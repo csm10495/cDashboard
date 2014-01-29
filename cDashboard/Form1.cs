@@ -16,6 +16,7 @@ namespace cDashboard
 {
     public partial class cDashboard : Form
     {
+
         #region Global Variables
         /// <summary>
         /// this is the tick counter for timer1
@@ -41,7 +42,7 @@ namespace cDashboard
         /// <summary>
         /// list of all stickies in program
         /// </summary>
-       // List<RichTextBox> list_stickies = new List<RichTextBox>();
+        // List<RichTextBox> list_stickies = new List<RichTextBox>();
         public List<cSticky> list_cStickies = new List<cSticky>();
 
         /// <summary>
@@ -90,6 +91,26 @@ namespace cDashboard
         #endregion
 
         #region Form Loading, Initial Setup
+        /// <summary>
+        /// This will be called on window creation to make Windows 
+        /// think of the Dash window as a toolwindow
+        /// window to avoid being in the alt-tab menu
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+
+                // turn on WS_EX_TOOLWINDOW style bit
+                // By calling VK_F17
+                // see WinUser.h for more information
+                cp.ExStyle |= 0x80;
+
+                return cp;
+            }
+        }
+
 
         /// <summary>
         /// check for duplicate cDashboard processes
