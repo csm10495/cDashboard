@@ -147,7 +147,7 @@ namespace cDashboard
             check_for_duplicate_processes(); //check for duplicate cDashboard processes
 
             variable_setup(); //setup variables1
-            label_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+            button_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
 
             //create appdata directory
             if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
@@ -814,7 +814,7 @@ namespace cDashboard
         {
             cD_tstate = timerstate.fadeout;
             maintimer.Interval = 10;
-            label_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+            button_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
         }
 
 
@@ -871,8 +871,8 @@ namespace cDashboard
             //always happening when timer is going
             #region alwaysontimer
             //set time label
-            label_time.Text = (DateTime.Now.ToString()).Substring(DateTime.Now.ToString().IndexOf(" ")).Trim();
-            label_time.Left = this.Width - label_time.Width + 14;
+            button_time.Text = (DateTime.Now.ToString()).Substring(DateTime.Now.ToString().IndexOf(" ")).Trim();
+            button_time.Left = this.Width - button_time.Width + 14;
             //set date label
             string datelabeltext = (DateTime.Now.DayOfWeek.ToString()) + ", " + DateTime.Now.ToString("MMMMMMMMMMMMMM") + " " + DateTime.Now.Day.ToString() + ", " + DateTime.Now.Year.ToString();
 
@@ -881,8 +881,8 @@ namespace cDashboard
             {
                 datelabeltext = "    " + datelabeltext;
             }
-            label_date.Text = datelabeltext;
-            label_date.Left = this.Width - label_date.Width;
+            button_date.Text = datelabeltext;
+            button_date.Left = this.Width - button_date.Width;
             #endregion
         }
         #endregion
@@ -959,6 +959,7 @@ namespace cDashboard
         }
         #endregion
 
+        #region Calls to fade_out()
         /// <summary>
         /// hides the dash, just by calling fade_in()
         /// </summary>
@@ -970,6 +971,39 @@ namespace cDashboard
         }
 
         /// <summary>
+        /// Replacement for label_time
+        /// single (not double) click fades the dash out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_time_Click(object sender, EventArgs e)
+        {
+            fade_out();
+        }
+
+        /// <summary>
+        /// Replacement for button_date
+        /// single (not double) click fades the dash out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_date_Click(object sender, EventArgs e)
+        {
+            fade_out();
+        }
+
+        /// <summary>
+        /// fade out by clicking the dash (not on a cForm)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cDashboard_Click(object sender, EventArgs e)
+        {
+            fade_out();
+        }
+        #endregion
+
+        /// <summary>
         /// exits application
         /// </summary>
         /// <param name="sender"></param>
@@ -978,10 +1012,6 @@ namespace cDashboard
         {
             Application.Exit();
         }
-
-
-
-
 
         /// <summary>
         /// Makes new sticky of desired color
@@ -1026,9 +1056,6 @@ namespace cDashboard
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_new.Name.Substring(cSticky_new.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
         }
 
-
-
-
         /// <summary>
         /// Allows the creation of any color sticky
         /// </summary>
@@ -1046,9 +1073,6 @@ namespace cDashboard
             }
 
         }
-
-
-
 
         /// <summary>
         /// sets the back color of the dash, and saves it to settings
@@ -1086,9 +1110,6 @@ namespace cDashboard
                 saveSettingsList(list_settings);
             }
         }
-
-
-
 
         /// <summary>
         /// called if a control is removed
@@ -1188,7 +1209,6 @@ namespace cDashboard
             saveSettingsList(list_settings);
         }
 
-
         /// <summary>
         /// double click the notify icon
         /// </summary>
@@ -1219,19 +1239,6 @@ namespace cDashboard
             notifyIcon1.Visible = false;
         }
 
-
-        /// <summary>
-        /// double click the time label
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void label_time_DoubleClick(object sender, EventArgs e)
-        {
-            //send down the dash
-            fade_out();
-        }
-
-
         /// <summary>
         /// exit application from notify icon
         /// </summary>
@@ -1242,6 +1249,11 @@ namespace cDashboard
             Application.Exit();
         }
 
+        /// <summary>
+        /// test
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tESTToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -1290,18 +1302,6 @@ namespace cDashboard
             replaceSetting(find, replace);
 
 
-        }
-
-
-        /// <summary>
-        /// double click the date label
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void label_date_DoubleClick(object sender, EventArgs e)
-        {
-            //send down the dash
-            fade_out();
         }
 
         /// <summary>
@@ -1371,8 +1371,6 @@ namespace cDashboard
             }
         }
 
-
-
         /// <summary>
         /// set favorite sticky font
         /// </summary>
@@ -1404,6 +1402,8 @@ namespace cDashboard
 
             fontDialog1.ShowColor = true;
         }
+
+
 
 
 

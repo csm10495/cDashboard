@@ -34,8 +34,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cDashboard));
             this.maintimer = new System.Windows.Forms.Timer(this.components);
-            this.label_time = new System.Windows.Forms.Label();
-            this.label_date = new System.Windows.Forms.Label();
             this.label_build = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +63,8 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.notifyicon_menustrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitCDashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button_time = new System.Windows.Forms.Button();
+            this.button_date = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -73,36 +73,6 @@
             // 
             this.maintimer.Interval = 10;
             this.maintimer.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // label_time
-            // 
-            this.label_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_time.AutoSize = true;
-            this.label_time.BackColor = System.Drawing.Color.Transparent;
-            this.label_time.Font = new System.Drawing.Font("Arial Black", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_time.ForeColor = System.Drawing.Color.Black;
-            this.label_time.Location = new System.Drawing.Point(911, 589);
-            this.label_time.Margin = new System.Windows.Forms.Padding(0);
-            this.label_time.Name = "label_time";
-            this.label_time.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label_time.Size = new System.Drawing.Size(351, 68);
-            this.label_time.TabIndex = 1;
-            this.label_time.Text = "12:09:33 AM";
-            this.label_time.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label_time.DoubleClick += new System.EventHandler(this.label_time_DoubleClick);
-            // 
-            // label_date
-            // 
-            this.label_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_date.AutoSize = true;
-            this.label_date.BackColor = System.Drawing.Color.Transparent;
-            this.label_date.Font = new System.Drawing.Font("Arial Black", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_date.Location = new System.Drawing.Point(940, 652);
-            this.label_date.Name = "label_date";
-            this.label_date.Size = new System.Drawing.Size(61, 27);
-            this.label_date.TabIndex = 2;
-            this.label_date.Text = "Date";
-            this.label_date.DoubleClick += new System.EventHandler(this.label_date_DoubleClick);
             // 
             // label_build
             // 
@@ -340,15 +310,50 @@
             this.exitCDashboardToolStripMenuItem.Text = "Exit cDashboard";
             this.exitCDashboardToolStripMenuItem.Click += new System.EventHandler(this.exitCDashboardToolStripMenuItem_Click);
             // 
+            // button_time
+            // 
+            this.button_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_time.BackColor = System.Drawing.Color.Transparent;
+            this.button_time.FlatAppearance.BorderSize = 0;
+            this.button_time.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_time.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_time.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_time.Font = new System.Drawing.Font("Arial Black", 36F, System.Drawing.FontStyle.Bold);
+            this.button_time.Location = new System.Drawing.Point(917, 590);
+            this.button_time.Name = "button_time";
+            this.button_time.Size = new System.Drawing.Size(364, 74);
+            this.button_time.TabIndex = 5;
+            this.button_time.Text = "12:09:33 AM";
+            this.button_time.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_time.UseVisualStyleBackColor = false;
+            this.button_time.Click += new System.EventHandler(this.button_time_Click);
+            // 
+            // button_date
+            // 
+            this.button_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_date.FlatAppearance.BorderSize = 0;
+            this.button_date.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_date.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_date.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_date.Font = new System.Drawing.Font("Arial Black", 14.25F, System.Drawing.FontStyle.Bold);
+            this.button_date.Location = new System.Drawing.Point(956, 649);
+            this.button_date.Name = "button_date";
+            this.button_date.Size = new System.Drawing.Size(308, 34);
+            this.button_date.TabIndex = 6;
+            this.button_date.Text = "Date";
+            this.button_date.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_date.UseVisualStyleBackColor = true;
+            this.button_date.Click += new System.EventHandler(this.button_date_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(1264, 682);
+            this.Controls.Add(this.button_date);
+            this.Controls.Add(this.button_time);
             this.Controls.Add(this.label_build);
-            this.Controls.Add(this.label_date);
-            this.Controls.Add(this.label_time);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -361,6 +366,7 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Click += new System.EventHandler(this.cDashboard_Click);
             this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.Form1_ControlRemoved);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -373,8 +379,6 @@
         #endregion
 
         private System.Windows.Forms.Timer maintimer;
-        private System.Windows.Forms.Label label_time;
-        private System.Windows.Forms.Label label_date;
         private System.Windows.Forms.Label label_build;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -404,6 +408,8 @@
         private System.Windows.Forms.ToolStripMenuItem favoriteColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setFavoriteStickyColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setFavoriteFontToolStripMenuItem;
+        private System.Windows.Forms.Button button_time;
+        private System.Windows.Forms.Button button_date;
     }
 }
 
