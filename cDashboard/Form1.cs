@@ -872,17 +872,10 @@ namespace cDashboard
             #region alwaysontimer
             //set time label
             button_time.Text = (DateTime.Now.ToString()).Substring(DateTime.Now.ToString().IndexOf(" ")).Trim();
-            button_time.Left = this.Width - button_time.Width + 14;
             //set date label
             string datelabeltext = (DateTime.Now.DayOfWeek.ToString()) + ", " + DateTime.Now.ToString("MMMMMMMMMMMMMM") + " " + DateTime.Now.Day.ToString() + ", " + DateTime.Now.Year.ToString();
-
-            //try to make it look a tad bit nicer
-            if (datelabeltext.Length < 24)
-            {
-                datelabeltext = "    " + datelabeltext;
-            }
+            
             button_date.Text = datelabeltext;
-            button_date.Left = this.Width - button_date.Width;
             #endregion
         }
         #endregion

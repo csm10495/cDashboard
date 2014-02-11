@@ -336,9 +336,9 @@
             this.button_date.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button_date.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_date.Font = new System.Drawing.Font("Arial Black", 14.25F, System.Drawing.FontStyle.Bold);
-            this.button_date.Location = new System.Drawing.Point(956, 649);
+            this.button_date.Location = new System.Drawing.Point(887, 650);
             this.button_date.Name = "button_date";
-            this.button_date.Size = new System.Drawing.Size(308, 34);
+            this.button_date.Size = new System.Drawing.Size(382, 34);
             this.button_date.TabIndex = 6;
             this.button_date.Text = "Date";
             this.button_date.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
