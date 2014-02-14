@@ -1,4 +1,5 @@
-﻿
+﻿//cDashboard - An overlay for Microsoft Windows
+//(C) Charles Machalow 2014 under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,6 @@ namespace cDashboard
 {
     public partial class cDashboard : Form
     {
-
         #region Global Variables
         /// <summary>
         /// this is the tick counter for timer1
@@ -396,6 +396,7 @@ namespace cDashboard
         private void moveToPrimaryMonitor()
         {
             this.WindowState = FormWindowState.Normal;
+
             //set Primary Monitor for the dash
             string[] tmp = { "cDash", "PrimaryMonitor" };
             List<string> list_primarymonitorline = getSpecificSetting(new List<string>(tmp));
@@ -409,10 +410,57 @@ namespace cDashboard
                     {
                         this.StartPosition = FormStartPosition.Manual;
                         this.Left = s.Bounds.Left;
+                        this.Top = s.Bounds.Top;
                     }
                 }
             }
+
             this.WindowState = FormWindowState.Maximized;
+        }
+
+        /// <summary>
+        /// This will be called to cycle through all cForms to ensure that all 
+        /// cForms were viewable on screen
+        /// </summary>
+        private void makeSureCFormsAreOnScreen()
+        {
+            //goes through every cSticky
+            foreach (cSticky current_csticky in list_cStickies)
+            {
+                //make sure that cStickies are not lost to resizing the dash
+                if (current_csticky.Location.X > this.Location.X + this.Size.Width)
+                {
+                    int form_widths = this.Width + current_csticky.Width;
+                    int total_width = current_csticky.Location.X + current_csticky.Width;
+                    current_csticky.Location = new Point(total_width - form_widths - 10, current_csticky.Location.Y);
+                }
+                if (current_csticky.Location.Y > this.Location.Y + this.Size.Height)
+                {
+                    int form_height = this.Height + current_csticky.Height;
+                    int total_height = current_csticky.Location.Y + current_csticky.Height;
+                    current_csticky.Location = new Point(current_csticky.Location.X, total_height - form_height - 10);
+                }
+                if (current_csticky.Location.X < 0)
+                {
+                    current_csticky.Location = new Point(0, current_csticky.Location.Y);
+                }
+                if (current_csticky.Location.Y < 0)
+                {
+                   current_csticky.Location = new Point(current_csticky.Location.X, 0);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// If the size of the dashboard changed, the monitor or resolution must have changed.
+        /// Therefore make sure that all forms are still in the dash, and not lost
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cDashboard_SizeChanged(object sender, EventArgs e)
+        {
+            makeSureCFormsAreOnScreen();
         }
 
         /// <summary>
@@ -496,7 +544,6 @@ namespace cDashboard
             moveToPrimaryMonitor();
         }
 
-
         /// <summary>
         /// Cancel the monitor change operation and close the overlay windows
         /// </summary>
@@ -506,7 +553,6 @@ namespace cDashboard
         {
             closeMultiMontiorOverlays();
         }
-
 
         /// <summary>
         /// closes all multi monitor setup overlay windows
@@ -782,29 +828,13 @@ namespace cDashboard
         {
             cD_tstate = (int)timerstate.fadein; //cD_tstate is the timer state
             this.Focus();
+
+            moveToPrimaryMonitor(); //ensures proper form sizing 
+
             this.Visible = true;
-
-
-            //READ STICKYS and PUT THEM IN RICHTEXTBOXES
-            /*
-            //open text file and put text in text box
-            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDashBoardText.cDash"))
-            {
-                System.IO.StreamReader file = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDashBoardText.cDash");
-                string tmpreadoffile = file.ReadToEnd().ToString();
-                file.Close();
-                richTextBox1.Text = tmpreadoffile;   
-            }
-            
-             
-            richTextBox1.Select(richTextBox1.Text.Length, 0); //move cursor to end of text (if not already there)
-
-            richTextBox1.Focus();
-             */
 
             maintimer.Interval = 10; //set interval
             maintimer.Start(); //begin timer
-
         }
 
         /// <summary>
@@ -816,9 +846,6 @@ namespace cDashboard
             maintimer.Interval = 10;
             button_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
         }
-
-
-
 
         /// <summary>
         /// timer tick
@@ -1243,16 +1270,6 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// test
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tESTToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
         /// called when this drop down menu is opened
         /// </summary>
         /// <param name="sender"></param>
@@ -1395,6 +1412,7 @@ namespace cDashboard
 
             fontDialog1.ShowColor = true;
         }
+
 
 
 

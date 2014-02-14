@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cSticky));
             this.rtb = new System.Windows.Forms.RichTextBox();
             this.rtb_contextmenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -199,6 +200,7 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.rtb);
             this.Controls.Add(this.menustrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menustrip;
             this.MaximizeBox = false;
             this.Name = "cSticky";

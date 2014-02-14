@@ -49,7 +49,6 @@
             this.favoriteColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tESTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCDashBackColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,8 +102,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newStickyToolStripMenuItem,
             this.hideToolStripMenuItem,
-            this.exitToolStripMenuItem,
-            this.tESTToolStripMenuItem});
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -202,13 +200,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.exitToolStripMenuItem.Text = "Exit cDashboard";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // tESTToolStripMenuItem
-            // 
-            this.tESTToolStripMenuItem.Name = "tESTToolStripMenuItem";
-            this.tESTToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.tESTToolStripMenuItem.Text = "TEST";
-            this.tESTToolStripMenuItem.Click += new System.EventHandler(this.tESTToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -356,6 +347,7 @@
             this.Controls.Add(this.label_build);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
@@ -366,6 +358,7 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.SizeChanged += new System.EventHandler(this.cDashboard_SizeChanged);
             this.Click += new System.EventHandler(this.cDashboard_Click);
             this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.Form1_ControlRemoved);
             this.menuStrip1.ResumeLayout(false);
@@ -402,7 +395,6 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip notifyicon_menustrip;
         private System.Windows.Forms.ToolStripMenuItem exitCDashboardToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tESTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setOpacityToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox textbox_opacity;
         private System.Windows.Forms.ToolStripMenuItem favoriteColorToolStripMenuItem;

@@ -1,4 +1,7 @@
-﻿using System;
+﻿//This file is part of cDashboard
+//cSticky - A sticky note for widget for cDashboard
+//(C) Charles Machalow 2014 under the MIT License
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,7 +26,6 @@ namespace cDashboard
         /// used with locking
         /// </summary>
         bool CompletedForm_Load = false;
-
 
         #endregion
 
@@ -192,7 +194,6 @@ namespace cDashboard
             //note a setting does not exist if this method returns a List<string> where .Count() == 0
         }
 
-
         #endregion
 
 
@@ -220,7 +221,6 @@ namespace cDashboard
             if (CompletedForm_Load == true)
             {
                 rtb.SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + this.Name.Substring(this.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
-
             }
         }
 
@@ -231,7 +231,6 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cSticky_Move(object sender, EventArgs e)
         {
-
             if (CompletedForm_Load == true)
             {
                 List<string> list_find = new List<string>();
@@ -252,7 +251,6 @@ namespace cDashboard
                 replaceSetting(list_find, list_replace);
             }
         }
-
 
         /// <summary>
         /// when the resizing is complete, save the new size
@@ -404,7 +402,6 @@ namespace cDashboard
         {
             rtb.Copy();
         }
-
 
         /// <summary>
         /// standard paste content from clipboard
