@@ -38,7 +38,6 @@ namespace cDashboard
         /// </summary>
         globalKeyboardHook KeyHook = new globalKeyboardHook(); //KeyHook is the global key hook
 
-
         /// <summary>
         /// list of all stickies in program
         /// </summary>
@@ -450,7 +449,6 @@ namespace cDashboard
                 }
             }
         }
-
 
         /// <summary>
         /// If the size of the dashboard changed, the monitor or resolution must have changed.

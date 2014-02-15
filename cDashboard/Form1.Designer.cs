@@ -120,7 +120,7 @@
             this.customColorToolStripMenuItem,
             this.favoriteColorToolStripMenuItem});
             this.newStickyToolStripMenuItem.Name = "newStickyToolStripMenuItem";
-            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newStickyToolStripMenuItem.Text = "New Sticky";
             // 
             // redToolStripMenuItem
@@ -190,15 +190,17 @@
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.hideToolStripMenuItem.Text = "Hide";
+            this.hideToolStripMenuItem.ToolTipText = "Hides the cDashboard";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.exitToolStripMenuItem.Text = "Exit cDashboard";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.ToolTipText = "Exit the cDashboard. (This closes the process)";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
@@ -218,7 +220,7 @@
             this.setFavoriteStickyColorToolStripMenuItem,
             this.setFavoriteFontToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashBackColorToolStripMenuItem
