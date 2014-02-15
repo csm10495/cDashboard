@@ -1327,7 +1327,6 @@ namespace cDashboard
         }
         #endregion
   
-
         /// <summary>
         /// called if a control is removed
         /// ex: if the x button is clicked on a child from, handle deleting the sticky
