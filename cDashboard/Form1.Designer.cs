@@ -55,6 +55,9 @@
             this.setCDashDefaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setOpacityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textbox_opacity = new System.Windows.Forms.ToolStripTextBox();
+            this.setFadeTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setInMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
             this.setFavoriteStickyColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setFavoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -86,7 +89,7 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.menuStrip1.Font = new System.Drawing.Font("Arial Black", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -120,7 +123,7 @@
             this.customColorToolStripMenuItem,
             this.favoriteColorToolStripMenuItem});
             this.newStickyToolStripMenuItem.Name = "newStickyToolStripMenuItem";
-            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.newStickyToolStripMenuItem.Text = "New Sticky";
             // 
             // redToolStripMenuItem
@@ -190,17 +193,15 @@
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.hideToolStripMenuItem.Text = "Hide";
-            this.hideToolStripMenuItem.ToolTipText = "Hides the cDashboard";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.ToolTipText = "Exit the cDashboard. (This closes the process)";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.exitToolStripMenuItem.Text = "Exit cDashboard";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
@@ -217,10 +218,11 @@
             this.setCDashBackColorToolStripMenuItem,
             this.setCDashDefaultMonitorToolStripMenuItem,
             this.setOpacityToolStripMenuItem,
+            this.setFadeTimeToolStripMenuItem,
             this.setFavoriteStickyColorToolStripMenuItem,
             this.setFavoriteFontToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashBackColorToolStripMenuItem
@@ -251,6 +253,29 @@
             // 
             this.textbox_opacity.Name = "textbox_opacity";
             this.textbox_opacity.Size = new System.Drawing.Size(100, 23);
+            // 
+            // setFadeTimeToolStripMenuItem
+            // 
+            this.setFadeTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setInMillisecondsToolStripMenuItem});
+            this.setFadeTimeToolStripMenuItem.Name = "setFadeTimeToolStripMenuItem";
+            this.setFadeTimeToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.setFadeTimeToolStripMenuItem.Text = "Set Fade Time...";
+            // 
+            // setInMillisecondsToolStripMenuItem
+            // 
+            this.setInMillisecondsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.textbox_fadetime});
+            this.setInMillisecondsToolStripMenuItem.Name = "setInMillisecondsToolStripMenuItem";
+            this.setInMillisecondsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.setInMillisecondsToolStripMenuItem.Text = "Set in Milliseconds...";
+            this.setInMillisecondsToolStripMenuItem.DropDownClosed += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownClosed_1);
+            this.setInMillisecondsToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownOpened);
+            // 
+            // textbox_fadetime
+            // 
+            this.textbox_fadetime.Name = "textbox_fadetime";
+            this.textbox_fadetime.Size = new System.Drawing.Size(100, 23);
             // 
             // setFavoriteStickyColorToolStripMenuItem
             // 
@@ -404,6 +429,9 @@
         private System.Windows.Forms.ToolStripMenuItem setFavoriteFontToolStripMenuItem;
         private System.Windows.Forms.Button button_time;
         private System.Windows.Forms.Button button_date;
+        private System.Windows.Forms.ToolStripMenuItem setFadeTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
     }
 }
 

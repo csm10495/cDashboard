@@ -43,6 +43,7 @@ namespace cDashboard
         /// </summary>
         globalKeyboardHook KeyHook = new globalKeyboardHook(); //KeyHook is the global key hook
 
+
         /// <summary>
         /// list of all stickies in program
         /// </summary>
@@ -457,6 +458,7 @@ namespace cDashboard
                 }
             }
         }
+
 
         /// <summary>
         /// If the size of the dashboard changed, the monitor or resolution must have changed.
@@ -1321,8 +1323,29 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setInMillisecondsToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        private void setInMillisecondsToolStripMenuItem_DropDownClosed_1(object sender, EventArgs e)
         {
+            //if the casting fails, then break gracefully
+            try
+            {
+                int_fade_milliseconds = Convert.ToInt32(textbox_fadetime.Text);
+            }
+            catch
+            {
+                MessageBox.Show("The fade_time must be an integer!");
+                return;
+            }
+
+            //replace the setting
+            List<string> find = new List<string>();
+            List<string> replace = new List<string>();
+
+            find.Add("cDash");
+            replace.Add("cDash");
+            find.Add("FadeLengthInMilliseconds");
+            replace.Add("FadeLengthInMilliseconds");
+            replace.Add(int_fade_milliseconds.ToString());
+            replaceSetting(find, replace);
 
         }
         #endregion
@@ -1454,6 +1477,7 @@ namespace cDashboard
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
         }
+
 
 
 
