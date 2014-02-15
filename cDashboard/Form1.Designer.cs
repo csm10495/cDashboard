@@ -64,6 +64,9 @@
             this.exitCDashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_time = new System.Windows.Forms.Button();
             this.button_date = new System.Windows.Forms.Button();
+            this.setFadeTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setInMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -86,7 +89,7 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.menuStrip1.Font = new System.Drawing.Font("Arial Black", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -217,6 +220,7 @@
             this.setCDashBackColorToolStripMenuItem,
             this.setCDashDefaultMonitorToolStripMenuItem,
             this.setOpacityToolStripMenuItem,
+            this.setFadeTimeToolStripMenuItem,
             this.setFavoriteStickyColorToolStripMenuItem,
             this.setFavoriteFontToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
@@ -338,6 +342,28 @@
             this.button_date.UseVisualStyleBackColor = true;
             this.button_date.Click += new System.EventHandler(this.button_date_Click);
             // 
+            // setFadeTimeToolStripMenuItem
+            // 
+            this.setFadeTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setInMillisecondsToolStripMenuItem});
+            this.setFadeTimeToolStripMenuItem.Name = "setFadeTimeToolStripMenuItem";
+            this.setFadeTimeToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.setFadeTimeToolStripMenuItem.Text = "Set Fade Time...";
+            // 
+            // setInMillisecondsToolStripMenuItem
+            // 
+            this.setInMillisecondsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.textbox_fadetime});
+            this.setInMillisecondsToolStripMenuItem.Name = "setInMillisecondsToolStripMenuItem";
+            this.setInMillisecondsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.setInMillisecondsToolStripMenuItem.Text = "Set in Milliseconds...";
+            this.setInMillisecondsToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownOpened);
+            // 
+            // textbox_fadetime
+            // 
+            this.textbox_fadetime.Name = "textbox_fadetime";
+            this.textbox_fadetime.Size = new System.Drawing.Size(100, 23);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -404,6 +430,9 @@
         private System.Windows.Forms.ToolStripMenuItem setFavoriteFontToolStripMenuItem;
         private System.Windows.Forms.Button button_time;
         private System.Windows.Forms.Button button_date;
+        private System.Windows.Forms.ToolStripMenuItem setFadeTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
     }
 }
 
