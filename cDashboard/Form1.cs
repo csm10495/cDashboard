@@ -24,11 +24,6 @@ namespace cDashboard
         int timertime = 0;
 
         /// <summary>
-        /// the amount of time in milliseconds needed for fade_in, fade_out
-        /// </summary>
-        int int_fade_milliseconds = 500;
-
-        /// <summary>
         /// the state of the timer can be fading in, out, indash.
         /// </summary>
         enum timerstate { fadein = 0, fadeout = 1, indash = 2 };
@@ -114,6 +109,7 @@ namespace cDashboard
                 return cp;
             }
         }
+
 
         /// <summary>
         /// check for duplicate cDashboard processes
@@ -201,11 +197,6 @@ namespace cDashboard
                         textbox_opacity.Text = currentline[2];
                     }
 
-                    if (currentline[1] == "FadeLengthInMilliseconds")
-                    {
-                        int_fade_milliseconds = Convert.ToInt32(currentline[2]);
-                    }
-
                     if (currentline[1] == "FavoriteStickyColor")
                     {
                         if (currentline[2] == "NULL")
@@ -237,6 +228,8 @@ namespace cDashboard
 
 
         }
+
+
 
         /// <summary>
         /// Create the stickies from the settings file
@@ -333,7 +326,6 @@ namespace cDashboard
                 if (!System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\BuildData.cDash"))
                 {
                     //creates build data
-                    //at this point this number doesn't mean much :P
                     System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\BuildData.cDash");
                     sw.Write("144");
                     sw.Close();
@@ -372,7 +364,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;FavoriteStickyColor;NULL");
                 sw.WriteLine("cDash;FavoriteStickyFontName;Arial Black");
                 sw.WriteLine("cDash;FavoriteStickyFontSize;12");
-                sw.WriteLine("cDash;FadeLengthInMilliseconds;500");
+
                 sw.Close();
 
                 //if there is more than one monitor, check which monitor the user wants to use
@@ -803,6 +795,7 @@ namespace cDashboard
         done: ;
         }
 
+
         /// <summary>
         /// Every time a hooked key is let up, this will be called
         /// </summary>
@@ -825,6 +818,7 @@ namespace cDashboard
             }
         }
 
+
         /// <summary>
         /// cues the form's fade in process
         /// </summary>
@@ -837,7 +831,7 @@ namespace cDashboard
 
             this.Visible = true;
 
-            maintimer.Interval = 1; //set interval
+            maintimer.Interval = 10; //set interval
             maintimer.Start(); //begin timer
         }
 
@@ -847,7 +841,7 @@ namespace cDashboard
         private void fade_out()
         {
             cD_tstate = timerstate.fadeout;
-            maintimer.Interval = 1;
+            maintimer.Interval = 10;
             button_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
         }
 
@@ -858,22 +852,18 @@ namespace cDashboard
         /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timertime++; //increment fade timer
+            timertime++; //increment fade in
 
             //fade in related code
             #region fadeintimer
             if (cD_tstate == (int)timerstate.fadein)
             {
-              
-                //computes amount of change in opacity per clock tick then applies it
-                double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds)  * 1 / 10;
-                this.Opacity = timertime * double_change_in_opacity_per_tick;
-                
-                if (this.Opacity >= (Convert.ToDouble(OpacityLevel) * 1/100))
+                this.Opacity = ((double)timertime / OpacityLevel) * Convert.ToDouble("." + OpacityLevel.ToString());
+                if (timertime == OpacityLevel)
                 {
-                    cD_tstate = timerstate.indash; //We set the timerstate to indash to allow for timekeeping
                     this.Opacity = Convert.ToDouble("." + OpacityLevel);
                     timertime = 0;
+                    cD_tstate = timerstate.indash; //We set the timerstate to indash to allow for timekeeping
                     maintimer.Interval = 1000;
                 }
             }
@@ -891,17 +881,14 @@ namespace cDashboard
             #region fadeouttimer
             if (cD_tstate == timerstate.fadeout)
             {
-                //computes amount of change in opacity per clock tick then applies it
-                double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
-                this.Opacity = (Convert.ToDouble(OpacityLevel) * 1/100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
-
-                if (this.Opacity <= 0)
+                this.Opacity = Convert.ToDouble("." + OpacityLevel.ToString()) - ((double)timertime / OpacityLevel) * Convert.ToDouble("." + OpacityLevel.ToString());
+                if (timertime == OpacityLevel)
                 {
-                    cD_tstate = timerstate.fadein;
                     this.Opacity = 0;
                     this.Visible = false;
                     timertime = 0;
                     maintimer.Stop();
+                    cD_tstate = timerstate.fadein;
                 }
             }
             #endregion
@@ -988,49 +975,6 @@ namespace cDashboard
         {
             makeNewSticky(Color.Violet);
         }
-
-        /// <summary>
-        /// Makes new sticky of desired color
-        /// </summary>
-        /// <param name="pickedColor">The desired color</param>
-        private void makeNewSticky(Color pickedColor)
-        {
-            //this code will add a new sticky to the form
-            cSticky cSticky_new = new cSticky();
-            cSticky_new.Location = new Point(10, 25);
-            cSticky_new.Size = new Size(350, 400);
-            cSticky_new.BackColor = pickedColor;
-            ((MenuStrip)cSticky_new.Controls.Find("menustrip", false)[0]).BackColor = pickedColor;
-            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).BackColor = pickedColor;
-            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Font = FavoriteStickyFont;
-            cSticky_new.TopLevel = false;
-            cSticky_new.Parent = this;
-            Controls.Add(cSticky_new);
-            cSticky_new.Show();
-            cSticky_new.BringToFront();
-            cSticky_new.Name = "RichTextBox" + list_cStickies.Count.ToString();
-            list_cStickies.Add(cSticky_new);
-
-            //this code will add this new sticky to the settings file
-            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash"))
-            {
-                int currentsticky = list_cStickies.Count - 1;
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
-                sw.WriteLine("RichTextBox;" + currentsticky + ";BackColor;" + list_cStickies[currentsticky].BackColor.R.ToString() + ";" + list_cStickies[currentsticky].BackColor.G.ToString() + ";" + list_cStickies[currentsticky].BackColor.B.ToString());
-                sw.WriteLine("RichTextBox;" + currentsticky + ";Location;" + list_cStickies[currentsticky].Location.X.ToString() + ";" + list_cStickies[currentsticky].Location.Y.ToString());
-                sw.WriteLine("RichTextBox;" + currentsticky + ";Size;" + list_cStickies[currentsticky].Size.Width.ToString() + ";" + list_cStickies[currentsticky].Size.Height.ToString());
-                sw.WriteLine("RichTextBox;" + currentsticky + ";FontStyle;" + ((RichTextBox)list_cStickies[currentsticky].Controls.Find("rtb", false)[0]).Font.Name.ToString() + ";" + ((RichTextBox)list_cStickies[currentsticky].Controls.Find("rtb", false)[0]).Font.Size.ToString());
-                sw.Close();
-            }
-            else
-            {
-                //this error should never EVER be thrown
-                MessageBox.Show("System.IO.Exception: File does not exist");
-            }
-
-
-            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_new.Name.Substring(cSticky_new.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
-        }
         #endregion
 
         #region Calls to fade_out()
@@ -1077,7 +1021,6 @@ namespace cDashboard
         }
         #endregion
 
-        #region Menustrip Items
         /// <summary>
         /// exits application
         /// </summary>
@@ -1086,6 +1029,49 @@ namespace cDashboard
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        /// <summary>
+        /// Makes new sticky of desired color
+        /// </summary>
+        /// <param name="pickedColor">The desired color</param>
+        private void makeNewSticky(Color pickedColor)
+        {
+            //this code will add a new sticky to the form
+            cSticky cSticky_new = new cSticky();
+            cSticky_new.Location = new Point(10, 25);
+            cSticky_new.Size = new Size(350, 400);
+            cSticky_new.BackColor = pickedColor;
+            ((MenuStrip)cSticky_new.Controls.Find("menustrip", false)[0]).BackColor = pickedColor;
+            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).BackColor = pickedColor;
+            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Font = FavoriteStickyFont;
+            cSticky_new.TopLevel = false;
+            cSticky_new.Parent = this;
+            Controls.Add(cSticky_new);
+            cSticky_new.Show();
+            cSticky_new.BringToFront();
+            cSticky_new.Name = "RichTextBox" + list_cStickies.Count.ToString();
+            list_cStickies.Add(cSticky_new);
+
+            //this code will add this new sticky to the settings file
+            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash"))
+            {
+                int currentsticky = list_cStickies.Count - 1;
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
+                sw.WriteLine("RichTextBox;" + currentsticky + ";BackColor;" + list_cStickies[currentsticky].BackColor.R.ToString() + ";" + list_cStickies[currentsticky].BackColor.G.ToString() + ";" + list_cStickies[currentsticky].BackColor.B.ToString());
+                sw.WriteLine("RichTextBox;" + currentsticky + ";Location;" + list_cStickies[currentsticky].Location.X.ToString() + ";" + list_cStickies[currentsticky].Location.Y.ToString());
+                sw.WriteLine("RichTextBox;" + currentsticky + ";Size;" + list_cStickies[currentsticky].Size.Width.ToString() + ";" + list_cStickies[currentsticky].Size.Height.ToString());
+                sw.WriteLine("RichTextBox;" + currentsticky + ";FontStyle;" + ((RichTextBox)list_cStickies[currentsticky].Controls.Find("rtb", false)[0]).Font.Name.ToString() + ";" + ((RichTextBox)list_cStickies[currentsticky].Controls.Find("rtb", false)[0]).Font.Size.ToString());
+                sw.Close();
+            }
+            else
+            {
+                //this error should never EVER be thrown
+                MessageBox.Show("System.IO.Exception: File does not exist");
+            }
+
+
+            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_new.Name.Substring(cSticky_new.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
         }
 
         /// <summary>
@@ -1143,190 +1129,6 @@ namespace cDashboard
             }
         }
 
-        /// <summary>
-        /// exit application from notify icon
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void exitCDashboardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        /// <summary>
-        /// called when this drop down menu is opened
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setOpacityToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
-        {
-            //make sure it displays the current opacity
-            textbox_opacity.Text = OpacityLevel.ToString();
-        }
-
-        /// <summary>
-        /// called when this drop down menu is closed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setOpacityToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
-        {
-            //if the casting fails, then break gracefully
-            try
-            {
-                OpacityLevel = Convert.ToInt32(textbox_opacity.Text);
-            }
-            catch
-            {
-                MessageBox.Show("The opacity must be an integer!");
-                return;
-            }
-
-            //if the user gives 100 (or greater) we must save it as 99 to make sure that 
-            //the it goes 99 -> .99 instead of 100 -> .10
-            if (OpacityLevel > 99)
-            {
-                OpacityLevel = 99;
-            }
-
-            this.Opacity = Convert.ToDouble("." + OpacityLevel.ToString());
-
-            //replace the setting
-            List<string> find = new List<string>();
-            List<string> replace = new List<string>();
-
-            find.Add("cDash");
-            replace.Add("cDash");
-            find.Add("Opacity");
-            replace.Add("Opacity");
-            replace.Add(OpacityLevel.ToString());
-            replaceSetting(find, replace);
-
-
-        }
-
-        /// <summary>
-        /// make a new sticky of the user's favorite color
-        /// ask user to pick color if it is still null
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void favoriteColorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<string> find = new List<string>();
-            List<string> replace = new List<string>();
-            find.Add("cDash");
-            find.Add("FavoriteStickyColor");
-            replace.Add("cDash");
-            replace.Add("FavoriteStickyColor");
-
-            //still need to set favorite color
-            if (getSpecificSetting(find)[0] == "NULL")
-            {
-                //show the color selection dialog
-                DialogResult result = colorDialog1.ShowDialog();
-
-                //if the user clicks Ok, set the color, otherwise cancel
-                if (result == DialogResult.OK)
-                {
-                    FavoriteStickyColor = colorDialog1.Color;
-                    makeNewSticky(FavoriteStickyColor);
-                    replace.Add(FavoriteStickyColor.R.ToString());
-                    replace.Add(FavoriteStickyColor.G.ToString());
-                    replace.Add(FavoriteStickyColor.B.ToString());
-                    replaceSetting(find, replace);
-                }
-            }
-            else
-            {
-                makeNewSticky(FavoriteStickyColor);
-            }
-
-        }
-
-        /// <summary>
-        /// set favorite sticky color w/o making a new sticky
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setFavoriteStickyColorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //show the color selection dialog
-            DialogResult result = colorDialog1.ShowDialog();
-
-            List<string> find = new List<string>();
-            List<string> replace = new List<string>();
-            find.Add("cDash");
-            find.Add("FavoriteStickyColor");
-            replace.Add("cDash");
-            replace.Add("FavoriteStickyColor");
-
-            //if the user clicks Ok, set the color, otherwise cancel
-            if (result == DialogResult.OK)
-            {
-                FavoriteStickyColor = colorDialog1.Color;
-                replace.Add(FavoriteStickyColor.R.ToString());
-                replace.Add(FavoriteStickyColor.G.ToString());
-                replace.Add(FavoriteStickyColor.B.ToString());
-                replaceSetting(find, replace);
-            }
-        }
-
-        /// <summary>
-        /// set favorite sticky font
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setFavoriteFontToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fontDialog1.ShowColor = false;
-
-            DialogResult result = fontDialog1.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                FavoriteStickyFont = fontDialog1.Font;
-
-                List<string> find = new List<string>();
-                List<string> replace = new List<string>();
-                find.Add("cDash");
-                find.Add("FavoriteStickyFontName");
-                replace.Add("cDash");
-                replace.Add("FavoriteStickyFontName");
-                replace.Add(FavoriteStickyFont.Name.ToString());
-                replaceSetting(find, replace);
-                find[1] = "FavoriteStickyFontSize";
-                replace[1] = "FavoriteStickyFontSize";
-                replace[2] = FavoriteStickyFont.Size.ToString();
-                replaceSetting(find, replace);
-            }
-
-            fontDialog1.ShowColor = true;
-        }
-
-        /// <summary>
-        /// called when the textbox for editting fade time is made visible
-        /// aka when the drop down is opened
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setInMillisecondsToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
-        {
-            //set textbox text equal to saved fade length
-            textbox_fadetime.Text = int_fade_milliseconds.ToString();
-        }
-
-        /// <summary>
-        /// save fade length setting when the menu item is closed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setInMillisecondsToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
-        {
-
-        }
-        #endregion
-  
         /// <summary>
         /// called if a control is removed
         /// ex: if the x button is clicked on a child from, handle deleting the sticky
@@ -1453,6 +1255,160 @@ namespace cDashboard
         {
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
+        }
+
+        /// <summary>
+        /// exit application from notify icon
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exitCDashboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        /// <summary>
+        /// called when this drop down menu is opened
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setOpacityToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            //make sure it displays the current opacity
+            textbox_opacity.Text = OpacityLevel.ToString();
+        }
+
+        /// <summary>
+        /// called when this drop down menu is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setOpacityToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            //if the casting fails, then break gracefully
+            try
+            {
+                OpacityLevel = Convert.ToInt32(textbox_opacity.Text);
+            }
+            catch
+            {
+                MessageBox.Show("The opacity must be an integer!");
+                return;
+            }
+
+            this.Opacity = Convert.ToDouble("." + OpacityLevel.ToString());
+
+            //replace the setting
+            List<string> find = new List<string>();
+            List<string> replace = new List<string>();
+
+            find.Add("cDash");
+            replace.Add("cDash");
+            find.Add("Opacity");
+            replace.Add("Opacity");
+            replace.Add(OpacityLevel.ToString());
+            replaceSetting(find, replace);
+
+
+        }
+
+        /// <summary>
+        /// make a new sticky of the user's favorite color
+        /// ask user to pick color if it is still null
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void favoriteColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> find = new List<string>();
+            List<string> replace = new List<string>();
+            find.Add("cDash");
+            find.Add("FavoriteStickyColor");
+            replace.Add("cDash");
+            replace.Add("FavoriteStickyColor");
+
+            //still need to set favorite color
+            if (getSpecificSetting(find)[0] == "NULL")
+            {
+                //show the color selection dialog
+                DialogResult result = colorDialog1.ShowDialog();
+
+                //if the user clicks Ok, set the color, otherwise cancel
+                if (result == DialogResult.OK)
+                {
+                    FavoriteStickyColor = colorDialog1.Color;
+                    makeNewSticky(FavoriteStickyColor);
+                    replace.Add(FavoriteStickyColor.R.ToString());
+                    replace.Add(FavoriteStickyColor.G.ToString());
+                    replace.Add(FavoriteStickyColor.B.ToString());
+                    replaceSetting(find, replace);
+                }
+            }
+            else
+            {
+                makeNewSticky(FavoriteStickyColor);
+            }
+
+        }
+
+        /// <summary>
+        /// set favorite sticky color w/o making a new sticky
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setFavoriteStickyColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show the color selection dialog
+            DialogResult result = colorDialog1.ShowDialog();
+
+            List<string> find = new List<string>();
+            List<string> replace = new List<string>();
+            find.Add("cDash");
+            find.Add("FavoriteStickyColor");
+            replace.Add("cDash");
+            replace.Add("FavoriteStickyColor");
+
+            //if the user clicks Ok, set the color, otherwise cancel
+            if (result == DialogResult.OK)
+            {
+                FavoriteStickyColor = colorDialog1.Color;
+                replace.Add(FavoriteStickyColor.R.ToString());
+                replace.Add(FavoriteStickyColor.G.ToString());
+                replace.Add(FavoriteStickyColor.B.ToString());
+                replaceSetting(find, replace);
+            }
+        }
+
+        /// <summary>
+        /// set favorite sticky font
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setFavoriteFontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fontDialog1.ShowColor = false;
+
+            DialogResult result = fontDialog1.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                FavoriteStickyFont = fontDialog1.Font;
+
+                List<string> find = new List<string>();
+                List<string> replace = new List<string>();
+                find.Add("cDash");
+                find.Add("FavoriteStickyFontName");
+                replace.Add("cDash");
+                replace.Add("FavoriteStickyFontName");
+                replace.Add(FavoriteStickyFont.Name.ToString());
+                replaceSetting(find, replace);
+                find[1] = "FavoriteStickyFontSize";
+                replace[1] = "FavoriteStickyFontSize";
+                replace[2] = FavoriteStickyFont.Size.ToString();
+                replaceSetting(find, replace);
+            }
+
+            fontDialog1.ShowColor = true;
         }
 
 
