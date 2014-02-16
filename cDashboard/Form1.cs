@@ -51,9 +51,9 @@ namespace cDashboard
         public List<cSticky> list_cStickies = new List<cSticky>();
 
         /// <summary>
-        /// Signifies if the 1 key is down
+        /// Signifies if the LCtrl key is down
         /// </summary>
-        bool OneKeyIsDown = false;
+        bool LCtrlIsDown = false;
 
 
         /// <summary>
@@ -311,9 +311,9 @@ namespace cDashboard
         /// </summary>
         private void variable_setup()
         {
-            //add Shift and Ctrl to the list of hooked keys
+            //add tilde and LeftCtrl to the list of hooked keys
             KeyHook.HookedKeys.Add(Keys.Oemtilde);
-            KeyHook.HookedKeys.Add(Keys.D1);
+            KeyHook.HookedKeys.Add(Keys.LControlKey);
             //begin hook
             KeyHook.hook();
             //Setup Key Event Handlers 
@@ -760,11 +760,11 @@ namespace cDashboard
         /// <param name="e">Arguements for the event</param>
         private void KeyHook_KeyDown(object sender, KeyEventArgs e)
         {
-            //Check if the hooked key is the 1 key
-            if (e.KeyCode == Keys.D1)
+            //Check if the hooked key is the LCtrl
+            if (e.KeyCode == Keys.LControlKey)
             {
                 //Set the bool properly
-                OneKeyIsDown = true;
+                LCtrlIsDown = true;
             }
 
             //Check if the hooked key is the tilde key
@@ -775,7 +775,7 @@ namespace cDashboard
             }
 
             //if both hooked keys are down, and we are ready to fadein, fade in the dash
-            if (TildeIsDown && OneKeyIsDown && cD_tstate == timerstate.fadein && CompletedForm_Load == true)
+            if (TildeIsDown && LCtrlIsDown && cD_tstate == timerstate.fadein && CompletedForm_Load == true)
             {
                 //theoretically should fix incorrectly shapped loads
                 moveToPrimaryMonitor();
@@ -784,19 +784,19 @@ namespace cDashboard
 
                 //reset which keys are down
                 TildeIsDown = false;
-                OneKeyIsDown = false;
+                LCtrlIsDown = false;
                 e.Handled = true;
                 goto done;
             }
 
             //if both hooked keys are down, and we are ready to fadeout, fadeout in the dash
-            if (TildeIsDown && OneKeyIsDown && cD_tstate == timerstate.indash)
+            if (TildeIsDown && LCtrlIsDown && cD_tstate == timerstate.indash)
             {
                 fade_out();
 
                 //reset which keys are down
                 TildeIsDown = false;
-                OneKeyIsDown = false;
+                LCtrlIsDown = false;
                 e.Handled = true;
                 goto done;
             }
@@ -812,11 +812,11 @@ namespace cDashboard
         /// <param name="e">Arguements for the event</param>
         private void KeyHook_KeyUp(object sender, KeyEventArgs e)
         {
-            //Check if the hooked key is the 1 key
-            if (e.KeyCode == Keys.D1)
+            //Check if the hooked key is the LCtrl
+            if (e.KeyCode == Keys.LControlKey)
             {
                 //Set the bool properly
-                OneKeyIsDown = false;
+                LCtrlIsDown = false;
             }
 
             //Check if the hooked key is the tilde key
