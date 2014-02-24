@@ -67,6 +67,7 @@
             this.exitCDashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_time = new System.Windows.Forms.Button();
             this.button_date = new System.Windows.Forms.Button();
+            this.newCPicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -104,6 +105,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newStickyToolStripMenuItem,
+            this.newCPicToolStripMenuItem,
             this.hideToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -222,7 +224,7 @@
             this.setFavoriteStickyColorToolStripMenuItem,
             this.setFavoriteFontToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashBackColorToolStripMenuItem
@@ -363,6 +365,13 @@
             this.button_date.UseVisualStyleBackColor = true;
             this.button_date.Click += new System.EventHandler(this.button_date_Click);
             // 
+            // newCPicToolStripMenuItem
+            // 
+            this.newCPicToolStripMenuItem.Name = "newCPicToolStripMenuItem";
+            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.newCPicToolStripMenuItem.Text = "New cPic";
+            this.newCPicToolStripMenuItem.Click += new System.EventHandler(this.newCPicToolStripMenuItem_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -432,6 +441,7 @@
         private System.Windows.Forms.ToolStripMenuItem setFadeTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
+        private System.Windows.Forms.ToolStripMenuItem newCPicToolStripMenuItem;
     }
 }
 

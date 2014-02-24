@@ -78,6 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cPic.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cPic.Designer.cs">
+      <DependentUpon>cPic.cs</DependentUpon>
+    </Compile>
     <Compile Include="cSticky.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     <Compile Include="globalKeyboardHook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="cPic.resx">
+      <DependentUpon>cPic.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="cSticky.resx">
       <DependentUpon>cSticky.cs</DependentUpon>
     </EmbeddedResource>

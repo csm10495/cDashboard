@@ -1478,6 +1478,18 @@ namespace cDashboard
             notifyIcon1.Visible = false;
         }
 
+        private void newCPicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cPic cPic_new = new cPic();
+            cPic_new.Location = new Point(10, 25);
+            cPic_new.Size = new Size(350, 400);
+            cPic_new.TopLevel = false;
+            cPic_new.Parent = this;
+            Controls.Add(cPic_new);
+            cPic_new.Show();
+            cPic_new.BringToFront();
+        }
+
 
 
 
