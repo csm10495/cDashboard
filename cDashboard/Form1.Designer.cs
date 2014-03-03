@@ -47,6 +47,7 @@
             this.violetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoriteColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCPicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +68,7 @@
             this.exitCDashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_time = new System.Windows.Forms.Button();
             this.button_date = new System.Windows.Forms.Button();
-            this.newCPicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -191,6 +192,13 @@
             this.favoriteColorToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.favoriteColorToolStripMenuItem.Text = "Favorite Color";
             this.favoriteColorToolStripMenuItem.Click += new System.EventHandler(this.favoriteColorToolStripMenuItem_Click);
+            // 
+            // newCPicToolStripMenuItem
+            // 
+            this.newCPicToolStripMenuItem.Name = "newCPicToolStripMenuItem";
+            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.newCPicToolStripMenuItem.Text = "New cPic...";
+            this.newCPicToolStripMenuItem.Click += new System.EventHandler(this.newCPicToolStripMenuItem_Click);
             // 
             // hideToolStripMenuItem
             // 
@@ -365,12 +373,10 @@
             this.button_date.UseVisualStyleBackColor = true;
             this.button_date.Click += new System.EventHandler(this.button_date_Click);
             // 
-            // newCPicToolStripMenuItem
+            // openFileDialog1
             // 
-            this.newCPicToolStripMenuItem.Name = "newCPicToolStripMenuItem";
-            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.newCPicToolStripMenuItem.Text = "New cPic";
-            this.newCPicToolStripMenuItem.Click += new System.EventHandler(this.newCPicToolStripMenuItem_Click);
+            this.openFileDialog1.FileName = "Image.jpg";
+            this.openFileDialog1.Title = "Select Image File For cPic";
             // 
             // cDashboard
             // 
@@ -442,6 +448,7 @@
         private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
         private System.Windows.Forms.ToolStripMenuItem newCPicToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

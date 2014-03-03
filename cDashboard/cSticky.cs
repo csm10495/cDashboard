@@ -33,6 +33,27 @@ namespace cDashboard
         #region Settings List Related Methods
 
         /// <summary>
+        /// Will grab the NON identifying setting value from what would be a string_currentline
+        /// calls the overloaded list version
+        /// </summary>
+        /// <param name="array_identifiers"></param>
+        /// <returns></returns>
+        private List<string> getSpecificSetting(string[] array_identifiers)
+        {
+            return getSpecificSetting(array_identifiers.ToList());
+        }
+
+        /// <summary>
+        /// array version of replace setting
+        /// </summary>
+        /// <param name="array_find"></param>
+        /// <param name="array_replace"></param>
+        private void replaceSetting(string[] array_find, string[] array_replace)
+        {
+            replaceSetting(array_find.ToList(), array_replace.ToList());
+        }
+
+        /// <summary>
         /// return settings from file
         /// </summary>
         /// <returns></returns>

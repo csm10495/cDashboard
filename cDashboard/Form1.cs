@@ -151,7 +151,7 @@ namespace cDashboard
             check_for_duplicate_processes(); //check for duplicate cDashboard processes
 
             variable_setup(); //setup variables1
-            button_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+            this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
 
             //create appdata directory
             if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
@@ -228,15 +228,62 @@ namespace cDashboard
                     {
                         FSFS = Convert.ToSingle(currentline[2]);
                     }
+                }
+                else if (currentline[0] == "cPic")
+                {
+                    //this would mean that this form already exists
+                    if (!(Controls.Find(currentline[1], true).Length > 0))
+                    {
+                        cPic cPic_new = new cPic();
+                        cPic_new.Name = currentline[1];
+                        cPic_new.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + getSpecificSetting(new[] { "cPic", currentline[1], "FileName" })[0]);
+                        cPic_new.TopLevel = false;
+                        cPic_new.Parent = this;
+                        Controls.Add(cPic_new);
+                    }
 
+                    //get form by name
+                    cPic this_cPic = (cPic)this.Controls.Find(currentline[1], true)[0];
+
+                    if (currentline[2] == "ImageLayout")
+                    {
+                        if (currentline[3] == "Center")
+                        {
+                            this_cPic.BackgroundImageLayout = ImageLayout.Center;
+                        }
+                        else if (currentline[3] == "None")
+                        {
+                            this_cPic.BackgroundImageLayout = ImageLayout.None;
+                        }
+                        else if (currentline[3] == "Stretch")
+                        {
+                            this_cPic.BackgroundImageLayout = ImageLayout.Stretch;
+                        }
+                        else if (currentline[3] == "Tile")
+                        {
+                            this_cPic.BackgroundImageLayout = ImageLayout.Tile;
+                        }
+                        else if (currentline[3] == "Zoom")
+                        {
+                            this_cPic.BackgroundImageLayout = ImageLayout.Zoom;
+                        }
+                    }
+                    else if (currentline[2] == "Size")
+                    {
+                        this_cPic.Size = new Size(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
+                    else if (currentline[2] == "Location")
+                    {
+                        this_cPic.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
+
+                    this_cPic.Show();
+                    this_cPic.BringToFront();
                 }
             }
-
             FavoriteStickyFont = new Font(FSFN, FSFS);
             //move dash to set monitor
             moveToPrimaryMonitor();
-
-
         }
 
         /// <summary>
@@ -279,12 +326,6 @@ namespace cDashboard
                     {
                         list_cStickies[Convert.ToInt32(current_item[1])].Size = new Size(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]));
                     }
-
-                    //the property is font style
-                    //   if (current_item[2] == "FontStyle")
-                    //  {
-                    //      list_cStickies[Convert.ToInt32(current_item[1])].Font = new Font(current_item[3], Convert.ToSingle(current_item[4]));
-                    //  }
                 }
             }
 
@@ -454,7 +495,7 @@ namespace cDashboard
                 }
                 if (current_csticky.Location.Y < 0)
                 {
-                   current_csticky.Location = new Point(current_csticky.Location.X, 0);
+                    current_csticky.Location = new Point(current_csticky.Location.X, 0);
                 }
             }
         }
@@ -584,6 +625,27 @@ namespace cDashboard
         #endregion
 
         #region Settings Finding / Setting
+
+        /// <summary>
+        /// Will grab the NON identifying setting value from what would be a string_currentline
+        /// calls the overloaded list version
+        /// </summary>
+        /// <param name="array_identifiers"></param>
+        /// <returns></returns>
+        private List<string> getSpecificSetting(string[] array_identifiers)
+        {
+            return getSpecificSetting(array_identifiers.ToList());
+        }
+
+        /// <summary>
+        /// array version of replace setting
+        /// </summary>
+        /// <param name="array_find"></param>
+        /// <param name="array_replace"></param>
+        private void replaceSetting(string[] array_find, string[] array_replace)
+        {
+            replaceSetting(array_find.ToList(), array_replace.ToList());
+        }
 
         /// <summary>
         /// return settings from file
@@ -850,7 +912,7 @@ namespace cDashboard
         {
             cD_tstate = timerstate.fadeout;
             maintimer.Interval = 1;
-            button_date.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+            this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
         }
 
         /// <summary>
@@ -866,12 +928,12 @@ namespace cDashboard
             #region fadeintimer
             if (cD_tstate == (int)timerstate.fadein)
             {
-              
+
                 //computes amount of change in opacity per clock tick then applies it
-                double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds)  * 1 / 10;
+                double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
                 this.Opacity = timertime * double_change_in_opacity_per_tick;
-                
-                if (this.Opacity >= (Convert.ToDouble(OpacityLevel) * 1/100))
+
+                if (this.Opacity >= (Convert.ToDouble(OpacityLevel) * 1 / 100))
                 {
                     cD_tstate = timerstate.indash; //We set the timerstate to indash to allow for timekeeping
                     this.Opacity = Convert.ToDouble("." + OpacityLevel);
@@ -895,7 +957,7 @@ namespace cDashboard
             {
                 //computes amount of change in opacity per clock tick then applies it
                 double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
-                this.Opacity = (Convert.ToDouble(OpacityLevel) * 1/100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
+                this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
 
                 if (this.Opacity <= 0)
                 {
@@ -914,7 +976,7 @@ namespace cDashboard
             button_time.Text = (DateTime.Now.ToString()).Substring(DateTime.Now.ToString().IndexOf(" ")).Trim();
             //set date label
             string datelabeltext = (DateTime.Now.DayOfWeek.ToString()) + ", " + DateTime.Now.ToString("MMMMMMMMMMMMMM") + " " + DateTime.Now.Day.ToString() + ", " + DateTime.Now.Year.ToString();
-            
+
             button_date.Text = datelabeltext;
             #endregion
         }
@@ -1080,6 +1142,7 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+
         /// <summary>
         /// exits application
         /// </summary>
@@ -1348,104 +1411,193 @@ namespace cDashboard
             replaceSetting(find, replace);
 
         }
+
+        /// <summary>
+        /// Creates a new cPic child form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCPicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form / image
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            //setup the OpenFileDialog to only accept images
+            openFileDialog1.Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.gif)|*.bmp;*.jpg;*.png;*.tiff;*.gif";
+
+            DialogResult result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                System.IO.File.Copy(openFileDialog1.FileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, false);
+                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+
+                cPic cPic_new = new cPic();
+                cPic_new.Name = long_unique_timestamp.ToString();
+                cPic_new.Location = new Point(10, 25);
+                cPic_new.Size = new Size(350, 400);
+                cPic_new.TopLevel = false;
+                cPic_new.Parent = this;
+
+                //unique cPic setup
+                cPic_new.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+                cPic_new.BackgroundImageLayout = ImageLayout.None;
+
+                Controls.Add(cPic_new);
+                cPic_new.Show();
+                cPic_new.BringToFront();
+
+                //add the cPic to settings
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
+                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";FileName;" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Size;350;400");
+                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Location;10;25");
+                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";ImageLayout;None");
+                sw.Close();
+            }
+        }
+
         #endregion
-  
+
         /// <summary>
         /// called if a control is removed
-        /// ex: if the x button is clicked on a child from, handle deleting the sticky
+        /// ex: if the x button is clicked on a child from, handle deleting the cForm
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_ControlRemoved(object sender, ControlEventArgs e)
         {
-            cSticky cSticky_this = (cSticky)e.Control;
 
-            List<List<string>> list_settings = getSettingsList();
-
-            //we must find the number of this sticky
-            int int_removed_sticky = Convert.ToInt32(cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1));
-            int int_current_sticky_to_be_moved = (int_removed_sticky + 1);
-
-            //remove from list_cStickies
-            foreach (cSticky cSticky_tmp in list_cStickies)
+            //performs classic (out of date) work to remove a csticky
+            if (e.Control.GetType() == typeof(cSticky))
             {
-                if (cSticky_tmp.Name == cSticky_this.Name)
-                {
-                    list_cStickies.Remove(cSticky_tmp);
-                    break;
-                }
+                cSticky cSticky_this = (cSticky)e.Control;
 
-            }
+                List<List<string>> list_settings = getSettingsList();
 
-            //safe delete rtf for this textbox
-            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
-            {
-                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
-            }
+                //we must find the number of this sticky
+                int int_removed_sticky = Convert.ToInt32(cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1));
+                int int_current_sticky_to_be_moved = (int_removed_sticky + 1);
 
-            //we need to restart the foreach each time because the size of list_settings changes
-        //get rid of every setting relating to the RichTextBox being removed
-        get_rid_of_more_settings:
-            foreach (List<string> currentline in list_settings)
-            {
-                if (currentline[0] == "RichTextBox" && Convert.ToInt32(currentline[1]) == int_removed_sticky)
-                {
-                    list_settings.Remove(currentline);
-                    goto get_rid_of_more_settings;
-                }
-            }
-
-
-            //go through the entire list, and move RTBs down in increment
-            //do this until all after the removal have been removed
-            while (int_current_sticky_to_be_moved < list_cStickies.Count + 1)
-            {
-                //Since the stickies may be in the wrong order, we need to find them by name
+                //remove from list_cStickies
                 foreach (cSticky cSticky_tmp in list_cStickies)
                 {
-                    //if the current RichTextBox is the right one, we can change decrement numbers
-                    if (Convert.ToInt32(cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1)) == int_current_sticky_to_be_moved)
+                    if (cSticky_tmp.Name == cSticky_this.Name)
                     {
-
-
-                        //safe move rtf for this textbox
-                        if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
-                        {
-                            System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1).ToString() + ".rtf", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + (int_current_sticky_to_be_moved - 1).ToString() + ".rtf");
-                        }
-
-                        //rename the actual .Name of the RichTextBoxes
-                        cSticky_tmp.Name = "RichTextBox" + (int_current_sticky_to_be_moved - 1).ToString();
-
-                        //we need to restart the foreach each time because the size of list_settings changes
-                    decrement_settings:
-                        //decrement settings (numerically) above the removed
-                        foreach (List<string> currentline in list_settings)
-                        {
-                            if (currentline[0] == "RichTextBox" && Convert.ToInt32(currentline[1]) == int_current_sticky_to_be_moved)
-                            {
-                                currentline[1] = (int_current_sticky_to_be_moved - 1).ToString();
-                                goto decrement_settings;
-                            }
-                        }
-
-                        int_current_sticky_to_be_moved++;
+                        list_cStickies.Remove(cSticky_tmp);
                         break;
                     }
+
                 }
+
+                //safe delete rtf for this textbox
+                if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
+                {
+                    System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
+                }
+
+            //we need to restart the foreach each time because the size of list_settings changes
+            //get rid of every setting relating to the RichTextBox being removed
+            get_rid_of_more_settings:
+                foreach (List<string> currentline in list_settings)
+                {
+                    if (currentline[0] == "RichTextBox" && Convert.ToInt32(currentline[1]) == int_removed_sticky)
+                    {
+                        list_settings.Remove(currentline);
+                        goto get_rid_of_more_settings;
+                    }
+                }
+
+
+                //go through the entire list, and move RTBs down in increment
+                //do this until all after the removal have been removed
+                while (int_current_sticky_to_be_moved < list_cStickies.Count + 1)
+                {
+                    //Since the stickies may be in the wrong order, we need to find them by name
+                    foreach (cSticky cSticky_tmp in list_cStickies)
+                    {
+                        //if the current RichTextBox is the right one, we can change decrement numbers
+                        if (Convert.ToInt32(cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1)) == int_current_sticky_to_be_moved)
+                        {
+
+
+                            //safe move rtf for this textbox
+                            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
+                            {
+                                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1).ToString() + ".rtf", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + (int_current_sticky_to_be_moved - 1).ToString() + ".rtf");
+                            }
+
+                            //rename the actual .Name of the RichTextBoxes
+                            cSticky_tmp.Name = "RichTextBox" + (int_current_sticky_to_be_moved - 1).ToString();
+
+                            //we need to restart the foreach each time because the size of list_settings changes
+                        decrement_settings:
+                            //decrement settings (numerically) above the removed
+                            foreach (List<string> currentline in list_settings)
+                            {
+                                if (currentline[0] == "RichTextBox" && Convert.ToInt32(currentline[1]) == int_current_sticky_to_be_moved)
+                                {
+                                    currentline[1] = (int_current_sticky_to_be_moved - 1).ToString();
+                                    goto decrement_settings;
+                                }
+                            }
+
+                            int_current_sticky_to_be_moved++;
+                            break;
+                        }
+                    }
+                }
+
+
+                //remove this richtextbox from current form
+                Controls.Remove(cSticky_this);
+                cSticky_this.Dispose();
+                //save fixed settings
+                saveSettingsList(list_settings);
             }
+            //check if this is anything other than a cSticky and remove
+            else 
+            {
+                Control this_control = e.Control;
+        
+                List<List<string>> list_settings = getSettingsList();
+            top:
+                foreach (List<string> currentsetting in list_settings)
+                {
+                    //this has to do with the control to be removed
+                    if (currentsetting[1] == this_control.Name)
+                    {
+                        list_settings.Remove(currentsetting);
+                        goto top;
+                    }
+                }
 
+                //special deletion of image file (only for cPic)
+                if (this_control.GetType() == typeof(cPic))
+                {
+                    int int_len = this_control.Name.Length;
 
+                    foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\"))
+                    {
+                        //f is the name of the file with extension
+                        string f = file.Substring(file.LastIndexOf("\\") + 1);
+                        string f2 = f.Substring(0, int_len);
+                        string n = this_control.Name;
+                        //if timestamp == timestamp
+                        if (f2 == n)
+                        {
+                            this_control.BackgroundImage.Dispose();
+                            System.IO.File.Delete(file);
+                            break;
+                        }
+                    }
+                }
 
-
-
-
-
-            //remove this richtextbox from current form
-            Controls.Remove(cSticky_this);
-            cSticky_this.Dispose();
-            //save fixed settings
-            saveSettingsList(list_settings);
+                //remove control
+                Controls.Remove(this_control);
+                this_control.Dispose();
+                //save fixed settings
+                saveSettingsList(list_settings);
+            }
         }
 
         /// <summary>
@@ -1477,32 +1629,6 @@ namespace cDashboard
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
         }
-
-        private void newCPicToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            cPic cPic_new = new cPic();
-            cPic_new.Location = new Point(10, 25);
-            cPic_new.Size = new Size(350, 400);
-            cPic_new.TopLevel = false;
-            cPic_new.Parent = this;
-            Controls.Add(cPic_new);
-            cPic_new.Show();
-            cPic_new.BringToFront();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
