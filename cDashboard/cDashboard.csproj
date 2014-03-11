@@ -78,6 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cAbout.Designer.cs">
+      <DependentUpon>cAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="cPic.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +105,9 @@
     <Compile Include="globalKeyboardHook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="cAbout.resx">
+      <DependentUpon>cAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="cPic.resx">
       <DependentUpon>cPic.cs</DependentUpon>
     </EmbeddedResource>
@@ -151,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cdash logo.ico" />
+    <None Include="Resources\cDash_icon.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

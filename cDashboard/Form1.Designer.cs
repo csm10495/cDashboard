@@ -69,6 +69,7 @@
             this.button_time = new System.Windows.Forms.Button();
             this.button_date = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -108,6 +109,7 @@
             this.newStickyToolStripMenuItem,
             this.newCPicToolStripMenuItem,
             this.hideToolStripMenuItem,
+            this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
@@ -378,6 +380,13 @@
             this.openFileDialog1.FileName = "Image.jpg";
             this.openFileDialog1.Title = "Select Image File For cPic";
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -449,6 +458,7 @@
         private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
         private System.Windows.Forms.ToolStripMenuItem newCPicToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

@@ -1630,6 +1630,17 @@ namespace cDashboard
             notifyIcon1.Visible = false;
         }
 
+        /// <summary>
+        /// show about box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form about = new cAbout();
+            about.Show();
+        }
+
     }
 
 }
