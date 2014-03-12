@@ -151,7 +151,7 @@ namespace cDashboard
             check_for_duplicate_processes(); //check for duplicate cDashboard processes
 
             variable_setup(); //setup variables1
-            this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+           // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
 
             //create appdata directory
             if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
@@ -895,7 +895,7 @@ namespace cDashboard
         private void fade_in()
         {
             cD_tstate = (int)timerstate.fadein; //cD_tstate is the timer state
-            this.Focus();
+            //this.Focus();
 
             moveToPrimaryMonitor(); //ensures proper form sizing 
 
@@ -912,7 +912,7 @@ namespace cDashboard
         {
             cD_tstate = timerstate.fadeout;
             maintimer.Interval = 1;
-            this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+           // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
         }
 
         /// <summary>
@@ -1142,6 +1142,17 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+        /// <summary>
+        /// show about box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form about = new cAbout();
+            about.Show();
+        }
+
 
         /// <summary>
         /// exits application
@@ -1610,7 +1621,7 @@ namespace cDashboard
             //bring up dash if it is down, bring it down if it is up
             if (cD_tstate != timerstate.indash)
             {
-                this.Focus();
+              //  this.Focus();
                 fade_in();
             }
             else
@@ -1628,17 +1639,6 @@ namespace cDashboard
         {
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
-        }
-
-        /// <summary>
-        /// show about box
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form about = new cAbout();
-            about.Show();
         }
 
     }
