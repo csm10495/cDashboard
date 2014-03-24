@@ -70,6 +70,9 @@
             this.button_time = new System.Windows.Forms.Button();
             this.button_date = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -239,9 +242,11 @@
             this.setOpacityToolStripMenuItem,
             this.setFadeTimeToolStripMenuItem,
             this.setFavoriteStickyColorToolStripMenuItem,
-            this.setFavoriteFontToolStripMenuItem});
+            this.setFavoriteFontToolStripMenuItem,
+            this.exportBackupToolStripMenuItem,
+            this.importCDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashBackColorToolStripMenuItem
@@ -387,6 +392,24 @@
             this.openFileDialog1.FileName = "Image.jpg";
             this.openFileDialog1.Title = "Select Image File For cPic";
             // 
+            // exportBackupToolStripMenuItem
+            // 
+            this.exportBackupToolStripMenuItem.Name = "exportBackupToolStripMenuItem";
+            this.exportBackupToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.exportBackupToolStripMenuItem.Text = "Export cDash Data...";
+            this.exportBackupToolStripMenuItem.Click += new System.EventHandler(this.exportBackupToolStripMenuItem_Click);
+            // 
+            // folderBrowserDialog1
+            // 
+//            this.folderBrowserDialog1.HelpRequest += new System.EventHandler(this.folderBrowserDialog1_HelpRequest);
+            // 
+            // importCDashDataToolStripMenuItem
+            // 
+            this.importCDashDataToolStripMenuItem.Name = "importCDashDataToolStripMenuItem";
+            this.importCDashDataToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.importCDashDataToolStripMenuItem.Text = "Import cDash Data...";
+            this.importCDashDataToolStripMenuItem.Click += new System.EventHandler(this.importCDashDataToolStripMenuItem_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -459,6 +482,9 @@
         private System.Windows.Forms.ToolStripMenuItem newCPicToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportBackupToolStripMenuItem;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.ToolStripMenuItem importCDashDataToolStripMenuItem;
     }
 }
 
