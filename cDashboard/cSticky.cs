@@ -241,7 +241,7 @@ namespace cDashboard
             //to avoid file locks
             if (CompletedForm_Load == true)
             {
-                rtb.SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + this.Name.Substring(this.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
+                rtb.SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + this.Name + ".rtf");
             }
         }
 
@@ -257,8 +257,8 @@ namespace cDashboard
                 List<string> list_find = new List<string>();
                 List<string> list_replace = new List<string>();
 
-                list_find.Add("RichTextBox");
-                list_find.Add(this.Name.Substring(this.Name.LastIndexOf("x") + 1).ToString());
+                list_find.Add("cSticky");
+                list_find.Add(this.Name);
                 list_find.Add("Location");
 
                 foreach (string s in list_find)
@@ -285,12 +285,12 @@ namespace cDashboard
                 List<string> find = new List<string>();
                 List<string> replace = new List<string>();
 
-                find.Add("RichTextBox");
-                find.Add(this.Name.Substring(this.Name.LastIndexOf("x") + 1).ToString());
+                find.Add("cSticky");
+                find.Add(this.Name);
                 find.Add("Size");
 
-                replace.Add("RichTextBox");
-                replace.Add(this.Name.Substring(this.Name.LastIndexOf("x") + 1).ToString());
+                replace.Add("cSticky");
+                replace.Add(this.Name);
                 replace.Add("Size");
                 replace.Add(this.Size.Width.ToString());
                 replace.Add(this.Size.Height.ToString());
@@ -320,9 +320,9 @@ namespace cDashboard
                 List<string> find = new List<string>();
                 List<string> replace = new List<string>();
 
-                find.Add("RichTextBox");
-                replace.Add("RichTextBox");
-                string num = (this.Name.Substring(this.Name.LastIndexOf("x") + 1));
+                find.Add("cSticky");
+                replace.Add("cSticky");
+                string num = (this.Name);
                 find.Add(num);
                 replace.Add(num);
                 find.Add("BackColor");
@@ -332,22 +332,6 @@ namespace cDashboard
                 replace.Add(rtb.BackColor.B.ToString());
 
                 replaceSetting(find, replace);
-
-                //List<List<String>> list_settings = getSettingsList();
-
-                //foreach (List<String> currentline in list_settings)
-                //{
-
-                //    if (currentline[0] == "RichTextBox" && currentline[1] == rtb.Name.Substring(rtb.Name.LastIndexOf("x") + 1).ToString() && currentline[2] == "BackColor")
-                //    {
-                //        currentline[3] = rtb.BackColor.R.ToString();
-                //        currentline[4] = rtb.BackColor.G.ToString();
-                //        currentline[5] = rtb.BackColor.B.ToString();
-                //        break;
-                //    }
-                //}
-
-                //saveSettingsList(list_settings);
             }
         }
 

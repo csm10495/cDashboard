@@ -44,30 +44,20 @@ namespace cDashboard
         /// </summary>
         globalKeyboardHook KeyHook = new globalKeyboardHook(); //KeyHook is the global key hook
 
-
-        /// <summary>
-        /// list of all stickies in program
-        /// </summary>
-        // List<RichTextBox> list_stickies = new List<RichTextBox>();
-        public List<cSticky> list_cStickies = new List<cSticky>();
-
         /// <summary>
         /// Signifies if the LCtrl key is down
         /// </summary>
         bool LCtrlIsDown = false;
-
 
         /// <summary>
         /// Signifies if the tilde key is down
         /// </summary>
         bool TildeIsDown = false;
 
-
         /// <summary>
         /// This will be changed to true after the form load is completed to allow stickies to be saved without conflicting locks
         /// </summary>
         bool CompletedForm_Load = false;
-
 
         /// <summary>
         /// opacity level of the dashboard
@@ -295,54 +285,57 @@ namespace cDashboard
 
             foreach (List<string> current_item in settings_list)
             {
-                if (current_item[0] == "RichTextBox")
+                if (current_item[0] == "cSticky")
                 {
-                    //we have a "RichTextBox"
-                    while (Convert.ToInt32(current_item[1]) + 1 > list_cStickies.Count)
+                    //we have a "cSticky"
+
+                    //check if this one has already been made
+                    if (this.Controls.Find(current_item[1], true).Length == 0)
                     {
-                        //there aren't enough stickies, so we should add more, until this one makes sense
+                        //if we make it in here, the control wasn't created yet
                         cSticky cSticky_new = new cSticky();
-                        cSticky_new.Name = "RichTextBox" + list_cStickies.Count.ToString();
-                        list_cStickies.Add(cSticky_new);
+                        cSticky_new.Name = current_item[1];
+                        cSticky_new.TopLevel = false;
+                        cSticky_new.Parent = this;
+                        Controls.Add(cSticky_new);
                     }
-                    //at this point, we have enough richtextboxes
-                    //we move onto the property [2]
 
                     //the property is back color
                     if (current_item[2] == "BackColor")
                     {
-                        list_cStickies[Convert.ToInt32(current_item[1])].Controls.Find("menustrip", false)[0].BackColor = Color.FromArgb(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]), Convert.ToInt32(current_item[5]));
-                        list_cStickies[Convert.ToInt32(current_item[1])].BackColor = Color.FromArgb(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]), Convert.ToInt32(current_item[5]));
-                        list_cStickies[Convert.ToInt32(current_item[1])].Controls.Find("rtb", false)[0].BackColor = Color.FromArgb(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]), Convert.ToInt32(current_item[5]));
+                        this.Controls.Find(current_item[1], true)[0].Controls.Find("menustrip", false)[0].BackColor = Color.FromArgb(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]), Convert.ToInt32(current_item[5]));
+                        this.Controls.Find(current_item[1], true)[0].BackColor = Color.FromArgb(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]), Convert.ToInt32(current_item[5]));
+                        this.Controls.Find(current_item[1], true)[0].Controls.Find("rtb", false)[0].BackColor = Color.FromArgb(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]), Convert.ToInt32(current_item[5]));
                     }
 
                     //the property is location
                     if (current_item[2] == "Location")
                     {
-                        list_cStickies[Convert.ToInt32(current_item[1])].Location = new Point(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]));
+                        this.Controls.Find(current_item[1], true)[0].Location = new Point(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]));
                     }
 
                     //the property is size
                     if (current_item[2] == "Size")
                     {
-                        list_cStickies[Convert.ToInt32(current_item[1])].Size = new Size(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]));
+                        this.Controls.Find(current_item[1], true)[0].Size = new Size(Convert.ToInt32(current_item[3]), Convert.ToInt32(current_item[4]));
                     }
                 }
             }
 
             //add stickies to form
-            foreach (cSticky cSticky_new in list_cStickies)
+            foreach (cSticky cSticky_new in this.Controls.OfType<cSticky>())
             {
                 //attempts to load richtextbox files, if the file doesn't exist, it fails gracefully
-                if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_new.Name.Substring(cSticky_new.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
+                if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + cSticky_new.Name + ".rtf"))
                 {
-                    ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).LoadFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_new.Name.Substring(cSticky_new.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
+                    ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).LoadFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + cSticky_new.Name + ".rtf");
+                }
+                else
+                {
+                    ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Text = "File missing";
                 }
 
-                //add control
-                cSticky_new.TopLevel = false;
-                cSticky_new.Parent = this;
-                Controls.Add(cSticky_new);
+                //display control           
                 cSticky_new.Show();
                 cSticky_new.BringToFront();
             }
@@ -475,7 +468,7 @@ namespace cDashboard
         private void makeSureCFormsAreOnScreen()
         {
             //goes through every cSticky
-            foreach (cSticky current_csticky in list_cStickies)
+            foreach (cSticky current_csticky in this.Controls.OfType<cSticky>())
             {
                 //make sure that cStickies are not lost to resizing the dash
                 if (current_csticky.Location.X > this.Location.X + this.Size.Width)
@@ -1065,6 +1058,8 @@ namespace cDashboard
             cSticky_new.Location = new Point(10, 25);
             cSticky_new.Size = new Size(350, 400);
             cSticky_new.BackColor = pickedColor;
+
+            //this will actually change the colors of the new form to match pickedColor
             ((MenuStrip)cSticky_new.Controls.Find("menustrip", false)[0]).BackColor = pickedColor;
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).BackColor = pickedColor;
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Font = FavoriteStickyFont;
@@ -1073,18 +1068,19 @@ namespace cDashboard
             Controls.Add(cSticky_new);
             cSticky_new.Show();
             cSticky_new.BringToFront();
-            cSticky_new.Name = "RichTextBox" + list_cStickies.Count.ToString();
-            list_cStickies.Add(cSticky_new);
+
+            //represents the a unique time stamp for use as name of form / image
+            long long_unique_timestamp = DateTime.Now.Ticks;
+            cSticky_new.Name = long_unique_timestamp.ToString();
 
             //this code will add this new sticky to the settings file
             if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash"))
             {
-                int currentsticky = list_cStickies.Count - 1;
                 System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
-                sw.WriteLine("RichTextBox;" + currentsticky + ";BackColor;" + list_cStickies[currentsticky].BackColor.R.ToString() + ";" + list_cStickies[currentsticky].BackColor.G.ToString() + ";" + list_cStickies[currentsticky].BackColor.B.ToString());
-                sw.WriteLine("RichTextBox;" + currentsticky + ";Location;" + list_cStickies[currentsticky].Location.X.ToString() + ";" + list_cStickies[currentsticky].Location.Y.ToString());
-                sw.WriteLine("RichTextBox;" + currentsticky + ";Size;" + list_cStickies[currentsticky].Size.Width.ToString() + ";" + list_cStickies[currentsticky].Size.Height.ToString());
-                sw.WriteLine("RichTextBox;" + currentsticky + ";FontStyle;" + ((RichTextBox)list_cStickies[currentsticky].Controls.Find("rtb", false)[0]).Font.Name.ToString() + ";" + ((RichTextBox)list_cStickies[currentsticky].Controls.Find("rtb", false)[0]).Font.Size.ToString());
+                sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";BackColor;" + cSticky_new.BackColor.R.ToString() + ";" + cSticky_new.BackColor.G.ToString() + ";" + cSticky_new.BackColor.B.ToString());
+                sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";Location;" + cSticky_new.Location.X.ToString() + ";" + cSticky_new.Location.Y.ToString());
+                sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";Size;" + cSticky_new.Size.Width.ToString() + ";" + cSticky_new.Size.Height.ToString());
+                sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";FontStyle;" + ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Font.Name.ToString() + ";" + ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Font.Size.ToString());
                 sw.Close();
             }
             else
@@ -1094,7 +1090,7 @@ namespace cDashboard
             }
 
 
-            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_new.Name.Substring(cSticky_new.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
+            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + ".rtf");
         }
         #endregion
 
@@ -1143,6 +1139,79 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+
+        /// <summary>
+        /// exports cDashBoard Settings folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exportBackupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = folderBrowserDialog1.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                //if the user clicks ok
+                if (System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
+                {
+                    //create directory
+                    System.IO.Directory.CreateDirectory(folderBrowserDialog1.SelectedPath + "\\cDashBoard");
+
+                    //copy files
+                    foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
+                    {
+                        //represents file name without a path
+                        string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
+                        System.IO.File.Copy(file, folderBrowserDialog1.SelectedPath + "\\cDashBoard\\" + str_nopath_file);
+                    }
+                }
+                MessageBox.Show("Data exported successfully");
+            }
+        }
+
+        /// <summary>
+        /// imports cDashBoard Settings folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void importCDashDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = folderBrowserDialog1.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+
+                //basic check to see if folder has "cDash Settings.cDash"
+                bool bool_found_cdash_file = false;
+                foreach (string file in System.IO.Directory.GetFiles(folderBrowserDialog1.SelectedPath))
+                {
+                    //represents file name without a path
+                    string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
+                    if (str_nopath_file == "cDash Settings.cDash")
+                    {
+                        bool_found_cdash_file = true;
+                    }
+                }
+                if (!bool_found_cdash_file)
+                {
+                    MessageBox.Show("Folder is not an appropriate cDashBoard folder");
+                    return;
+                }
+
+                //if the user clicks ok
+                if (System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
+                {
+                    //copy files
+                    foreach (string file in System.IO.Directory.GetFiles(folderBrowserDialog1.SelectedPath))
+                    {
+                        //get file without path
+                        string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
+                        System.IO.File.Copy(file, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + str_nopath_file, true);
+                    }
+                }
+                //reload the form to represent changes in files
+                Form1_Load(this, null);
+            }
+        }
+
         /// <summary>
         /// show about box
         /// </summary>
@@ -1153,7 +1222,6 @@ namespace cDashboard
             Form about = new cAbout();
             about.Show();
         }
-
 
         /// <summary>
         /// exits application
@@ -1478,138 +1546,50 @@ namespace cDashboard
         /// <param name="e"></param>
         private void Form1_ControlRemoved(object sender, ControlEventArgs e)
         {
+            Control this_control = e.Control;
 
-            //performs classic (out of date) work to remove a csticky
-            if (e.Control.GetType() == typeof(cSticky))
+            List<List<string>> list_settings = getSettingsList();
+
+        top:
+            foreach (List<string> currentsetting in list_settings)
             {
-                cSticky cSticky_this = (cSticky)e.Control;
-
-                List<List<string>> list_settings = getSettingsList();
-
-                //we must find the number of this sticky
-                int int_removed_sticky = Convert.ToInt32(cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1));
-                int int_current_sticky_to_be_moved = (int_removed_sticky + 1);
-
-                //remove from list_cStickies
-                foreach (cSticky cSticky_tmp in list_cStickies)
+                //this has to do with the control to be removed
+                if (currentsetting[1] == this_control.Name)
                 {
-                    if (cSticky_tmp.Name == cSticky_this.Name)
+                    list_settings.Remove(currentsetting);
+                    goto top;
+                }
+            }
+
+            //special deletion of associated files (cPic, cSticky)
+            if (this_control.GetType() == typeof(cPic) || this_control.GetType() == typeof(cSticky))
+            {
+                int int_len = this_control.Name.Length;
+
+                foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\"))
+                {
+                    //f is the name of the file with extension
+                    string f = file.Substring(file.LastIndexOf("\\") + 1);
+                    string f2 = f.Substring(0, int_len);
+                    string n = this_control.Name;
+                    //if timestamp == timestamp
+                    if (f2 == n)
                     {
-                        list_cStickies.Remove(cSticky_tmp);
+                        //special handling for cPic
+                        if (this_control.GetType() == typeof(cPic))
+                             this_control.BackgroundImage.Dispose();
+                        System.IO.File.Delete(file);
                         break;
                     }
-
                 }
-
-                //safe delete rtf for this textbox
-                if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
-                {
-                    System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_this.Name.Substring(cSticky_this.Name.LastIndexOf("x") + 1).ToString() + ".rtf");
-                }
-
-            //we need to restart the foreach each time because the size of list_settings changes
-            //get rid of every setting relating to the RichTextBox being removed
-            get_rid_of_more_settings:
-                foreach (List<string> currentline in list_settings)
-                {
-                    if (currentline[0] == "RichTextBox" && Convert.ToInt32(currentline[1]) == int_removed_sticky)
-                    {
-                        list_settings.Remove(currentline);
-                        goto get_rid_of_more_settings;
-                    }
-                }
-
-
-                //go through the entire list, and move RTBs down in increment
-                //do this until all after the removal have been removed
-                while (int_current_sticky_to_be_moved < list_cStickies.Count + 1)
-                {
-                    //Since the stickies may be in the wrong order, we need to find them by name
-                    foreach (cSticky cSticky_tmp in list_cStickies)
-                    {
-                        //if the current RichTextBox is the right one, we can change decrement numbers
-                        if (Convert.ToInt32(cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1)) == int_current_sticky_to_be_moved)
-                        {
-
-
-                            //safe move rtf for this textbox
-                            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1).ToString() + ".rtf"))
-                            {
-                                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + cSticky_tmp.Name.Substring(cSticky_tmp.Name.LastIndexOf("x") + 1).ToString() + ".rtf", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + "RichTextBox" + (int_current_sticky_to_be_moved - 1).ToString() + ".rtf");
-                            }
-
-                            //rename the actual .Name of the RichTextBoxes
-                            cSticky_tmp.Name = "RichTextBox" + (int_current_sticky_to_be_moved - 1).ToString();
-
-                            //we need to restart the foreach each time because the size of list_settings changes
-                        decrement_settings:
-                            //decrement settings (numerically) above the removed
-                            foreach (List<string> currentline in list_settings)
-                            {
-                                if (currentline[0] == "RichTextBox" && Convert.ToInt32(currentline[1]) == int_current_sticky_to_be_moved)
-                                {
-                                    currentline[1] = (int_current_sticky_to_be_moved - 1).ToString();
-                                    goto decrement_settings;
-                                }
-                            }
-
-                            int_current_sticky_to_be_moved++;
-                            break;
-                        }
-                    }
-                }
-
-
-                //remove this richtextbox from current form
-                Controls.Remove(cSticky_this);
-                cSticky_this.Dispose();
-                //save fixed settings
-                saveSettingsList(list_settings);
             }
-            //check if this is anything other than a cSticky and remove
-            else
-            {
-                Control this_control = e.Control;
 
-                List<List<string>> list_settings = getSettingsList();
-            top:
-                foreach (List<string> currentsetting in list_settings)
-                {
-                    //this has to do with the control to be removed
-                    if (currentsetting[1] == this_control.Name)
-                    {
-                        list_settings.Remove(currentsetting);
-                        goto top;
-                    }
-                }
+            //remove control
+            Controls.Remove(this_control);
+            this_control.Dispose();
+            //save fixed settings
+            saveSettingsList(list_settings);
 
-                //special deletion of image file (only for cPic)
-                if (this_control.GetType() == typeof(cPic))
-                {
-                    int int_len = this_control.Name.Length;
-
-                    foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\"))
-                    {
-                        //f is the name of the file with extension
-                        string f = file.Substring(file.LastIndexOf("\\") + 1);
-                        string f2 = f.Substring(0, int_len);
-                        string n = this_control.Name;
-                        //if timestamp == timestamp
-                        if (f2 == n)
-                        {
-                            this_control.BackgroundImage.Dispose();
-                            System.IO.File.Delete(file);
-                            break;
-                        }
-                    }
-                }
-
-                //remove control
-                Controls.Remove(this_control);
-                this_control.Dispose();
-                //save fixed settings
-                saveSettingsList(list_settings);
-            }
         }
 
         /// <summary>
@@ -1642,78 +1622,6 @@ namespace cDashboard
             notifyIcon1.Visible = false;
         }
 
-        /// <summary>
-        /// exports cDashBoard Settings folder
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void exportBackupToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dr = folderBrowserDialog1.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                //if the user clicks ok
-                if (System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
-                {
-                    //create directory
-                    System.IO.Directory.CreateDirectory(folderBrowserDialog1.SelectedPath + "\\cDashBoard");
-
-                    //copy files
-                    foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
-                    {
-                        //represents file name without a path
-                        string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
-                        System.IO.File.Copy(file, folderBrowserDialog1.SelectedPath + "\\cDashBoard\\" + str_nopath_file);
-                    }
-                }
-                MessageBox.Show("Data exported successfully");
-            }
-        }
-
-        /// <summary>
-        /// imports cDashBoard Settings folder
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void importCDashDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dr = folderBrowserDialog1.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-
-                //basic check to see if folder has "cDash Settings.cDash"
-                bool bool_found_cdash_file = false;
-                foreach (string file in System.IO.Directory.GetFiles(folderBrowserDialog1.SelectedPath))
-                {
-                    //represents file name without a path
-                    string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
-                    if (str_nopath_file == "cDash Settings.cDash")
-                    {
-                        bool_found_cdash_file = true;
-                    }
-                }
-                if (!bool_found_cdash_file)
-                {
-                    MessageBox.Show("Folder is not an appropriate cDashBoard folder");
-                    return;
-                }
-
-                //if the user clicks ok
-                if (System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
-                {
-                    //copy files
-                    foreach (string file in System.IO.Directory.GetFiles(folderBrowserDialog1.SelectedPath))
-                    {
-                        //get file without path
-                        string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
-                        System.IO.File.Copy(file, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + str_nopath_file,true);
-                    }
-                }
-                //reload the form to represent changes in files
-                Form1_Load(this, null);
-            }
-        }
- 
     }
 
 }
