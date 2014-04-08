@@ -84,6 +84,12 @@
     <Compile Include="cAbout.Designer.cs">
       <DependentUpon>cAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="cForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cForm.Designer.cs">
+      <DependentUpon>cForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="cPic.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="cAbout.resx">
       <DependentUpon>cAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cForm.resx">
+      <DependentUpon>cForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="cPic.resx">
       <DependentUpon>cPic.cs</DependentUpon>
