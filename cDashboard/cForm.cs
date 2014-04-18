@@ -64,7 +64,8 @@ namespace cDashboard
             while (tmp_line != null)
             {
                 //check for blank lines or ones that start with #
-                if (tmp_line != "" && tmp_line.Substring(0, 1) != "#")
+                if (tmp_line != "") //&& tmp_line.Substring(0, 1) != "#") 
+                                    //changed line to maintain comment structure of settings file
                 {
                     //this will be the list that will be added to settings_list
                     List<string> tmp_list = new List<string>();
@@ -137,9 +138,10 @@ namespace cDashboard
         protected void saveSettingsList(List<List<string>> list_settings)
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash");
-            sw.WriteLine("# cDashBoard Settings File");
-            sw.WriteLine("# A # tells the program to ignore this line");
-            sw.WriteLine("# Don't edit this file unless you know what you are doing");
+           // sw.WriteLine("# cDashBoard Settings File");
+           // sw.WriteLine("# A # tells the program to ignore this line");
+           // sw.WriteLine("# Don't edit this file unless you know what you are doing");
+           // removed so that this isn't printed over and over...
             foreach (List<string> currentline in list_settings)
             {
                 sw.WriteLine(string.Join(";", currentline));
