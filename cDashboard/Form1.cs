@@ -271,6 +271,29 @@ namespace cDashboard
                     this_cPic.Show();
                     this_cPic.BringToFront();
                 }
+                else if (currentline[0] == "cStopwatch")
+                {
+                    //this would mean that this form already exists
+                    if (!(Controls.Find(currentline[1], true).Length > 0))
+                    {
+                        cStopwatch cStopwatch_new = new cStopwatch();
+                        cStopwatch_new.Name = currentline[1];
+                        cStopwatch_new.TopLevel = false;
+                        cStopwatch_new.Parent = this;
+                        Controls.Add(cStopwatch_new);
+                    }
+                                                    
+                    //get form by name
+                    cStopwatch this_cStopwatch = (cStopwatch)this.Controls.Find(currentline[1], true)[0];
+                    
+                    if (currentline[2] == "Location")
+                    {
+                        this_cStopwatch.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
+
+                    this_cStopwatch.Show();
+                    this_cStopwatch.BringToFront();
+                }
             }
             FavoriteStickyFont = new Font(FSFN, FSFS);
             //move dash to set monitor
@@ -950,6 +973,34 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+        /// <summary>
+        /// add a new cStopwatch cForm to the cDash
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCStopwatchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            //add the cStopwatch to settings
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
+            sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";Location;10;25");
+            sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";StartDateTime;NULL");
+            sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";TimerRunning;False");
+            sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";EndDateTime;NULL");
+            sw.Close();
+
+            cStopwatch cStopwatch_new = new cStopwatch();
+            cStopwatch_new.Name = long_unique_timestamp.ToString();
+            cStopwatch_new.Location = new Point(10, 25);
+            cStopwatch_new.TopLevel = false;
+            cStopwatch_new.Parent = this;
+
+            Controls.Add(cStopwatch_new);
+            cStopwatch_new.Show();
+            cStopwatch_new.BringToFront();
+        }
 
         /// <summary>
         /// exports cDashBoard Settings folder
@@ -1364,6 +1415,9 @@ namespace cDashboard
         top:
             foreach (List<string> currentsetting in list_settings)
             {
+                if (currentsetting[0].Substring(0, 1) == "#")   //fixed problem with comment persistance
+                    continue;
+
                 //this has to do with the control to be removed
                 if (currentsetting[1] == this_control.Name)
                 {
@@ -1388,7 +1442,7 @@ namespace cDashboard
                     {
                         //special handling for cPic
                         if (this_control.GetType() == typeof(cPic))
-                             this_control.BackgroundImage.Dispose();
+                            this_control.BackgroundImage.Dispose();
                         System.IO.File.Delete(file);
                         break;
                     }
@@ -1432,6 +1486,7 @@ namespace cDashboard
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
         }
+
 
     }
 

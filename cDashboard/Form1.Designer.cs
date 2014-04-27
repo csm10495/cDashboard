@@ -62,6 +62,8 @@
             this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
             this.setFavoriteStickyColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setFavoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -70,9 +72,8 @@
             this.button_time = new System.Windows.Forms.Button();
             this.button_date = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -111,6 +112,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newStickyToolStripMenuItem,
             this.newCPicToolStripMenuItem,
+            this.newCStopwatchToolStripMenuItem,
             this.hideToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -131,8 +133,8 @@
             this.customColorToolStripMenuItem,
             this.favoriteColorToolStripMenuItem});
             this.newStickyToolStripMenuItem.Name = "newStickyToolStripMenuItem";
-            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.newStickyToolStripMenuItem.Text = "New Sticky";
+            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newStickyToolStripMenuItem.Text = "New cSticky";
             // 
             // redToolStripMenuItem
             // 
@@ -201,28 +203,28 @@
             // newCPicToolStripMenuItem
             // 
             this.newCPicToolStripMenuItem.Name = "newCPicToolStripMenuItem";
-            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.newCPicToolStripMenuItem.Text = "New cPic...";
             this.newCPicToolStripMenuItem.Click += new System.EventHandler(this.newCPicToolStripMenuItem_Click);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.exitToolStripMenuItem.Text = "Exit cDashboard";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -246,7 +248,7 @@
             this.exportBackupToolStripMenuItem,
             this.importCDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashBackColorToolStripMenuItem
@@ -314,6 +316,20 @@
             this.setFavoriteFontToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setFavoriteFontToolStripMenuItem.Text = "Set Favorite Sticky Font...";
             this.setFavoriteFontToolStripMenuItem.Click += new System.EventHandler(this.setFavoriteFontToolStripMenuItem_Click);
+            // 
+            // exportBackupToolStripMenuItem
+            // 
+            this.exportBackupToolStripMenuItem.Name = "exportBackupToolStripMenuItem";
+            this.exportBackupToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.exportBackupToolStripMenuItem.Text = "Export cDash Data...";
+            this.exportBackupToolStripMenuItem.Click += new System.EventHandler(this.exportBackupToolStripMenuItem_Click);
+            // 
+            // importCDashDataToolStripMenuItem
+            // 
+            this.importCDashDataToolStripMenuItem.Name = "importCDashDataToolStripMenuItem";
+            this.importCDashDataToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.importCDashDataToolStripMenuItem.Text = "Import cDash Data...";
+            this.importCDashDataToolStripMenuItem.Click += new System.EventHandler(this.importCDashDataToolStripMenuItem_Click);
             // 
             // colorDialog1
             // 
@@ -392,23 +408,12 @@
             this.openFileDialog1.FileName = "Image.jpg";
             this.openFileDialog1.Title = "Select Image File For cPic";
             // 
-            // exportBackupToolStripMenuItem
+            // newCStopwatchToolStripMenuItem
             // 
-            this.exportBackupToolStripMenuItem.Name = "exportBackupToolStripMenuItem";
-            this.exportBackupToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.exportBackupToolStripMenuItem.Text = "Export cDash Data...";
-            this.exportBackupToolStripMenuItem.Click += new System.EventHandler(this.exportBackupToolStripMenuItem_Click);
-            // 
-            // folderBrowserDialog1
-            // 
-//            this.folderBrowserDialog1.HelpRequest += new System.EventHandler(this.folderBrowserDialog1_HelpRequest);
-            // 
-            // importCDashDataToolStripMenuItem
-            // 
-            this.importCDashDataToolStripMenuItem.Name = "importCDashDataToolStripMenuItem";
-            this.importCDashDataToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.importCDashDataToolStripMenuItem.Text = "Import cDash Data...";
-            this.importCDashDataToolStripMenuItem.Click += new System.EventHandler(this.importCDashDataToolStripMenuItem_Click);
+            this.newCStopwatchToolStripMenuItem.Name = "newCStopwatchToolStripMenuItem";
+            this.newCStopwatchToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCStopwatchToolStripMenuItem.Text = "New cStopwatch";
+            this.newCStopwatchToolStripMenuItem.Click += new System.EventHandler(this.newCStopwatchToolStripMenuItem_Click);
             // 
             // cDashboard
             // 
@@ -485,6 +490,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportBackupToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ToolStripMenuItem importCDashDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newCStopwatchToolStripMenuItem;
     }
 }
 

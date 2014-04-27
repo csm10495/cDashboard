@@ -102,6 +102,12 @@
     <Compile Include="cSticky.Designer.cs">
       <DependentUpon>cSticky.cs</DependentUpon>
     </Compile>
+    <Compile Include="cStopwatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cStopwatch.Designer.cs">
+      <DependentUpon>cStopwatch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="cSticky.resx">
       <DependentUpon>cSticky.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cStopwatch.resx">
+      <DependentUpon>cStopwatch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
