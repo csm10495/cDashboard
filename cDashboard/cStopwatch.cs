@@ -84,7 +84,11 @@ namespace cDashboard
             //gets elapsed time
             TimeSpan tmp = (datetime_2 - startTime);
 
-            label_time.Text = tmp.ToString().Substring(0, tmp.ToString().IndexOf(".") + 3);
+            //attempted fix for auto changing of TimeSpan.ToString()
+            string string_span = tmp.Hours.ToString().PadLeft(2, '0') + ":" + tmp.Minutes.ToString().PadLeft(2,'0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2) ;
+
+            label_time.Text = string_span;
+            //label_time.Text = tmp.ToString().Substring(0, tmp.ToString().IndexOf(".") + 3);
             while (label_time.Width > 267)
             {
                 label_time.Font = new Font(label_time.Font.FontFamily, label_time.Font.SizeInPoints - 1);
