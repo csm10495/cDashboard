@@ -85,7 +85,7 @@ namespace cDashboard
             TimeSpan tmp = (datetime_2 - startTime);
 
             //attempted fix for auto changing of TimeSpan.ToString()
-            string string_span = tmp.Hours.ToString().PadLeft(2, '0') + ":" + tmp.Minutes.ToString().PadLeft(2,'0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2) ;
+            string string_span = tmp.TotalHours.ToString().PadLeft(2, '0').Substring(0, tmp.TotalHours.ToString().PadLeft(2, '0').IndexOf("."))  + ":" + tmp.Minutes.ToString().PadLeft(2,'0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2) ;
 
             label_time.Text = string_span;
             //label_time.Text = tmp.ToString().Substring(0, tmp.ToString().IndexOf(".") + 3);
