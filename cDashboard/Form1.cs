@@ -50,6 +50,11 @@ namespace cDashboard
         bool LCtrlIsDown = false;
 
         /// <summary>
+        /// signifies if a wallpaper image is being used
+        /// </summary>
+        bool UseWallpaperImage = false;
+
+        /// <summary>
         /// Signifies if the tilde key is down
         /// </summary>
         bool TildeIsDown = false;
@@ -184,7 +189,8 @@ namespace cDashboard
                     if (currentline[1] == "BackColor")
                     {
                         this.BackColor = Color.FromArgb(Convert.ToInt32(currentline[2]), Convert.ToInt32(currentline[3]), Convert.ToInt32(currentline[4]));
-                        menuStrip1.BackColor = this.BackColor;
+                        //line removed so that transparent color works 
+                        //menuStrip1.BackColor = this.BackColor;
                     }
 
                     if (currentline[1] == "Opacity")
@@ -218,6 +224,18 @@ namespace cDashboard
                     if (currentline[1] == "FavoriteStickyFontSize")
                     {
                         FSFS = Convert.ToSingle(currentline[2]);
+                    }
+
+                    //setup cDash wallpaper
+                    if (currentline[1] == "Wallpaper")
+                    {
+                        UseWallpaperImage = Convert.ToBoolean(currentline[2]);
+
+                        //if we are using a wallpaper image, grab it from file
+                        if (UseWallpaperImage)
+                        {
+                            this.BackgroundImage = Image.FromFile(getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0]);
+                        }
                     }
                 }
                 else if (currentline[0] == "cPic")
@@ -282,10 +300,10 @@ namespace cDashboard
                         cStopwatch_new.Parent = this;
                         Controls.Add(cStopwatch_new);
                     }
-                                                    
+
                     //get form by name
                     cStopwatch this_cStopwatch = (cStopwatch)this.Controls.Find(currentline[1], true)[0];
-                    
+
                     if (currentline[2] == "Location")
                     {
                         this_cStopwatch.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
@@ -432,6 +450,8 @@ namespace cDashboard
                 sw.WriteLine("cDash;FavoriteStickyFontName;Arial Black");
                 sw.WriteLine("cDash;FavoriteStickyFontSize;12");
                 sw.WriteLine("cDash;FadeLengthInMilliseconds;500");
+                sw.WriteLine("cDash;Wallpaper;False");
+                sw.WriteLine("cDash;WallpaperImage;NULL");
                 sw.Close();
 
                 //if there is more than one monitor, check which monitor the user wants to use
@@ -1127,7 +1147,8 @@ namespace cDashboard
             if (result == DialogResult.OK)
             {
                 this.BackColor = colorDialog1.Color;
-                menuStrip1.BackColor = this.BackColor;
+                //removed for transparent color
+                //menuStrip1.BackColor = this.BackColor;
                 List<List<string>> list_settings = getSettingsList();
 
                 foreach (List<string> currentline in list_settings)
@@ -1147,6 +1168,24 @@ namespace cDashboard
 
                 list_settings.Add(line_to_be_added);
                 saveSettingsList(list_settings);
+
+                //special handling if a wallpaper had been used before
+                if (UseWallpaperImage)
+                {
+                    //remove image if currently in use
+                    this.BackgroundImage.Dispose();
+                    this.BackgroundImage = null;
+           //         this.Visible = false;
+                    //remove wallpaper image
+                    System.IO.File.Delete(getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0]);
+
+
+                    //we are not using a wallpaper image
+                    //set as such
+                    UseWallpaperImage = false;
+                    replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "False" });
+                    replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", "NULL" });
+                }
             }
         }
 
@@ -1485,6 +1524,39 @@ namespace cDashboard
         {
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
+        }
+
+        private void setCDashWallpaperToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form / image
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            //setup the OpenFileDialog to only accept images
+            openFileDialog1.Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.gif)|*.bmp;*.jpg;*.png;*.tiff;*.gif";
+
+            DialogResult result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                //remove wallpaper image if it exists
+                string string_old_file_location = getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0];
+                if (System.IO.File.Exists(string_old_file_location))
+                {
+                    this.BackgroundImage.Dispose();
+                    System.IO.File.Delete(string_old_file_location);
+                }
+
+                System.IO.File.Copy(openFileDialog1.FileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, false);
+                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+
+                //set image
+                this.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+
+                //we are using a wallpaper image
+                //set as such
+                UseWallpaperImage = true;
+                replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "True" });
+                replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName) });
+            }
         }
 
 

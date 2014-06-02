@@ -10,7 +10,9 @@
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">true if managed resources should be 
+        /// 
+        /// d; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -69,16 +71,14 @@
             // 
             // label_time
             // 
-            this.label_time.AutoSize = true;
-            this.label_time.Font = new System.Drawing.Font("Arial", 33F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_time.Font = new System.Drawing.Font("Arial", 33.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_time.ForeColor = System.Drawing.Color.White;
-            this.label_time.Location = new System.Drawing.Point(-4, 19);
+            this.label_time.Location = new System.Drawing.Point(-3, 21);
             this.label_time.Name = "label_time";
-            this.label_time.Size = new System.Drawing.Size(260, 58);
+            this.label_time.Size = new System.Drawing.Size(264, 53);
             this.label_time.TabIndex = 2;
             this.label_time.Text = "00:00:00.00";
             this.label_time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label_time.UseCompatibleTextRendering = true;
             // 
             // sw_timer
             // 

@@ -13,7 +13,8 @@
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">true if managed resources should be 
+        /// d; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -34,6 +35,15 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cDashboard));
             this.maintimer = new System.Windows.Forms.Timer(this.components);
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyicon_menustrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitCDashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.button_date = new System.Windows.Forms.Button();
+            this.button_time = new System.Windows.Forms.Button();
             this.label_build = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,12 +58,14 @@
             this.customColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoriteColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCPicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCDashBackColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setCDashWallpaperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCDashDefaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setOpacityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textbox_opacity = new System.Windows.Forms.ToolStripTextBox();
@@ -64,24 +76,92 @@
             this.setFavoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.notifyicon_menustrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.exitCDashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button_time = new System.Windows.Forms.Button();
-            this.button_date = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.newCStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
             this.notifyicon_menustrip.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // maintimer
             // 
             this.maintimer.Interval = 10;
             this.maintimer.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // colorDialog1
+            // 
+            this.colorDialog1.FullOpen = true;
+            // 
+            // fontDialog1
+            // 
+            this.fontDialog1.AllowScriptChange = false;
+            this.fontDialog1.AllowSimulations = false;
+            this.fontDialog1.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fontDialog1.FontMustExist = true;
+            this.fontDialog1.ShowColor = true;
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "This is a test";
+            this.notifyIcon1.BalloonTipTitle = "cDashboard Test!";
+            this.notifyIcon1.ContextMenuStrip = this.notifyicon_menustrip;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "cDashboard Process is running...";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // notifyicon_menustrip
+            // 
+            this.notifyicon_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitCDashboardToolStripMenuItem});
+            this.notifyicon_menustrip.Name = "notifyicon_menustrip";
+            this.notifyicon_menustrip.Size = new System.Drawing.Size(159, 26);
+            // 
+            // exitCDashboardToolStripMenuItem
+            // 
+            this.exitCDashboardToolStripMenuItem.Name = "exitCDashboardToolStripMenuItem";
+            this.exitCDashboardToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.exitCDashboardToolStripMenuItem.Text = "Exit cDashboard";
+            this.exitCDashboardToolStripMenuItem.Click += new System.EventHandler(this.exitCDashboardToolStripMenuItem_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "Image.jpg";
+            this.openFileDialog1.Title = "Select Image File For cPic";
+            // 
+            // button_date
+            // 
+            this.button_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_date.BackColor = System.Drawing.Color.Transparent;
+            this.button_date.FlatAppearance.BorderSize = 0;
+            this.button_date.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_date.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_date.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_date.Font = new System.Drawing.Font("Arial Black", 14.25F, System.Drawing.FontStyle.Bold);
+            this.button_date.Location = new System.Drawing.Point(887, 650);
+            this.button_date.Name = "button_date";
+            this.button_date.Size = new System.Drawing.Size(382, 34);
+            this.button_date.TabIndex = 6;
+            this.button_date.Text = "Date";
+            this.button_date.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_date.UseVisualStyleBackColor = false;
+            this.button_date.Click += new System.EventHandler(this.button_date_Click);
+            // 
+            // button_time
+            // 
+            this.button_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_time.BackColor = System.Drawing.Color.Transparent;
+            this.button_time.FlatAppearance.BorderSize = 0;
+            this.button_time.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_time.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_time.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_time.Font = new System.Drawing.Font("Arial Black", 36F, System.Drawing.FontStyle.Bold);
+            this.button_time.Location = new System.Drawing.Point(917, 590);
+            this.button_time.Name = "button_time";
+            this.button_time.Size = new System.Drawing.Size(364, 74);
+            this.button_time.TabIndex = 5;
+            this.button_time.Text = "12:09:33 AM";
+            this.button_time.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_time.UseVisualStyleBackColor = false;
+            this.button_time.Click += new System.EventHandler(this.button_time_Click);
             // 
             // label_build
             // 
@@ -96,7 +176,7 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Font = new System.Drawing.Font("Arial Black", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -207,6 +287,13 @@
             this.newCPicToolStripMenuItem.Text = "New cPic...";
             this.newCPicToolStripMenuItem.Click += new System.EventHandler(this.newCPicToolStripMenuItem_Click);
             // 
+            // newCStopwatchToolStripMenuItem
+            // 
+            this.newCStopwatchToolStripMenuItem.Name = "newCStopwatchToolStripMenuItem";
+            this.newCStopwatchToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCStopwatchToolStripMenuItem.Text = "New cStopwatch";
+            this.newCStopwatchToolStripMenuItem.Click += new System.EventHandler(this.newCStopwatchToolStripMenuItem_Click);
+            // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
@@ -240,6 +327,7 @@
             // 
             this.preferencesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setCDashBackColorToolStripMenuItem,
+            this.setCDashWallpaperToolStripMenuItem,
             this.setCDashDefaultMonitorToolStripMenuItem,
             this.setOpacityToolStripMenuItem,
             this.setFadeTimeToolStripMenuItem,
@@ -257,6 +345,13 @@
             this.setCDashBackColorToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setCDashBackColorToolStripMenuItem.Text = "Set cDash BackColor...";
             this.setCDashBackColorToolStripMenuItem.Click += new System.EventHandler(this.setCDashBackColorToolStripMenuItem_Click);
+            // 
+            // setCDashWallpaperToolStripMenuItem
+            // 
+            this.setCDashWallpaperToolStripMenuItem.Name = "setCDashWallpaperToolStripMenuItem";
+            this.setCDashWallpaperToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.setCDashWallpaperToolStripMenuItem.Text = "Set cDash Wallpaper...";
+            this.setCDashWallpaperToolStripMenuItem.Click += new System.EventHandler(this.setCDashWallpaperToolStripMenuItem_Click);
             // 
             // setCDashDefaultMonitorToolStripMenuItem
             // 
@@ -331,90 +426,6 @@
             this.importCDashDataToolStripMenuItem.Text = "Import cDash Data...";
             this.importCDashDataToolStripMenuItem.Click += new System.EventHandler(this.importCDashDataToolStripMenuItem_Click);
             // 
-            // colorDialog1
-            // 
-            this.colorDialog1.FullOpen = true;
-            // 
-            // fontDialog1
-            // 
-            this.fontDialog1.AllowScriptChange = false;
-            this.fontDialog1.AllowSimulations = false;
-            this.fontDialog1.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fontDialog1.FontMustExist = true;
-            this.fontDialog1.ShowColor = true;
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notifyIcon1.BalloonTipText = "This is a test";
-            this.notifyIcon1.BalloonTipTitle = "cDashboard Test!";
-            this.notifyIcon1.ContextMenuStrip = this.notifyicon_menustrip;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "cDashboard Process is running...";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            // 
-            // notifyicon_menustrip
-            // 
-            this.notifyicon_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitCDashboardToolStripMenuItem});
-            this.notifyicon_menustrip.Name = "notifyicon_menustrip";
-            this.notifyicon_menustrip.Size = new System.Drawing.Size(159, 26);
-            // 
-            // exitCDashboardToolStripMenuItem
-            // 
-            this.exitCDashboardToolStripMenuItem.Name = "exitCDashboardToolStripMenuItem";
-            this.exitCDashboardToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.exitCDashboardToolStripMenuItem.Text = "Exit cDashboard";
-            this.exitCDashboardToolStripMenuItem.Click += new System.EventHandler(this.exitCDashboardToolStripMenuItem_Click);
-            // 
-            // button_time
-            // 
-            this.button_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_time.BackColor = System.Drawing.Color.Transparent;
-            this.button_time.FlatAppearance.BorderSize = 0;
-            this.button_time.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button_time.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button_time.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_time.Font = new System.Drawing.Font("Arial Black", 36F, System.Drawing.FontStyle.Bold);
-            this.button_time.Location = new System.Drawing.Point(917, 590);
-            this.button_time.Name = "button_time";
-            this.button_time.Size = new System.Drawing.Size(364, 74);
-            this.button_time.TabIndex = 5;
-            this.button_time.Text = "12:09:33 AM";
-            this.button_time.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_time.UseVisualStyleBackColor = false;
-            this.button_time.Click += new System.EventHandler(this.button_time_Click);
-            // 
-            // button_date
-            // 
-            this.button_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_date.FlatAppearance.BorderSize = 0;
-            this.button_date.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button_date.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button_date.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_date.Font = new System.Drawing.Font("Arial Black", 14.25F, System.Drawing.FontStyle.Bold);
-            this.button_date.Location = new System.Drawing.Point(887, 650);
-            this.button_date.Name = "button_date";
-            this.button_date.Size = new System.Drawing.Size(382, 34);
-            this.button_date.TabIndex = 6;
-            this.button_date.Text = "Date";
-            this.button_date.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_date.UseVisualStyleBackColor = true;
-            this.button_date.Click += new System.EventHandler(this.button_date_Click);
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "Image.jpg";
-            this.openFileDialog1.Title = "Select Image File For cPic";
-            // 
-            // newCStopwatchToolStripMenuItem
-            // 
-            this.newCStopwatchToolStripMenuItem.Name = "newCStopwatchToolStripMenuItem";
-            this.newCStopwatchToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.newCStopwatchToolStripMenuItem.Text = "New cStopwatch";
-            this.newCStopwatchToolStripMenuItem.Click += new System.EventHandler(this.newCStopwatchToolStripMenuItem_Click);
-            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -440,9 +451,9 @@
             this.SizeChanged += new System.EventHandler(this.cDashboard_SizeChanged);
             this.Click += new System.EventHandler(this.cDashboard_Click);
             this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.Form1_ControlRemoved);
+            this.notifyicon_menustrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.notifyicon_menustrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,6 +502,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ToolStripMenuItem importCDashDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCStopwatchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setCDashWallpaperToolStripMenuItem;
     }
 }
 
