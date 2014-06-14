@@ -472,7 +472,7 @@ namespace cDashboard
                 //set default opacity
                 sw.WriteLine("cDash;Opacity;85");
                 sw.WriteLine("cDash;FavoriteStickyColor;NULL");
-                sw.WriteLine("cDash;FavoriteStickyFontName;Arial Black");
+                sw.WriteLine("cDash;FavoriteStickyFontName;Arial");
                 sw.WriteLine("cDash;FavoriteStickyFontSize;12");
                 sw.WriteLine("cDash;FadeLengthInMilliseconds;500");
                 sw.WriteLine("cDash;Wallpaper;False");

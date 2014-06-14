@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cSticky));
-            this.rtb = new System.Windows.Forms.RichTextBox();
             this.rtb_contextmenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -39,30 +38,19 @@
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.rtb = new System.Windows.Forms.RichTextBox();
             this.menustrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeBackcolorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abcdeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveThisTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.rtb_contextmenu.SuspendLayout();
             this.menustrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // rtb
-            // 
-            this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtb.ContextMenuStrip = this.rtb_contextmenu;
-            this.rtb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtb.Location = new System.Drawing.Point(0, 24);
-            this.rtb.Name = "rtb";
-            this.rtb.Size = new System.Drawing.Size(284, 238);
-            this.rtb.TabIndex = 0;
-            this.rtb.Text = "";
-            this.rtb.TextChanged += new System.EventHandler(this.rtb_TextChanged);
             // 
             // rtb_contextmenu
             // 
@@ -127,6 +115,29 @@
             this.selectAllToolStripMenuItem.Text = "Select All";
             this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
             // 
+            // fontDialog1
+            // 
+            this.fontDialog1.ShowColor = true;
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "rtf";
+            this.saveFileDialog1.Filter = "Rich Text File|*.rtf";
+            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
+            // rtb
+            // 
+            this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtb.ContextMenuStrip = this.rtb_contextmenu;
+            this.rtb.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb.Location = new System.Drawing.Point(0, 24);
+            this.rtb.Name = "rtb";
+            this.rtb.Size = new System.Drawing.Size(284, 238);
+            this.rtb.TabIndex = 0;
+            this.rtb.Text = "";
+            this.rtb.TextChanged += new System.EventHandler(this.rtb_TextChanged);
+            this.rtb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtb_KeyDown);
+            // 
             // menustrip
             // 
             this.menustrip.Font = new System.Drawing.Font("Webdings", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
@@ -183,16 +194,6 @@
             this.saveThisTextToolStripMenuItem.Text = "Save this text...";
             this.saveThisTextToolStripMenuItem.Click += new System.EventHandler(this.saveThisTextToolStripMenuItem_Click);
             // 
-            // fontDialog1
-            // 
-            this.fontDialog1.ShowColor = true;
-            // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.DefaultExt = "rtf";
-            this.saveFileDialog1.Filter = "Rich Text File|*.rtf";
-            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
-            // 
             // cSticky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -207,7 +208,6 @@
             this.Text = "cSticky";
             this.Load += new System.EventHandler(this.cSticky_Load);
             this.ResizeEnd += new System.EventHandler(this.cSticky_ResizeEnd);
-            this.Move += new System.EventHandler(this.cSticky_Move);
             this.rtb_contextmenu.ResumeLayout(false);
             this.menustrip.ResumeLayout(false);
             this.menustrip.PerformLayout();

@@ -96,7 +96,6 @@
             this.Text = "cPic";
             this.Load += new System.EventHandler(this.cPic_Load);
             this.ResizeEnd += new System.EventHandler(this.cPic_ResizeEnd);
-            this.Move += new System.EventHandler(this.cPic_Move);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

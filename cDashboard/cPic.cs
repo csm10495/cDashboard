@@ -21,8 +21,6 @@ namespace cDashboard
         /// </summary>
         bool CompletedForm_Load = false;
 
-     
-
         /// <summary>
         /// called when the form has finished loading
         /// used with locking
@@ -112,48 +110,11 @@ namespace cDashboard
         {
             if (CompletedForm_Load == true)
             {
-                List<string> find = new List<string>();
-                List<string> replace = new List<string>();
+                //handle resize
+                replaceSetting(new string[] {"cPic", this.Name, "Size"}, new string[] {"cPic", this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString()});
 
-                find.Add("cPic");
-                find.Add(this.Name);
-                find.Add("Size");
-
-                replace.Add("cPic");
-                replace.Add(this.Name);
-                replace.Add("Size");
-                replace.Add(this.Size.Width.ToString());
-                replace.Add(this.Size.Height.ToString());
-
-                replaceSetting(find, replace);
-            }
-        }
-
-        /// <summary>
-        /// saves new location of form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cPic_Move(object sender, EventArgs e)
-        {
-            if (CompletedForm_Load == true)
-            {
-                List<string> list_find = new List<string>();
-                List<string> list_replace = new List<string>();
-
-                list_find.Add("cPic");
-                list_find.Add(this.Name);
-                list_find.Add("Location");
-
-                foreach (string s in list_find)
-                {
-                    list_replace.Add(s);
-                }
-
-                list_replace.Add(this.Location.X.ToString());
-                list_replace.Add(this.Location.Y.ToString());
-
-                replaceSetting(list_find, list_replace);
+                //handle move
+                replaceSetting(new string[] {"cPic", this.Name, "Location"}, new string[] {"cPic", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString()});
             }
         }
     }

@@ -58,35 +58,8 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// must save new form location
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cSticky_Move(object sender, EventArgs e)
-        {
-            if (CompletedForm_Load == true)
-            {
-                List<string> list_find = new List<string>();
-                List<string> list_replace = new List<string>();
-
-                list_find.Add("cSticky");
-                list_find.Add(this.Name);
-                list_find.Add("Location");
-
-                foreach (string s in list_find)
-                {
-                    list_replace.Add(s);
-                }
-
-                list_replace.Add(this.Location.X.ToString());
-                list_replace.Add(this.Location.Y.ToString());
-
-                replaceSetting(list_find, list_replace);
-            }
-        }
-
-        /// <summary>
         /// when the resizing is complete, save the new size
+        /// this also fires when the form is moved, so save new location
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -94,20 +67,52 @@ namespace cDashboard
         {
             if (CompletedForm_Load == true)
             {
-                List<string> find = new List<string>();
-                List<string> replace = new List<string>();
+                //handle resize
+                replaceSetting(new string[] { "cSticky", this.Name, "Size" }, new string[] { "cSticky", this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString() });
 
-                find.Add("cSticky");
-                find.Add(this.Name);
-                find.Add("Size");
+                //handle move
+                replaceSetting(new string[] { "cSticky", this.Name, "Location" }, new string[] { "cSticky", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
+            }
+        }
 
-                replace.Add("cSticky");
-                replace.Add(this.Name);
-                replace.Add("Size");
-                replace.Add(this.Size.Width.ToString());
-                replace.Add(this.Size.Height.ToString());
+        /// <summary>
+        /// handles key downs within the rtb
+        /// used for formatting of selected text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rtb_KeyDown(object sender, KeyEventArgs e)
+        {
+            //Ctrl + B makes selected text bold
+            if (e.Control && e.KeyCode == Keys.B)
+            {
+                rtb.SelectionFont = new Font(rtb.SelectionFont, rtb.SelectionFont.Style ^ FontStyle.Bold);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
 
-                replaceSetting(find, replace);
+            //Ctrl + I makes selected text italicized
+            if (e.Control && e.KeyCode == Keys.I)
+            {
+                rtb.SelectionFont = new Font(rtb.SelectionFont, rtb.SelectionFont.Style ^ FontStyle.Italic);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
+            //Ctrl + U makes selected text underlined
+            if (e.Control && e.KeyCode == Keys.U)
+            {
+                rtb.SelectionFont = new Font(rtb.SelectionFont, rtb.SelectionFont.Style ^ FontStyle.Underline);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
+            //Ctrl + S makes selected text strikethrough
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                rtb.SelectionFont = new Font(rtb.SelectionFont, rtb.SelectionFont.Style ^ FontStyle.Strikeout);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -241,6 +246,7 @@ namespace cDashboard
         }
 
         #endregion
+
 
 
     }
