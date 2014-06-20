@@ -273,7 +273,7 @@ namespace cDashboard
 
                         //get proper folder for this cPic
                         string foldername = getSpecificSetting(new[] { "cPic", currentline[1], "FolderName" })[0];
-                        
+
                         //set cPic_new's background image equal to a random image in its folder
                         Random r = new Random();
                         string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + foldername);
@@ -781,6 +781,19 @@ namespace cDashboard
 
             moveToPrimaryMonitor(); //ensures proper form sizing 
 
+            //go through every cPic and randomly pick image from folder
+            foreach (cPic this_cPic in this.Controls.OfType<cPic>())
+            {
+                //prevent crash on deletion
+                this_cPic.BackgroundImage.Dispose();
+
+                //set cPic_new's background image equal to a random image in its folder
+                Random r = new Random();
+                string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + this_cPic.Name);
+                this_cPic.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
+            }
+
+
             this.Visible = true;
 
             maintimer.Interval = 1; //set interval
@@ -1037,6 +1050,9 @@ namespace cDashboard
         {
             //represents the a unique time stamp for use as name of form / image
             long long_unique_timestamp = DateTime.Now.Ticks;
+
+            //force multiselect to be false
+            openFileDialog1.Multiselect = false;
 
             //setup the OpenFileDialog to only accept images
             openFileDialog1.Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.gif)|*.bmp;*.jpg;*.png;*.tiff;*.gif";
@@ -1479,6 +1495,9 @@ namespace cDashboard
             //represents the a unique time stamp for use as name of form / image
             long long_unique_timestamp = DateTime.Now.Ticks;
 
+            //set multiselect to true
+            openFileDialog1.Multiselect = true;
+
             //setup the OpenFileDialog to only accept images
             openFileDialog1.Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.gif)|*.bmp;*.jpg;*.png;*.tiff;*.gif";
 
@@ -1488,12 +1507,19 @@ namespace cDashboard
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                System.IO.File.Copy(openFileDialog1.FileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, false);
 
                 //make directory
                 System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString());
-                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + "\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
 
+                foreach (string file in openFileDialog1.FileNames)
+                {
+                    System.IO.File.Copy(file, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + file.Substring(file.LastIndexOf("\\") + 1), false);
+
+                    //sleeping for 1 millisecond eliminates chance of multiple completion on same tick
+                    System.Threading.Thread.Sleep(1);
+
+                    System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + file.Substring(file.LastIndexOf("\\") + 1), Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + "\\" + DateTime.Now.Ticks.ToString() + System.IO.Path.GetExtension(file));
+                }
                 cPic cPic_new = new cPic();
                 cPic_new.Name = long_unique_timestamp.ToString();
                 cPic_new.Location = new Point(10, 25);
@@ -1501,8 +1527,12 @@ namespace cDashboard
                 cPic_new.TopLevel = false;
                 cPic_new.Parent = this;
 
-                //unique cPic setup
-                cPic_new.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + "\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+
+                //set cPic_new's background image equal to a random image in its folder
+                Random r = new Random();
+                string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString());
+                cPic_new.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
+
                 cPic_new.BackgroundImageLayout = ImageLayout.None;
 
                 Controls.Add(cPic_new);
