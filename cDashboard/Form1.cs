@@ -270,7 +270,15 @@ namespace cDashboard
                     {
                         cPic cPic_new = new cPic();
                         cPic_new.Name = currentline[1];
-                        cPic_new.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + getSpecificSetting(new[] { "cPic", currentline[1], "FileName" })[0]);
+
+                        //get proper folder for this cPic
+                        string foldername = getSpecificSetting(new[] { "cPic", currentline[1], "FolderName" })[0];
+                        
+                        //set cPic_new's background image equal to a random image in its folder
+                        Random r = new Random();
+                        string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + foldername);
+                        cPic_new.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
+
                         cPic_new.TopLevel = false;
                         cPic_new.Parent = this;
                         Controls.Add(cPic_new);
@@ -1481,7 +1489,10 @@ namespace cDashboard
             if (result == DialogResult.OK)
             {
                 System.IO.File.Copy(openFileDialog1.FileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, false);
-                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+
+                //make directory
+                System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString());
+                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + "\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
 
                 cPic cPic_new = new cPic();
                 cPic_new.Name = long_unique_timestamp.ToString();
@@ -1491,7 +1502,7 @@ namespace cDashboard
                 cPic_new.Parent = this;
 
                 //unique cPic setup
-                cPic_new.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+                cPic_new.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + "\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
                 cPic_new.BackgroundImageLayout = ImageLayout.None;
 
                 Controls.Add(cPic_new);
@@ -1500,7 +1511,7 @@ namespace cDashboard
 
                 //add the cPic to settings
                 System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
-                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";FileName;" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";FolderName;" + long_unique_timestamp.ToString());
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Size;350;400");
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Location;10;25");
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";ImageLayout;None");
@@ -1589,6 +1600,37 @@ namespace cDashboard
 
             List<List<string>> list_settings = getSettingsList();
 
+
+
+            //special deletion of associated files (cPic, cSticky)
+            if (this_control.GetType() == typeof(cSticky))
+            {
+                int int_len = this_control.Name.Length;
+
+                foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\"))
+                {
+                    //f is the name of the file with extension
+                    string f = file.Substring(file.LastIndexOf("\\") + 1);
+                    string f2 = f.Substring(0, int_len);
+
+                    if (f2 == this_control.Name)
+                    {
+                        System.IO.File.Delete(file);
+                        break;
+                    }
+                }
+            }
+
+            //special handling for cPic
+            if (this_control.GetType() == typeof(cPic))
+            {
+                //manual memory management
+                this_control.BackgroundImage.Dispose();
+                //delete folder
+                System.IO.Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + this_control.Name, true);
+            }
+
+        //This should be here instead of up there, just in case we need to know a setting to delete the control
         top:
             foreach (List<string> currentsetting in list_settings)
             {
@@ -1602,30 +1644,6 @@ namespace cDashboard
                     goto top;
                 }
             }
-
-            //special deletion of associated files (cPic, cSticky)
-            if (this_control.GetType() == typeof(cPic) || this_control.GetType() == typeof(cSticky))
-            {
-                int int_len = this_control.Name.Length;
-
-                foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\"))
-                {
-                    //f is the name of the file with extension
-                    string f = file.Substring(file.LastIndexOf("\\") + 1);
-                    string f2 = f.Substring(0, int_len);
-                    string n = this_control.Name;
-                    //if timestamp == timestamp
-                    if (f2 == n)
-                    {
-                        //special handling for cPic
-                        if (this_control.GetType() == typeof(cPic))
-                            this_control.BackgroundImage.Dispose();
-                        System.IO.File.Delete(file);
-                        break;
-                    }
-                }
-            }
-
             //remove control
             Controls.Remove(this_control);
             this_control.Dispose();
