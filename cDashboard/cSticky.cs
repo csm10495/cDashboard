@@ -53,7 +53,7 @@ namespace cDashboard
             //to avoid file locks
             if (CompletedForm_Load == true)
             {
-                rtb.SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + this.Name + ".rtf");
+                rtb.SaveFile(SETTINGS_LOCATION + this.Name + ".rtf");
             }
         }
 

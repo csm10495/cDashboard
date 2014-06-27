@@ -19,6 +19,14 @@ namespace cDashboard
             InitializeComponent();
         }
 
+        #region Global Variables
+        /// <summary>
+        /// location for settings related files
+        /// </summary>
+        protected readonly string SETTINGS_LOCATION = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\";
+        #endregion
+
+
         //this exists as an interface because all cForms seem to have
         //various things in common
         #region Settings List Related Methods
@@ -51,7 +59,7 @@ namespace cDashboard
         protected List<List<string>> getSettingsList()
         {
             //StreamReader to read settings
-            System.IO.StreamReader sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash");
+            System.IO.StreamReader sr = new System.IO.StreamReader(SETTINGS_LOCATION + "cDash Settings.cDash");
 
             //this will be the list of lines from the settings file 
             //THE settings_list WILL NOT INCLUDE BLANK LINES OR LINES STARTING WITH #
@@ -137,7 +145,7 @@ namespace cDashboard
         /// <param name="list_settings">a list of lists of parts of settings lines</param>
         protected void saveSettingsList(List<List<string>> list_settings)
         {
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash");
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash");
            // sw.WriteLine("# cDashBoard Settings File");
            // sw.WriteLine("# A # tells the program to ignore this line");
            // sw.WriteLine("# Don't edit this file unless you know what you are doing");

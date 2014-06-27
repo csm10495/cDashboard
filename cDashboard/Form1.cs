@@ -150,8 +150,8 @@ namespace cDashboard
             // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
 
             //create appdata directory
-            if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
-                System.IO.Directory.CreateDirectory((Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"));
+            if (!System.IO.Directory.Exists(SETTINGS_LOCATION))
+                System.IO.Directory.CreateDirectory((SETTINGS_LOCATION));
 
             //File Building
             buildAndSettingsFileCreation();
@@ -276,7 +276,7 @@ namespace cDashboard
 
                         //set cPic_new's background image equal to a random image in its folder
                         Random r = new Random();
-                        string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + foldername);
+                        string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + foldername);
                         cPic_new.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
 
                         cPic_new.TopLevel = false;
@@ -400,9 +400,9 @@ namespace cDashboard
             foreach (cSticky cSticky_new in this.Controls.OfType<cSticky>())
             {
                 //attempts to load richtextbox files, if the file doesn't exist, it fails gracefully
-                if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + cSticky_new.Name + ".rtf"))
+                if (System.IO.File.Exists(SETTINGS_LOCATION + cSticky_new.Name + ".rtf"))
                 {
-                    ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).LoadFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + cSticky_new.Name + ".rtf");
+                    ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).LoadFile(SETTINGS_LOCATION + cSticky_new.Name + ".rtf");
                 }
                 else
                 {
@@ -440,11 +440,11 @@ namespace cDashboard
             {
                 #region Build Data
                 //check if build file exists
-                if (!System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\BuildData.cDash"))
+                if (!System.IO.File.Exists(SETTINGS_LOCATION + "BuildData.cDash"))
                 {
                     //creates build data
                     //at this point this number doesn't mean much :P
-                    System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\BuildData.cDash");
+                    System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "BuildData.cDash");
                     sw.Write("144");
                     sw.Close();
                     label_build.Text = "cDashBoard Alpha Build 144";
@@ -452,7 +452,7 @@ namespace cDashboard
                 else
                 {
                     //read build number
-                    System.IO.StreamReader sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\BuildData.cDash");
+                    System.IO.StreamReader sr = new System.IO.StreamReader(SETTINGS_LOCATION + "BuildData.cDash");
                     int buildnum = Convert.ToInt32(sr.ReadToEnd().ToString());
                     sr.Close();
 
@@ -460,7 +460,7 @@ namespace cDashboard
                     buildnum++;
 
                     //write incremented build number
-                    System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\BuildData.cDash");
+                    System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "BuildData.cDash");
                     sw.Write(buildnum.ToString());
                     sw.Close();
 
@@ -471,9 +471,9 @@ namespace cDashboard
             }
 
             //create the settings file
-            if (!System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash"))
+            if (!System.IO.File.Exists(SETTINGS_LOCATION + "cDash Settings.cDash"))
             {
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash");
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash");
                 sw.WriteLine("# cDashBoard Settings File");
                 sw.WriteLine("# A # tells the program to ignore this line");
                 sw.WriteLine("# Don't edit this file unless you know what you are doing");
@@ -789,7 +789,7 @@ namespace cDashboard
 
                 //set cPic_new's background image equal to a random image in its folder
                 Random r = new Random();
-                string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + this_cPic.Name);
+                string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + this_cPic.Name);
                 this_cPic.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
             }
 
@@ -975,9 +975,9 @@ namespace cDashboard
             cSticky_new.Name = long_unique_timestamp.ToString();
 
             //this code will add this new sticky to the settings file
-            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash"))
+            if (System.IO.File.Exists(SETTINGS_LOCATION + "cDash Settings.cDash"))
             {
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
                 sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";BackColor;" + cSticky_new.BackColor.R.ToString() + ";" + cSticky_new.BackColor.G.ToString() + ";" + cSticky_new.BackColor.B.ToString());
                 sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";Location;" + cSticky_new.Location.X.ToString() + ";" + cSticky_new.Location.Y.ToString());
                 sw.WriteLine("cSticky;" + long_unique_timestamp.ToString() + ";Size;" + cSticky_new.Size.Width.ToString() + ";" + cSticky_new.Size.Height.ToString());
@@ -991,7 +991,7 @@ namespace cDashboard
             }
 
 
-            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + ".rtf");
+            ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(SETTINGS_LOCATION + long_unique_timestamp.ToString() + ".rtf");
         }
         #endregion
 
@@ -1071,17 +1071,17 @@ namespace cDashboard
                     System.IO.File.Delete(string_old_file_location);
                 }
 
-                System.IO.File.Copy(openFileDialog1.FileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, false);
-                System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + openFileDialog1.SafeFileName, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+                System.IO.File.Copy(openFileDialog1.FileName, SETTINGS_LOCATION + openFileDialog1.SafeFileName, false);
+                System.IO.File.Move(SETTINGS_LOCATION + openFileDialog1.SafeFileName, SETTINGS_LOCATION + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
 
                 //set image
-                this.BackgroundImage = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
+                this.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName));
 
                 //we are using a wallpaper image
                 //set as such
                 UseWallpaperImage = true;
                 replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "True" });
-                replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName) });
+                replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", SETTINGS_LOCATION + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName) });
             }
         }
 
@@ -1096,7 +1096,7 @@ namespace cDashboard
             long long_unique_timestamp = DateTime.Now.Ticks;
 
             //add the cStopwatch to settings
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";Location;10;25");
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";StartDateTime;NULL");
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";TimerRunning;False");
@@ -1125,13 +1125,13 @@ namespace cDashboard
             if (dr == DialogResult.OK)
             {
                 //if the user clicks ok
-                if (System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
+                if (System.IO.Directory.Exists(SETTINGS_LOCATION))
                 {
                     //create directory
                     System.IO.Directory.CreateDirectory(folderBrowserDialog1.SelectedPath + "\\cDashBoard");
 
                     //copy files
-                    foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
+                    foreach (string file in System.IO.Directory.GetFiles(SETTINGS_LOCATION))
                     {
                         //represents file name without a path
                         string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
@@ -1171,14 +1171,14 @@ namespace cDashboard
                 }
 
                 //if the user clicks ok
-                if (System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard"))
+                if (System.IO.Directory.Exists(SETTINGS_LOCATION))
                 {
                     //copy files
                     foreach (string file in System.IO.Directory.GetFiles(folderBrowserDialog1.SelectedPath))
                     {
                         //get file without path
                         string str_nopath_file = file.Substring(file.LastIndexOf("\\") + 1);
-                        System.IO.File.Copy(file, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + str_nopath_file, true);
+                        System.IO.File.Copy(file, SETTINGS_LOCATION + str_nopath_file, true);
                     }
                 }
                 //reload the form to represent changes in files
@@ -1509,16 +1509,16 @@ namespace cDashboard
             {
 
                 //make directory
-                System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString());
+                System.IO.Directory.CreateDirectory(SETTINGS_LOCATION + long_unique_timestamp.ToString());
 
                 foreach (string file in openFileDialog1.FileNames)
                 {
-                    System.IO.File.Copy(file, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + file.Substring(file.LastIndexOf("\\") + 1), false);
+                    System.IO.File.Copy(file, SETTINGS_LOCATION + file.Substring(file.LastIndexOf("\\") + 1), false);
 
                     //sleeping for 1 millisecond eliminates chance of multiple completion on same tick
                     System.Threading.Thread.Sleep(1);
 
-                    System.IO.File.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + file.Substring(file.LastIndexOf("\\") + 1), Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString() + "\\" + DateTime.Now.Ticks.ToString() + System.IO.Path.GetExtension(file));
+                    System.IO.File.Move(SETTINGS_LOCATION + file.Substring(file.LastIndexOf("\\") + 1), SETTINGS_LOCATION + long_unique_timestamp.ToString() + "\\" + DateTime.Now.Ticks.ToString() + System.IO.Path.GetExtension(file));
                 }
                 cPic cPic_new = new cPic();
                 cPic_new.Name = long_unique_timestamp.ToString();
@@ -1530,7 +1530,7 @@ namespace cDashboard
 
                 //set cPic_new's background image equal to a random image in its folder
                 Random r = new Random();
-                string[] files = System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + long_unique_timestamp.ToString());
+                string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + long_unique_timestamp.ToString());
                 cPic_new.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
 
                 cPic_new.BackgroundImageLayout = ImageLayout.None;
@@ -1540,7 +1540,7 @@ namespace cDashboard
                 cPic_new.BringToFront();
 
                 //add the cPic to settings
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\cDash Settings.cDash", true);
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";FolderName;" + long_unique_timestamp.ToString());
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Size;350;400");
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Location;10;25");
@@ -1637,7 +1637,7 @@ namespace cDashboard
             {
                 int int_len = this_control.Name.Length;
 
-                foreach (string file in System.IO.Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\"))
+                foreach (string file in System.IO.Directory.GetFiles(SETTINGS_LOCATION))
                 {
                     //f is the name of the file with extension
                     string f = file.Substring(file.LastIndexOf("\\") + 1);
@@ -1657,7 +1657,7 @@ namespace cDashboard
                 //manual memory management
                 this_control.BackgroundImage.Dispose();
                 //delete folder
-                System.IO.Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\" + this_control.Name, true);
+                System.IO.Directory.Delete(SETTINGS_LOCATION + this_control.Name, true);
             }
 
         //This should be here instead of up there, just in case we need to know a setting to delete the control
