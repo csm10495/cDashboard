@@ -721,14 +721,18 @@ namespace cDashboard
             //if both hooked keys are down, and we are ready to fadein, fade in the dash
             if (TildeIsDown && LCtrlIsDown && cD_tstate == timerstate.fadein && CompletedForm_Load == true)
             {
+                //kill attempts to call a fade_in during a fade_in
+                if (this.Opacity != 0)
+                    goto done;
+
                 //theoretically should fix incorrectly shapped loads
                 moveToPrimaryMonitor();
 
                 fade_in();
 
                 //reset which keys are down
+                //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
-                LCtrlIsDown = false;
                 e.Handled = true;
                 goto done;
             }
@@ -739,8 +743,8 @@ namespace cDashboard
                 fade_out();
 
                 //reset which keys are down
+                //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
-                LCtrlIsDown = false;
                 e.Handled = true;
                 goto done;
             }
