@@ -784,8 +784,11 @@ namespace cDashboard
             //go through every cPic and randomly pick image from folder
             foreach (cPic this_cPic in this.Controls.OfType<cPic>())
             {
-                //prevent crash on deletion
-                this_cPic.BackgroundImage.Dispose();
+                try
+                {
+                    this_cPic.BackgroundImage.Dispose();
+                }
+                catch (Exception) { }
 
                 //set cPic_new's background image equal to a random image in its folder
                 Random r = new Random();
@@ -1502,7 +1505,7 @@ namespace cDashboard
             openFileDialog1.Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.gif)|*.bmp;*.jpg;*.png;*.tiff;*.gif";
 
             //change title of openFileDialog1
-            openFileDialog1.Title = "Select image for cPic...";
+            openFileDialog1.Title = "Select image(s) for cPic...";
 
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
@@ -1630,8 +1633,6 @@ namespace cDashboard
 
             List<List<string>> list_settings = getSettingsList();
 
-
-
             //special deletion of associated files (cPic, cSticky)
             if (this_control.GetType() == typeof(cSticky))
             {
@@ -1655,7 +1656,10 @@ namespace cDashboard
             if (this_control.GetType() == typeof(cPic))
             {
                 //manual memory management
-                this_control.BackgroundImage.Dispose();
+                //will throw exception if already disposed
+                try { this_control.BackgroundImage.Dispose(); }
+                catch (Exception) { }
+                ((cPic)this_control).dgv_sm.Dispose();
                 //delete folder
                 System.IO.Directory.Delete(SETTINGS_LOCATION + this_control.Name, true);
             }

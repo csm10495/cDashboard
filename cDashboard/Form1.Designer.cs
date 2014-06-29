@@ -338,7 +338,7 @@
             this.exportBackupToolStripMenuItem,
             this.importCDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashDefaultMonitorToolStripMenuItem
@@ -528,7 +528,6 @@
         private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
         private System.Windows.Forms.ToolStripMenuItem newCPicToolStripMenuItem;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportBackupToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
@@ -539,6 +538,7 @@
         private System.Windows.Forms.ToolStripMenuItem cDashWallpaperToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setCDashWallpaperImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox combobox_wallpaper;
+        public System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

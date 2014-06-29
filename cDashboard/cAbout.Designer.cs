@@ -53,7 +53,7 @@
             this.label_project_name.Font = new System.Drawing.Font("Arial Black", 25.75F, System.Drawing.FontStyle.Bold);
             this.label_project_name.Location = new System.Drawing.Point(214, -1);
             this.label_project_name.Name = "label_project_name";
-            this.label_project_name.Size = new System.Drawing.Size(248, 50);
+            this.label_project_name.Size = new System.Drawing.Size(247, 50);
             this.label_project_name.TabIndex = 1;
             this.label_project_name.Text = "cDashboard";
             // 
@@ -116,7 +116,7 @@
             this.Padding = new System.Windows.Forms.Padding(9);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "cAbout cDashboard";
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.picture_icon)).EndInit();
