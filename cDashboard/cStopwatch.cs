@@ -88,11 +88,14 @@ namespace cDashboard
             string string_span = tmp.TotalHours.ToString().PadLeft(2, '0').Substring(0, tmp.TotalHours.ToString().PadLeft(2, '0').IndexOf("."))  + ":" + tmp.Minutes.ToString().PadLeft(2,'0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2) ;
 
             label_time.Text = tmp.ToString().PadRight(12,'0');
+
+            //tmp removal
             //label_time.Text = tmp.ToString().Substring(0, tmp.ToString().IndexOf(".") + 3);
-            while (label_time.Width > this.Width)
-            {
-                label_time.Font = new Font(label_time.Font.FontFamily, label_time.Font.SizeInPoints - 1);
-            }
+            //while (label_time.Width > this.Width)
+            //{
+            //    label_time.Font = new Font(label_time.Font.FontFamily, label_time.Font.Size - 1);
+            //}
+            
             label_started_time.Text = "cStopwatch started on: " + startTime.ToString();
         }
 
