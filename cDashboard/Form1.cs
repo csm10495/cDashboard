@@ -853,6 +853,9 @@ namespace cDashboard
             #region fadeouttimer
             if (cD_tstate == timerstate.fadeout)
             {
+                //added this line to ensure that the interval is changed properly
+                maintimer.Interval = 1;
+
                 //computes amount of change in opacity per clock tick then applies it
                 double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
                 this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
