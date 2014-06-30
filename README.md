@@ -12,18 +12,26 @@ Features
 
 cStickies
 
-First and foremost, the user can create sticky notes (cStickies) to jot down quick thoughts, lists, and other things. They can be made by clicking File -> New Sticky -> <Color>. Also there exists a keyboard shortcut (Ctrl-T) to create a new sticky of your favorite color, which can be set to anything on the RGB spectrum.
+First and foremost, the user can create sticky notes (cStickies) to jot down quick thoughts, lists, and other things. They can be made by clicking File -> New Sticky -> <Color>. Also there exists a keyboard shortcut (Ctrl-T) to create a new sticky of your favorite color, which can be set to anything on the RGB spectrum. Within a cSticky, rich text formatting can be done on the fly using various keyboard shortcuts:
+Ctrl + I -> Italics
+Ctrl + B -> Bold
+Ctrl + U -> Underline
+Ctrl + S -> Strikethrough
 
 cPic
 
-cPic is an easy way to display a photo on the Dashboard. To create one, go to File -> New cPic... and select the picture file (bmp, gif, jpeg, png.) The user can also customize the view property to be stretch, center, tile, none, etc... When a cPic is made, the file is copied, so it can be deleted from its original location.
+cPic is an easy way to display a photo on the Dashboard. To create one, go to File -> New cPic... and select the picture file(s) (bmp, gif, jpeg, png.) The user can also customize the view property to be stretch, center, tile, none, etc... When a cPic is made, the file is copied, so it can be deleted from its original location. If multiple files are selected, a random image will be chosen during each fade_in(). The Slideshow Manager can also be used to manage (add, delete) the images shown by the cPic. 
+
+cStopwatch
+
+cStopwatch is a quick stopwatch that counts up from zero. It also maintains a record of when it was started.
 
 Preferences
 ===========
 
-cDash BackColor
+cDash Background
 
-The user has the ability to set the color of the Dashboard. The color, along with all other settings stays throughout resets of the program (and computer.)
+The user has the ability to set the color of the Dashboard. The color, along with all other settings stays throughout resets of the program (and computer.) The user can also select a wallpaper image, along with layout for said image. 
 
 Default Monitor
 
