@@ -119,6 +119,7 @@
             this.dgv_sm.TabIndex = 1;
             this.dgv_sm.Visible = false;
             this.dgv_sm.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_sm_CellContentClick);
+            this.dgv_sm.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgv_sm_RowsRemoved);
             // 
             // Images
             // 
@@ -154,6 +155,7 @@
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.dgv_sm);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;

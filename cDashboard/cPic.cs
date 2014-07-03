@@ -140,31 +140,42 @@ namespace cDashboard
                 this.BackgroundImage.Dispose();
                 this.BackgroundImage = null;
 
+                //ensure no seeing weird image changes
+                menuStrip1.BackColor = SystemColors.Control;
+
                 slideshowManagerToolStripMenuItem.Text = "Hide Slideshow Manager";
-                setupDGV();
+                setupDGV(false);
             }
             else
             {
                 //clear up some memory
                 dgv_sm.Rows.Clear();
+                System.GC.Collect(); //I know its bad but eh, it works
+
+                randomizeFiles(this.Name);
+                //ensure no seeing weird image changes
+                menuStrip1.BackColor = Color.Transparent;
 
                 slideshowManagerToolStripMenuItem.Text = "Show Slideshow Manager";
 
-                //set cPic_new's background image equal to a random image in its folder
-                Random r = new Random();
-                string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + this.Name);
-                this.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
+                //reset background image to what it was via tag
+                this.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + this.Name + "\\1");
             }
         }
 
         /// <summary>
         /// get images/buttons/etc into datagridview
         /// </summary>
-        private void setupDGV()
+        private void setupDGV(bool randomize)
         {
             //initial clearing of DGV
             dgv_sm.Rows.Clear();
-
+            //re randomize files (only on add or delete)
+            if (randomize)
+            {
+                randomizeFiles(this.Name);
+                this.Tag = 1;
+            }
             //grab images from folder and display them along with a delete button
             foreach (FileInfo f in (new DirectoryInfo(SETTINGS_LOCATION + this.Name).GetFiles()))
             {
@@ -172,6 +183,7 @@ namespace cDashboard
                 using (Image img = Image.FromFile(f.FullName))
                 {
                     dgv_sm.Rows.Add(new Bitmap(img), "Delete Image", f.FullName);
+                    img.Dispose();
                 }
 
                 //default row height of 100 pixels
@@ -180,6 +192,8 @@ namespace cDashboard
 
             //add the add image row
             dgv_sm.Rows.Add(new Bitmap(1, 1), "Add Image", "");
+
+
         }
 
         /// <summary>
@@ -195,24 +209,23 @@ namespace cDashboard
 
             //special handling if this is an add image click
             //eg the last row button has been clicked
-            if (e.RowIndex == dgv_sm.RowCount - 1)
+            if (e.RowIndex == dgv_sm.Rows.Count - 1)
             {
                 addImageToCPic();
-                return;
             }
-
-            string image_location = dgv_sm.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value.ToString();
-            dgv_sm.Rows[e.RowIndex].Dispose();
-            File.Delete(image_location);
-
-            //reset dgv
-            setupDGV();
-
-            //remove cPic if no images to show
-            if (dgv_sm.RowCount == 1)
+            else
             {
-                MessageBox.Show("There are no more images for this cPic and as a result it is being removed.");
-                this.Close();
+                //remove file, row
+                string image_location = dgv_sm.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value.ToString();
+                dgv_sm.Rows.RemoveAt(e.RowIndex);
+                File.Delete(image_location);
+
+                //remove cPic if no images to show
+                if (dgv_sm.RowCount == 1)
+                {
+                    MessageBox.Show("There are no more images for this cPic and as a result it is being removed.");
+                    this.Close();
+                }
             }
         }
 
@@ -236,16 +249,29 @@ namespace cDashboard
             {
                 foreach (string file in openFileDialog1.FileNames)
                 {
-                    System.IO.File.Copy(file, SETTINGS_LOCATION + file.Substring(file.LastIndexOf("\\") + 1), false);
+                    //sleeping for 5 millisecond eliminates chance of multiple completion on same tick
+                    System.Threading.Thread.Sleep(5);
 
-                    //sleeping for 1 millisecond eliminates chance of multiple completion on same tick
-                    System.Threading.Thread.Sleep(1);
+                    string tmp_ident = DateTime.Now.Ticks.ToString();
+                    string copyto = SETTINGS_LOCATION + this.Name + "\\" + tmp_ident;
+                    System.IO.File.Copy(file, copyto, true);
 
-                    System.IO.File.Move(SETTINGS_LOCATION + file.Substring(file.LastIndexOf("\\") + 1), SETTINGS_LOCATION + this.Name + "\\" + DateTime.Now.Ticks.ToString() + System.IO.Path.GetExtension(file));
+                    //add to dgv
+                    using (Image img = Image.FromFile(copyto))
+                    {
+                        dgv_sm.Rows.Insert(dgv_sm.Rows.Count - 1, new Bitmap(img), "Delete Image", copyto);
+                        img.Dispose();
+                    }
+
+                    //fix sizing
+                    dgv_sm.Rows[dgv_sm.Rows.Count - 2].Height = 100;
                 }
             }
-            //make sure everything is placed properly
-            setupDGV();
+        }
+
+        private void dgv_sm_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            // MessageBox.Show("removed");
         }
 
     }

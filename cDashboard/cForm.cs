@@ -219,5 +219,40 @@ namespace cDashboard
 
         #endregion
 
+
+        /// <summary>
+        /// randomizes files in a folder and numbers them starting with 1
+        /// </summary>
+        /// <param name="name"></param>
+        protected void randomizeFiles(string name)
+        {
+            //create random ordering of image files (for psuedo randomness)
+            Random r = new Random(DateTime.Now.Millisecond);
+
+            //list of files in directory
+            string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + name);
+
+            //this will give us an array of 1 ... 2 ... files.Length
+            int[] rand_ints = Enumerable.Range(1, files.Length).OrderBy(t => r.Next()).ToArray();
+
+            //temporary names so that there are not naming conflicts during the next step
+            foreach (string f in files)
+            {
+                //ensure that things happen on different ticks
+                System.Threading.Thread.Sleep(5);
+                File.Move(f, f.Substring(0, f.LastIndexOf("\\") + 1) + DateTime.Now.Ticks);
+            }
+
+            //refresh directory, with new tick-based names
+            files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + name);
+
+            //actually number each file via the rand_ints numbering
+            int x = 0;
+            foreach (string f in files)
+            {
+                File.Move(f, f.Substring(0, f.LastIndexOf("\\") + 1) + rand_ints[x]);
+                x++;
+            }
+        }
     }
 }

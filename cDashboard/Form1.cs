@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
 using System.Diagnostics;
+using System.IO;
 
 
 
@@ -271,13 +272,12 @@ namespace cDashboard
                         cPic cPic_new = new cPic();
                         cPic_new.Name = currentline[1];
 
-                        //get proper folder for this cPic
-                        string foldername = getSpecificSetting(new[] { "cPic", currentline[1], "FolderName" })[0];
+                        //randomize files in folder
+                        randomizeFiles(currentline[1]);
 
-                        //set cPic_new's background image equal to a random image in its folder
-                        Random r = new Random();
-                        string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + foldername);
-                        cPic_new.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
+                        //use 1st image
+                        cPic_new.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + currentline[1] + "\\1");
+                        cPic_new.Tag = 1;
 
                         cPic_new.TopLevel = false;
                         cPic_new.Parent = this;
@@ -780,27 +780,9 @@ namespace cDashboard
         /// </summary>
         private void fade_in()
         {
-            cD_tstate = (int)timerstate.fadein; //cD_tstate is the timer state
-            //this.Focus();
-
             moveToPrimaryMonitor(); //ensures proper form sizing 
 
-            //go through every cPic and randomly pick image from folder
-            foreach (cPic this_cPic in this.Controls.OfType<cPic>())
-            {
-                try
-                {
-                    this_cPic.BackgroundImage.Dispose();
-                }
-                catch (Exception) { }
-
-                //set cPic_new's background image equal to a random image in its folder
-                Random r = new Random();
-                string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + this_cPic.Name);
-                this_cPic.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
-            }
-
-
+            cD_tstate = (int)timerstate.fadein; //cD_tstate is the timer state
             this.Visible = true;
 
             maintimer.Interval = 1; //set interval
@@ -871,6 +853,9 @@ namespace cDashboard
                     this.Visible = false;
                     timertime = 0;
                     maintimer.Stop();
+
+                    //go to next image in slideshows
+                    rotateCPic();
                 }
             }
             #endregion
@@ -884,6 +869,45 @@ namespace cDashboard
 
             button_date.Text = datelabeltext;
             #endregion
+        }
+
+        /// <summary>
+        /// rotates through images in all cPic slideshows
+        /// </summary>
+        private void rotateCPic()
+        {
+            //go through every cPic and randomly pick image from folder
+            foreach (cPic this_cPic in this.Controls.OfType<cPic>())
+            {
+                try
+                {
+                    this_cPic.BackgroundImage.Dispose();
+                }
+                catch (Exception ee) { }
+
+                //set cPic_new's background image equal to next in its folder
+                try
+                {
+                    if (!this_cPic.dgv_sm.Visible)
+                    {
+                        Random r = new Random();
+                        string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + this_cPic.Name);
+                        if (files.Length < Convert.ToInt16(this_cPic.Tag) + 1)
+                        {
+                            this_cPic.Tag = 0;
+                        }
+
+                        this_cPic.Tag = Convert.ToInt16(this_cPic.Tag) + 1;
+
+                        using (Image img = Image.FromFile(SETTINGS_LOCATION + this_cPic.Name + "\\" + this_cPic.Tag))
+                        {
+                            this_cPic.BackgroundImage = new Bitmap(img);
+                            img.Dispose();
+                        }
+                    }
+                }
+                catch (Exception ee) { }
+            }
         }
         #endregion
 
@@ -1517,7 +1541,6 @@ namespace cDashboard
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-
                 //make directory
                 System.IO.Directory.CreateDirectory(SETTINGS_LOCATION + long_unique_timestamp.ToString());
 
@@ -1528,7 +1551,7 @@ namespace cDashboard
                     //sleeping for 1 millisecond eliminates chance of multiple completion on same tick
                     System.Threading.Thread.Sleep(1);
 
-                    System.IO.File.Move(SETTINGS_LOCATION + file.Substring(file.LastIndexOf("\\") + 1), SETTINGS_LOCATION + long_unique_timestamp.ToString() + "\\" + DateTime.Now.Ticks.ToString() + System.IO.Path.GetExtension(file));
+                    System.IO.File.Move(SETTINGS_LOCATION + file.Substring(file.LastIndexOf("\\") + 1), SETTINGS_LOCATION + long_unique_timestamp.ToString() + "\\" + DateTime.Now.Ticks.ToString());
                 }
                 cPic cPic_new = new cPic();
                 cPic_new.Name = long_unique_timestamp.ToString();
@@ -1536,14 +1559,16 @@ namespace cDashboard
                 cPic_new.Size = new Size(350, 400);
                 cPic_new.TopLevel = false;
                 cPic_new.Parent = this;
+                cPic_new.Tag = 1;
 
+                //properly name, randomize files
+                randomizeFiles(cPic_new.Name);
 
-                //set cPic_new's background image equal to a random image in its folder
-                Random r = new Random();
-                string[] files = System.IO.Directory.GetFiles(SETTINGS_LOCATION + long_unique_timestamp.ToString());
-                cPic_new.BackgroundImage = Image.FromFile(files[r.Next(files.Length)]);
+                //set cPic_new's background image equal to image number 1 from the folder
+                cPic_new.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + cPic_new.Name + "\\1");
 
-                cPic_new.BackgroundImageLayout = ImageLayout.None;
+                //changed default behavior to zoom
+                cPic_new.BackgroundImageLayout = ImageLayout.Zoom;
 
                 Controls.Add(cPic_new);
                 cPic_new.Show();
@@ -1554,7 +1579,7 @@ namespace cDashboard
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";FolderName;" + long_unique_timestamp.ToString());
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Size;350;400");
                 sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Location;10;25");
-                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";ImageLayout;None");
+                sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";ImageLayout;Zoom");
                 sw.Close();
             }
         }
