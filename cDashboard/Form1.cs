@@ -883,7 +883,7 @@ namespace cDashboard
                 {
                     this_cPic.BackgroundImage.Dispose();
                 }
-                catch (Exception ee) { }
+                catch (Exception) { }
 
                 //set cPic_new's background image equal to next in its folder
                 try
@@ -906,7 +906,7 @@ namespace cDashboard
                         }
                     }
                 }
-                catch (Exception ee) { }
+                catch (Exception) { }
             }
         }
         #endregion

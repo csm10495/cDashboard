@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace cDashboard
 {
@@ -34,6 +35,149 @@ namespace cDashboard
         private void cPic_Load(object sender, EventArgs e)
         {
             CompletedForm_Load = true;
+        }
+
+        #region Form Dragging and Resizing
+
+        //import both the SendMessage method and the ReleaseCapture method from user32.dll
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        /// <summary>
+        /// calls method for moving form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// calls method for moving form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cPic_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// calls the user32.dll to move the form
+        /// </summary>
+        /// <param name="e"></param>
+        private void dragForm(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                //removes mouse capture from current object, and allows it to be sent elsewhere
+                ReleaseCapture();
+
+                //WM_NCLBUTTONDOWN = 0xA1
+                //HT_CAPTION = 0x2
+                //send a windows message that the left mouse button is down on the titlebar 
+                SendMessage(this.Handle, 0xA1, 0x2, 0);
+            }
+        }
+
+        /// <summary>
+        /// used to save the new size of the form to settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cPic_ResizeEnd(object sender, EventArgs e)
+        {
+            if (CompletedForm_Load == true)
+            {
+                //handle resize
+                replaceSetting(new string[] { "cPic", this.Name, "Size" }, new string[] { "cPic", this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString() });
+
+                //handle move
+                replaceSetting(new string[] { "cPic", this.Name, "Location" }, new string[] { "cPic", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
+
+                //hide menustrip
+                menuStrip1.Visible = false;
+            }
+        }
+
+        #endregion
+
+        #region Hiding MenuStrip and Other MenuStrip Things
+
+        /// <summary>
+        /// called if the mouse leaves the main form area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cPic_MouseLeave(object sender, EventArgs e)
+        {
+            //if the mouse is anywhere on the form, don't hide the menustrip
+            if (this.GetChildAtPoint(this.PointToClient(MousePosition)) == null)
+            {
+                menuStrip1.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// called when mouse enters the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cPic_MouseEnter(object sender, EventArgs e)
+        {
+            menuStrip1.Visible = true;
+        }
+
+        /// <summary>
+        /// if the menustrip is left, hide
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuStrip1_MouseLeave(object sender, EventArgs e)
+        {
+            //if the mouse is anywhere on the form, don't hide the menustrip
+            if (this.GetChildAtPoint(this.PointToClient(MousePosition)) == null)
+            {
+                menuStrip1.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// Opens slideshow manager datagridview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void slideshowManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //boolean flip
+            dgv_sm.Visible = !dgv_sm.Visible;
+
+            //set menu item text
+            if (dgv_sm.Visible)
+            {
+                //manually memory management to ensure no file locks
+                this.BackgroundImage.Dispose();
+                this.BackgroundImage = null;
+
+                slideshowManagerToolStripMenuItem.Text = "Hide Slideshow Manager";
+                setupDGV(false);
+            }
+            else
+            {
+                //clear up some memory
+                dgv_sm.Rows.Clear();
+                System.GC.Collect(); //I know its bad but eh, it works
+
+                randomizeFiles(this.Name);
+
+                slideshowManagerToolStripMenuItem.Text = "Show Slideshow Manager";
+
+                //reset background image to what it was via tag
+                this.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + this.Name + "\\1");
+            }
         }
 
         /// <summary>
@@ -103,64 +247,6 @@ namespace cDashboard
 
             replaceSetting(new[] { "cPic", this.Name, "ImageLayout" }, new[] { "cPic", this.Name, "ImageLayout", string_layout });
 
-        }
-
-        /// <summary>
-        /// used to save the new size of the form to settings
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cPic_ResizeEnd(object sender, EventArgs e)
-        {
-            if (CompletedForm_Load == true)
-            {
-                //handle resize
-                replaceSetting(new string[] { "cPic", this.Name, "Size" }, new string[] { "cPic", this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString() });
-
-                //handle move
-                replaceSetting(new string[] { "cPic", this.Name, "Location" }, new string[] { "cPic", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
-            }
-        }
-
-
-        /// <summary>
-        /// Opens slideshow manager datagridview
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void slideshowManagerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //boolean flip
-            dgv_sm.Visible = !dgv_sm.Visible;
-
-            //set menu item text
-            if (dgv_sm.Visible)
-            {
-                //manually memory management to ensure no file locks
-                this.BackgroundImage.Dispose();
-                this.BackgroundImage = null;
-
-                //ensure no seeing weird image changes
-                menuStrip1.BackColor = SystemColors.Control;
-
-                slideshowManagerToolStripMenuItem.Text = "Hide Slideshow Manager";
-                setupDGV(false);
-            }
-            else
-            {
-                //clear up some memory
-                dgv_sm.Rows.Clear();
-                System.GC.Collect(); //I know its bad but eh, it works
-
-                randomizeFiles(this.Name);
-                //ensure no seeing weird image changes
-                menuStrip1.BackColor = Color.Transparent;
-
-                slideshowManagerToolStripMenuItem.Text = "Show Slideshow Manager";
-
-                //reset background image to what it was via tag
-                this.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + this.Name + "\\1");
-            }
         }
 
         /// <summary>
@@ -269,10 +355,44 @@ namespace cDashboard
             }
         }
 
-        private void dgv_sm_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        /// <summary>
+        /// (x) close button, closes form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void xToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // MessageBox.Show("removed");
+            this.Close();
         }
 
+        #endregion
+
+        /// <summary>
+        /// grabs all relevant Windows Messages
+        /// </summary>
+        /// <param name="m"></param>
+        protected override void WndProc(ref Message m)
+        {
+            //WM_NCHITTEST = 0x84
+            //HTBOTTOMLEFT = 16
+            //HTBOTTOMRIGHT = 17
+            if (m.Msg == 0x84)
+            {
+                //get the lower 4 bits
+                int x = (int)(m.LParam.ToInt64() & 0xFFFF);
+                //get higher 4 bits
+                int y = (int)((m.LParam.ToInt64() & 0xFFFF0000) >> 16);
+                Point pt = PointToClient(new Point(x, y));
+
+                if (pt.X >= ClientSize.Width - 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 16 : 17);
+                    return;
+                }
+            }
+
+            //if this isn't the message we are modifying, let it go
+            base.WndProc(ref m);
+        }
     }
 }
