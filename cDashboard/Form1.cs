@@ -797,6 +797,38 @@ namespace cDashboard
             cD_tstate = timerstate.fadeout;
             maintimer.Interval = 1;
             // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
+
+            //this is an attempted fix of the fade_out() bug
+            //not sure if it will do much
+            #region fadeouttimer
+            for (; ;timertime++ )
+            {
+                if (cD_tstate == timerstate.fadeout)
+                {
+                    //added this line to ensure that the interval is changed properly
+                    maintimer.Interval = 1;
+
+                    //computes amount of change in opacity per clock tick then applies it
+                    double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
+                    this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
+
+                    if (this.Opacity <= 0)
+                    {
+                        cD_tstate = timerstate.fadein;
+                        this.Opacity = 0;
+                        this.Visible = false;
+                        timertime = 0;
+                        maintimer.Stop();
+                        //go to next image in slideshows
+                        rotateCPic();
+                        break;
+                    }
+                }
+
+                //sleep so that a fade happens (makes it so the loop runs every 10 milliseconds
+                System.Threading.Thread.Sleep(10);
+            }
+            #endregion
         }
 
         /// <summary>
@@ -836,29 +868,29 @@ namespace cDashboard
             #endregion
 
             //fadeout related code
-            #region fadeouttimer
-            if (cD_tstate == timerstate.fadeout)
-            {
-                //added this line to ensure that the interval is changed properly
-                maintimer.Interval = 1;
+            //#region fadeouttimer
+            //if (cD_tstate == timerstate.fadeout)
+            //{
+            //    //added this line to ensure that the interval is changed properly
+            //    maintimer.Interval = 1;
 
-                //computes amount of change in opacity per clock tick then applies it
-                double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
-                this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
+            //    //computes amount of change in opacity per clock tick then applies it
+            //    double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
+            //    this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
 
-                if (this.Opacity <= 0)
-                {
-                    cD_tstate = timerstate.fadein;
-                    this.Opacity = 0;
-                    this.Visible = false;
-                    timertime = 0;
-                    maintimer.Stop();
+            //    if (this.Opacity <= 0)
+            //    {
+            //        cD_tstate = timerstate.fadein;
+            //        this.Opacity = 0;
+            //        this.Visible = false;
+            //        timertime = 0;
+            //        maintimer.Stop();
 
-                    //go to next image in slideshows
-                    rotateCPic();
-                }
-            }
-            #endregion
+            //        //go to next image in slideshows
+            //        rotateCPic();
+            //    }
+            //}
+            //#endregion
 
             //always happening when timer is going
             #region alwaysontimer
