@@ -130,13 +130,13 @@
             this.Images,
             this.DeleteButtons,
             this.FileLocation});
-            this.dgv_sm.Location = new System.Drawing.Point(0, 24);
+            this.dgv_sm.Location = new System.Drawing.Point(3, 24);
             this.dgv_sm.Name = "dgv_sm";
             this.dgv_sm.RowHeadersVisible = false;
             this.dgv_sm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgv_sm.ShowCellErrors = false;
             this.dgv_sm.ShowRowErrors = false;
-            this.dgv_sm.Size = new System.Drawing.Size(284, 236);
+            this.dgv_sm.Size = new System.Drawing.Size(278, 236);
             this.dgv_sm.TabIndex = 1;
             this.dgv_sm.Visible = false;
             this.dgv_sm.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_sm_CellContentClick);

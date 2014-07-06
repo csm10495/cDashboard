@@ -373,7 +373,14 @@ namespace cDashboard
         /// <param name="m"></param>
         protected override void WndProc(ref Message m)
         {
+            //WINDOWS API CODES 
             //WM_NCHITTEST = 0x84
+            //HTLEFT = 10
+            //HTRIGHT = 11
+            //HTTOP = 12
+            //HTTOPLEFT = 13
+            //HTTOPRIGHT = 14
+            //HTBOTTOM = 15
             //HTBOTTOMLEFT = 16
             //HTBOTTOMRIGHT = 17
             if (m.Msg == 0x84)
@@ -384,9 +391,60 @@ namespace cDashboard
                 int y = (int)((m.LParam.ToInt64() & 0xFFFF0000) >> 16);
                 Point pt = PointToClient(new Point(x, y));
 
+                //top
+                if (pt.Y <= 10 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(12);
+                }
+
+                //bottom
+                if (pt.Y >= ClientSize.Height - 10 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(15);
+                }
+
+                //left
+                if (pt.X <= 15 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(10);
+                }
+
+                //right
+                if (pt.X >= ClientSize.Width - 15 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(11);
+                }
+
+                //bottom right
                 if (pt.X >= ClientSize.Width - 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
                 {
                     m.Result = (IntPtr)(IsMirrored ? 16 : 17);
+                }
+
+                //bottom left
+                if (pt.X <= 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 17 : 16);
+                }
+
+                //top left
+                if (pt.X <= 15 && pt.Y <= 15 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 14 : 13);
+                }
+
+                //top right
+                //this also handles small forms
+                if (pt.X >= ClientSize.Width - 25 && pt.Y <= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 13 : 14);
+                }
+
+                //we results between 10 and 17, so return
+                if (m.Result.ToInt32() <= 17 && m.Result.ToInt32() >= 10)
+                {
+                    //hiding the menustrip again is a failsafe, it will prevent most chances for error
+                    menuStrip1.Visible = false; 
                     return;
                 }
             }
