@@ -103,6 +103,30 @@ namespace cDashboard
             }
         }
 
+        /// <summary>
+        /// if the cPic is resized and imagelayout is zoom, force the proper
+        /// ratio on the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cPic_Resize(object sender, EventArgs e)
+        {
+            forceRatio();
+        }
+
+        /// <summary>
+        /// forces proper ratio on form
+        /// </summary>
+        private void forceRatio()
+        {
+            if (this.BackgroundImageLayout == ImageLayout.Zoom)
+            {
+                //use ratio to compute height
+                double ratio = Convert.ToDouble(this.BackgroundImage.Height) / Convert.ToDouble(this.BackgroundImage.Width);
+                int new_height = Convert.ToInt16(Convert.ToDouble(this.Width) * ratio);
+                this.Height = new_height;
+            }
+        }
         #endregion
 
         #region Hiding MenuStrip and Other MenuStrip Things
@@ -243,6 +267,7 @@ namespace cDashboard
             {
                 this.BackgroundImageLayout = ImageLayout.Zoom;
                 string_layout = "Zoom";
+                forceRatio();
             }
 
             replaceSetting(new[] { "cPic", this.Name, "ImageLayout" }, new[] { "cPic", this.Name, "ImageLayout", string_layout });
