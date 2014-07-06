@@ -21,9 +21,9 @@ namespace cDashboard
     {
         #region Global Variables
         /// <summary>
-        /// this is the tick counter for timer1
+        /// this is the tick counter for the fade timer
         /// </summary>
-        int timertime = 0;
+        int fadetimertime = 0;
 
         /// <summary>
         /// the amount of time in milliseconds needed for fade_in, fade_out
@@ -782,11 +782,13 @@ namespace cDashboard
         {
             moveToPrimaryMonitor(); //ensures proper form sizing 
 
+            updateTimeDate(); //updates time/date on form
+
             cD_tstate = (int)timerstate.fadein; //cD_tstate is the timer state
+
             this.Visible = true;
 
-            maintimer.Interval = 1; //set interval
-            maintimer.Start(); //begin timer
+            fadetimer.Start(); //begin timer
         }
 
         /// <summary>
@@ -795,40 +797,8 @@ namespace cDashboard
         private void fade_out()
         {
             cD_tstate = timerstate.fadeout;
-            maintimer.Interval = 1;
-            // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
 
-            //this is an attempted fix of the fade_out() bug
-            //not sure if it will do much
-            #region fadeouttimer
-            for (; ;timertime++ )
-            {
-                if (cD_tstate == timerstate.fadeout)
-                {
-                    //added this line to ensure that the interval is changed properly
-                    maintimer.Interval = 1;
-
-                    //computes amount of change in opacity per clock tick then applies it
-                    double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
-                    this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
-
-                    if (this.Opacity <= 0)
-                    {
-                        cD_tstate = timerstate.fadein;
-                        this.Opacity = 0;
-                        this.Visible = false;
-                        timertime = 0;
-                        maintimer.Stop();
-                        //go to next image in slideshows
-                        rotateCPic();
-                        break;
-                    }
-                }
-
-                //sleep so that a fade happens (makes it so the loop runs every 10 milliseconds
-                System.Threading.Thread.Sleep(10);
-            }
-            #endregion
+            fadetimer.Start();
         }
 
         /// <summary>
@@ -836,71 +806,77 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer1_Tick(object sender, EventArgs e)
+        private void uitimer_Tick(object sender, EventArgs e)
         {
-            timertime++; //increment fade timer
+            updateTimeDate();
+        }
+
+        /// <summary>
+        /// timer tick specifically for fades
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void fadetimer_Tick(object sender, EventArgs e)
+        {
+            //increment timer ticking
+            fadetimertime++;
+
+            updateTimeDate(); //update time/date on ui
+
+            //fadeout related code
+            #region Fade Out
+            if (cD_tstate == timerstate.fadeout)
+            {
+                //computes amount of change in opacity per clock tick then applies it
+                double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
+                this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(fadetimertime) * double_change_in_opacity_per_tick);
+
+                if (this.Opacity <= 0)
+                {
+                    cD_tstate = timerstate.fadein;
+                    this.Opacity = 0;
+                    this.Visible = false;
+                    fadetimertime = 0;
+                    fadetimer.Stop();
+                    uitimer.Stop();
+                    //go to next image in slideshows
+                    rotateCPic();
+                }
+            }
+            #endregion
 
             //fade in related code
-            #region fadeintimer
-            if (cD_tstate == (int)timerstate.fadein)
+            #region Fade In
+            if (cD_tstate == timerstate.fadein)
             {
+                //start the timer that will update time/date
+                uitimer.Start();
 
                 //computes amount of change in opacity per clock tick then applies it
                 double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
-                this.Opacity = timertime * double_change_in_opacity_per_tick;
+                this.Opacity = fadetimertime * double_change_in_opacity_per_tick;
 
                 if (this.Opacity >= (Convert.ToDouble(OpacityLevel) * 1 / 100))
                 {
                     cD_tstate = timerstate.indash; //We set the timerstate to indash to allow for timekeeping
                     this.Opacity = Convert.ToDouble("." + OpacityLevel);
-                    timertime = 0;
-                    maintimer.Interval = 1000;
+                    fadetimertime = 0;
+                    fadetimer.Stop();
                 }
             }
             #endregion
 
-            //indash related code 
-            #region indashtimer
-            if (cD_tstate == timerstate.indash)
-            {
+        }
 
-            }
-            #endregion
-
-            //fadeout related code
-            //#region fadeouttimer
-            //if (cD_tstate == timerstate.fadeout)
-            //{
-            //    //added this line to ensure that the interval is changed properly
-            //    maintimer.Interval = 1;
-
-            //    //computes amount of change in opacity per clock tick then applies it
-            //    double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
-            //    this.Opacity = (Convert.ToDouble(OpacityLevel) * 1 / 100) - (Convert.ToDouble(timertime) * double_change_in_opacity_per_tick);
-
-            //    if (this.Opacity <= 0)
-            //    {
-            //        cD_tstate = timerstate.fadein;
-            //        this.Opacity = 0;
-            //        this.Visible = false;
-            //        timertime = 0;
-            //        maintimer.Stop();
-
-            //        //go to next image in slideshows
-            //        rotateCPic();
-            //    }
-            //}
-            //#endregion
-
-            //always happening when timer is going
-            #region alwaysontimer
+        /// <summary>
+        /// updates the time and date visible in the form
+        /// </summary>
+        private void updateTimeDate()
+        {
             //set time label
             button_time.Text = (DateTime.Now.ToString()).Substring(DateTime.Now.ToString().IndexOf(" ")).Trim();
             //set date label
-            string datelabeltext = (DateTime.Now.DayOfWeek.ToString()) + ", " + DateTime.Now.ToString("MMMMMMMMMMMMMM") + " " + DateTime.Now.Day.ToString() + ", " + DateTime.Now.Year.ToString();
-
-            button_date.Text = datelabeltext;
-            #endregion
+            button_date.Text = (DateTime.Now.DayOfWeek.ToString()) + ", " + DateTime.Now.ToString("MMMMMMMMMMMMMM") + " " + DateTime.Now.Day.ToString() + ", " + DateTime.Now.Year.ToString();
         }
 
         /// <summary>
@@ -1779,14 +1755,6 @@ namespace cDashboard
             //cleanly removes the notify icon from the system tray
             notifyIcon1.Visible = false;
         }
-
-
-
-
-
-
-
-
 
     }
 

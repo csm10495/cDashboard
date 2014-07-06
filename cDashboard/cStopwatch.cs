@@ -177,7 +177,5 @@ namespace cDashboard
                 replaceSetting(list_find, list_replace);
             }
         }
-
-
     }
 }

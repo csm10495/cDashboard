@@ -34,7 +34,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cDashboard));
-            this.maintimer = new System.Windows.Forms.Timer(this.components);
+            this.uitimer = new System.Windows.Forms.Timer(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -79,14 +79,15 @@
             this.setFavoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // maintimer
+            // uitimer
             // 
-            this.maintimer.Interval = 10;
-            this.maintimer.Tick += new System.EventHandler(this.timer1_Tick);
+            this.uitimer.Interval = 1000;
+            this.uitimer.Tick += new System.EventHandler(this.uitimer_Tick);
             // 
             // colorDialog1
             // 
@@ -344,7 +345,7 @@
             // setCDashDefaultMonitorToolStripMenuItem
             // 
             this.setCDashDefaultMonitorToolStripMenuItem.Name = "setCDashDefaultMonitorToolStripMenuItem";
-            this.setCDashDefaultMonitorToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.setCDashDefaultMonitorToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setCDashDefaultMonitorToolStripMenuItem.Text = "Set Default Monitor...";
             this.setCDashDefaultMonitorToolStripMenuItem.Click += new System.EventHandler(this.setCDashDefaultMonitorToolStripMenuItem_Click);
             // 
@@ -354,13 +355,13 @@
             this.setCDashBackcolorToolStripMenuItem1,
             this.cDashWallpaperToolStripMenuItem});
             this.cDashBackgroundToolStripMenuItem.Name = "cDashBackgroundToolStripMenuItem";
-            this.cDashBackgroundToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.cDashBackgroundToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.cDashBackgroundToolStripMenuItem.Text = "cDash Background";
             // 
             // setCDashBackcolorToolStripMenuItem1
             // 
             this.setCDashBackcolorToolStripMenuItem1.Name = "setCDashBackcolorToolStripMenuItem1";
-            this.setCDashBackcolorToolStripMenuItem1.Size = new System.Drawing.Size(215, 22);
+            this.setCDashBackcolorToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
             this.setCDashBackcolorToolStripMenuItem1.Text = "Set cDash Backcolor....";
             this.setCDashBackcolorToolStripMenuItem1.Click += new System.EventHandler(this.setCDashBackcolorToolStripMenuItem1_Click);
             // 
@@ -370,7 +371,7 @@
             this.setCDashWallpaperImageToolStripMenuItem,
             this.combobox_wallpaper});
             this.cDashWallpaperToolStripMenuItem.Name = "cDashWallpaperToolStripMenuItem";
-            this.cDashWallpaperToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.cDashWallpaperToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.cDashWallpaperToolStripMenuItem.Text = "cDash Wallpaper";
             this.cDashWallpaperToolStripMenuItem.DropDownOpened += new System.EventHandler(this.cDashWallpaperToolStripMenuItem_DropDownOpened);
             // 
@@ -398,7 +399,7 @@
             this.setOpacityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.textbox_opacity});
             this.setOpacityToolStripMenuItem.Name = "setOpacityToolStripMenuItem";
-            this.setOpacityToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.setOpacityToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setOpacityToolStripMenuItem.Text = "Set Opacity...";
             this.setOpacityToolStripMenuItem.DropDownClosed += new System.EventHandler(this.setOpacityToolStripMenuItem_DropDownClosed);
             this.setOpacityToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setOpacityToolStripMenuItem_DropDownOpened);
@@ -413,7 +414,7 @@
             this.setFadeTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setInMillisecondsToolStripMenuItem});
             this.setFadeTimeToolStripMenuItem.Name = "setFadeTimeToolStripMenuItem";
-            this.setFadeTimeToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.setFadeTimeToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setFadeTimeToolStripMenuItem.Text = "Set Fade Time...";
             // 
             // setInMillisecondsToolStripMenuItem
@@ -434,30 +435,35 @@
             // setFavoriteStickyColorToolStripMenuItem
             // 
             this.setFavoriteStickyColorToolStripMenuItem.Name = "setFavoriteStickyColorToolStripMenuItem";
-            this.setFavoriteStickyColorToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.setFavoriteStickyColorToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setFavoriteStickyColorToolStripMenuItem.Text = "Set Favorite Sticky Color...";
             this.setFavoriteStickyColorToolStripMenuItem.Click += new System.EventHandler(this.setFavoriteStickyColorToolStripMenuItem_Click);
             // 
             // setFavoriteFontToolStripMenuItem
             // 
             this.setFavoriteFontToolStripMenuItem.Name = "setFavoriteFontToolStripMenuItem";
-            this.setFavoriteFontToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.setFavoriteFontToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.setFavoriteFontToolStripMenuItem.Text = "Set Favorite Sticky Font...";
             this.setFavoriteFontToolStripMenuItem.Click += new System.EventHandler(this.setFavoriteFontToolStripMenuItem_Click);
             // 
             // exportBackupToolStripMenuItem
             // 
             this.exportBackupToolStripMenuItem.Name = "exportBackupToolStripMenuItem";
-            this.exportBackupToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.exportBackupToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.exportBackupToolStripMenuItem.Text = "Export cDash Data...";
             this.exportBackupToolStripMenuItem.Click += new System.EventHandler(this.exportBackupToolStripMenuItem_Click);
             // 
             // importCDashDataToolStripMenuItem
             // 
             this.importCDashDataToolStripMenuItem.Name = "importCDashDataToolStripMenuItem";
-            this.importCDashDataToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.importCDashDataToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.importCDashDataToolStripMenuItem.Text = "Import cDash Data...";
             this.importCDashDataToolStripMenuItem.Click += new System.EventHandler(this.importCDashDataToolStripMenuItem_Click);
+            // 
+            // fadetimer
+            // 
+            this.fadetimer.Interval = 1;
+            this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
             // cDashboard
             // 
@@ -494,7 +500,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer maintimer;
+        private System.Windows.Forms.Timer uitimer;
         private System.Windows.Forms.Label label_build;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -539,6 +545,7 @@
         private System.Windows.Forms.ToolStripMenuItem setCDashWallpaperImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox combobox_wallpaper;
         public System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Timer fadetimer;
     }
 }
 
