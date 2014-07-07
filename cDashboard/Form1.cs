@@ -1351,6 +1351,15 @@ namespace cDashboard
         /// <param name="e"></param>
         private void setOpacityToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
         {
+
+            //if the user sets this to low, it could be hard to use/see
+            if (Convert.ToInt32(textbox_opacity.Text) <= 15)
+            {
+                MessageBox.Show("The Opacity level must be greater than 15 and less than 100");
+                textbox_opacity.Text = OpacityLevel.ToString();
+                return;
+            }
+
             //if the casting fails, then break gracefully
             try
             {
