@@ -32,11 +32,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label_time = new System.Windows.Forms.Label();
             this.sw_timer = new System.Windows.Forms.Timer(this.components);
             this.label_started_time = new System.Windows.Forms.Label();
+            this.sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,30 +43,12 @@
             // 
             this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.sToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(255, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem});
-            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Wingdings 3", 8.25F);
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(28, 20);
-            this.fileToolStripMenuItem.Text = "p";
-            // 
-            // startToolStripMenuItem
-            // 
-            this.startToolStripMenuItem.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
-            this.startToolStripMenuItem.Text = "(Re)Start";
-            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // label_time
             // 
@@ -95,6 +76,15 @@
             this.label_started_time.TabIndex = 3;
             this.label_started_time.Text = "Click the Triangle then \"(Re)Start\" to Start";
             this.label_started_time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // sToolStripMenuItem
+            // 
+            this.sToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.sToolStripMenuItem.Name = "sToolStripMenuItem";
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(26, 20);
+            this.sToolStripMenuItem.Text = "S";
+            this.sToolStripMenuItem.Click += new System.EventHandler(this.sToolStripMenuItem_Click);
             // 
             // cStopwatch
             // 
@@ -124,10 +114,9 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.Label label_time;
         private System.Windows.Forms.Label label_started_time;
-        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         internal System.Windows.Forms.Timer sw_timer;
+        private System.Windows.Forms.ToolStripMenuItem sToolStripMenuItem;
     }
 }

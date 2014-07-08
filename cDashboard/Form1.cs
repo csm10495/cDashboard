@@ -1765,6 +1765,17 @@ namespace cDashboard
             notifyIcon1.Visible = false;
         }
 
+        /// <summary>
+        /// should make it so the time and date buttons won't get unnecessary focus
+        /// this would have happened if dash is on monitor 1 and user moves mouse to 2 while dash is up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cDashboard_MouseLeave(object sender, EventArgs e)
+        {
+            menuStrip1.Focus();
+        }
+
     }
 
 }

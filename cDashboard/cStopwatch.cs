@@ -40,9 +40,9 @@ namespace cDashboard
         private void start_stopwatch()
         {
             //get current time
-            startTime = DateTime.Now;
+            startTime = DateTime.UtcNow;
 
-            replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", DateTime.Now.Ticks.ToString() });
+            replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", startTime.Ticks.ToString() });
             //finally, start timer
             sw_timer.Start();
         }
@@ -54,25 +54,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if the timer is not running, start it
-            if (!sw_timer.Enabled)
-            {
-                start_stopwatch();
-                startToolStripMenuItem.Text = "Stop";
-                replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "True" });
-                replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", "NULL" });
-            }
-            else
-            {
-                string stop_ticks = DateTime.Now.Ticks.ToString();
-                startToolStripMenuItem.Text = "(Re)Start";
-                sw_timer.Stop();
-                replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "False" });
-                replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", stop_ticks });
-                
-                //we update the label text one more time to make sure it reflects what we save to settings
-                setLabel_TimeText(new DateTime(Convert.ToInt64(stop_ticks)));
-            }
+
         }
 
         /// <summary>
@@ -96,7 +78,7 @@ namespace cDashboard
             //    label_time.Font = new Font(label_time.Font.FontFamily, label_time.Font.Size - 1);
             //}
             
-            label_started_time.Text = "cStopwatch started on: " + startTime.ToString();
+            label_started_time.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
         }
 
         /// <summary>
@@ -108,7 +90,7 @@ namespace cDashboard
         private void sw_timer_Tick(object sender, EventArgs e)
         {
             //calls label setting method
-            setLabel_TimeText(DateTime.Now);
+            setLabel_TimeText(DateTime.UtcNow);
         }
 
         /// <summary>
@@ -125,7 +107,7 @@ namespace cDashboard
             if (string_start_time != "NULL")
             {
                 startTime = new DateTime(Convert.ToInt64(string_start_time));
-                setLabel_TimeText(DateTime.Now);
+                setLabel_TimeText(DateTime.UtcNow);
             }
 
             //see if timer was running on close
@@ -138,8 +120,8 @@ namespace cDashboard
             if (timer_running)
             {
                 sw_timer.Start();
-                startToolStripMenuItem.Text = "Stop";
             }
+
             //if the EndDateTime is not null, the timer ended, display previous results
             else if (string_end_time != "NULL")
             {
@@ -175,6 +157,32 @@ namespace cDashboard
                 list_replace.Add(this.Location.Y.ToString());
 
                 replaceSetting(list_find, list_replace);
+            }
+        }
+
+        /// <summary>
+        /// combined start/stop button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //if the timer is not running, start it
+            if (!sw_timer.Enabled)
+            {
+                start_stopwatch();
+                replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "True" });
+                replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", "NULL" });
+            }
+            else
+            {
+                string stop_ticks = DateTime.UtcNow.Ticks.ToString();
+                sw_timer.Stop();
+                replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "False" });
+                replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", stop_ticks });
+
+                //we update the label text one more time to make sure it reflects what we save to settings
+                setLabel_TimeText(new DateTime(Convert.ToInt64(stop_ticks)));
             }
         }
     }
