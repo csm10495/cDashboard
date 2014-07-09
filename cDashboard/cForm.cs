@@ -27,7 +27,6 @@ namespace cDashboard
         protected readonly string SETTINGS_LOCATION = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\";
         #endregion
 
-
         //this exists as an interface because all cForms seem to have
         //various things in common
         #region Settings List Related Methods
@@ -218,7 +217,6 @@ namespace cDashboard
         }
 
         #endregion
-
 
         /// <summary>
         /// randomizes files in a folder and numbers them starting with 1

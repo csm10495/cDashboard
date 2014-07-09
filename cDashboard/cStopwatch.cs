@@ -1,4 +1,7 @@
-﻿using System;
+﻿//This file is part of cDashboard
+//cStopwatch - A stopwatch for cDashboard
+//(C) Charles Machalow 2014 under the MIT License
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
