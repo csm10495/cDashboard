@@ -122,34 +122,6 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// this will save the new location of the form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cStopwatch_Move(object sender, EventArgs e)
-        {
-            if (CompletedForm_Load == true)
-            {
-                List<string> list_find = new List<string>();
-                List<string> list_replace = new List<string>();
-
-                list_find.Add("cStopwatch");
-                list_find.Add(this.Name);
-                list_find.Add("Location");
-
-                foreach (string s in list_find)
-                {
-                    list_replace.Add(s);
-                }
-
-                list_replace.Add(this.Location.X.ToString());
-                list_replace.Add(this.Location.Y.ToString());
-
-                replaceSetting(list_find, list_replace);
-            }
-        }
-
-        /// <summary>
         /// combined start/stop button
         /// </summary>
         /// <param name="sender"></param>
@@ -172,6 +144,20 @@ namespace cDashboard
 
                 //we update the label text one more time to make sure it reflects what we save to settings
                 setLabel_TimeText(new DateTime(Convert.ToInt64(stop_ticks)));
+            }
+        }
+
+        /// <summary>
+        /// this will save the new location of the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cStopwatch_ResizeEnd(object sender, EventArgs e)
+        {
+            if (CompletedForm_Load)
+            {
+                //handle move
+                replaceSetting(new string[] { "cStopwatch", this.Name, "Location" }, new string[] { "cStopwatch", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
             }
         }
     }

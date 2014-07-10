@@ -104,6 +104,7 @@
             this.Text = "cStopwatch";
             this.TransparencyKey = System.Drawing.Color.Transparent;
             this.Load += new System.EventHandler(this.cStopwatch_Load);
+            this.ResizeEnd += new System.EventHandler(this.cStopwatch_ResizeEnd);
             this.Move += new System.EventHandler(this.cStopwatch_Move);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
