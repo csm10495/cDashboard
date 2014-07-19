@@ -18,7 +18,7 @@ namespace cDashboard
         /// <summary>
         /// signifies the exact time that the stopwatch was started
         /// </summary>
-        DateTime startTime;
+        public DateTime startTime;
 
         /// <summary>
         /// signifies that form loading has finished
@@ -36,6 +36,59 @@ namespace cDashboard
         }
         #endregion
 
+        #region Form Moving
+
+        /// <summary>
+        /// used to drag the form via the menustrip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// move form on mousedown
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cStopwatch_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// move form on mousedown
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_time_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// drag form by rtb_l
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void richtextbox_lap_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+        #endregion
+
+
+        /// <summary>
+        /// forces a center alignment for the RTBL
+        /// </summary>
+        public void centerAlignRTBL()
+        {
+            richtextbox_lap.SelectAll();
+            richtextbox_lap.SelectionAlignment = HorizontalAlignment.Center;
+        }
+
         /// <summary>
         /// method to start the stopwatch
         /// should also make itself not visible, so that we can see the timer
@@ -48,6 +101,14 @@ namespace cDashboard
             replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", startTime.Ticks.ToString() });
             //finally, start timer
             sw_timer.Start();
+
+            richtextbox_lap.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
+
+            //reset form size
+            this.Size = new Size(255, 93);
+
+            //force center alignment
+            centerAlignRTBL();
         }
 
         /// <summary>
@@ -69,8 +130,6 @@ namespace cDashboard
             {
                 label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .001F);
             }
-
-            label_started_time.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
         }
 
         /// <summary>
@@ -100,6 +159,7 @@ namespace cDashboard
             {
                 startTime = new DateTime(Convert.ToInt64(string_start_time));
                 setLabel_TimeText(DateTime.UtcNow);
+                richtextbox_lap.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
             }
 
             //see if timer was running on close
@@ -120,6 +180,17 @@ namespace cDashboard
                 setLabel_TimeText(new DateTime(Convert.ToInt64(string_end_time)));
             }
 
+            //get previous laps (if any)
+            List<String> list_laps = getSpecificSetting(new string[] { "cStopwatch", this.Name, "Laps" });
+            foreach (string s in list_laps)
+            {
+                //add each lap to rtbl without updating settings
+                addLap(s, false);
+            }
+
+            //force center alignment
+            centerAlignRTBL();
+
             //to allow the rest of the class to know loading has completed
             CompletedForm_Load = true;
         }
@@ -137,6 +208,7 @@ namespace cDashboard
                 start_stopwatch();
                 replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "True" });
                 replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", "NULL" });
+                replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, new string[] { "cStopwatch", this.Name, "Laps" });
             }
             else
             {
@@ -174,50 +246,6 @@ namespace cDashboard
             this.Close();
         }
 
-        #region Form Moving
-
-        /// <summary>
-        /// used to drag the form via the menustrip
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
-        {
-            dragForm(e);
-        }
-
-        /// <summary>
-        /// move form on mousedown
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cStopwatch_MouseDown(object sender, MouseEventArgs e)
-        {
-            dragForm(e);
-        }
-
-        /// <summary>
-        /// move form on mousedown
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void label_time_MouseDown(object sender, MouseEventArgs e)
-        {
-            dragForm(e);
-        }
-
-        /// <summary>
-        /// move form on mousedown
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void label_started_time_MouseDown(object sender, MouseEventArgs e)
-        {
-            dragForm(e);
-        }
-
-        #endregion
-
         /// <summary>
         /// makes new lap
         /// </summary>
@@ -225,7 +253,38 @@ namespace cDashboard
         /// <param name="e"></param>
         private void lToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Doesn't do anything yet");
+            addLap(label_time.Text, true);
+        }
+
+        /// <summary>
+        /// method to add lap 
+        /// </summary>
+        /// <param name="text_lap">lap time as text</param>
+        /// <param name="update_settings">true if settings should be resaved</param>
+        private void addLap(string text_lap, bool update_settings)
+        {
+            //don't add more space to form after certain time
+            if (richtextbox_lap.Lines.Count() < 7)
+            {
+                this.Height += 16;
+            }
+
+            //add lap to richtextbox
+            richtextbox_lap.Text += Environment.NewLine + "Lap " + richtextbox_lap.Lines.Count().ToString() + ". " + text_lap;
+            centerAlignRTBL();
+
+            //scroll to end
+            richtextbox_lap.SelectionStart = richtextbox_lap.Text.Length;
+            richtextbox_lap.ScrollToCaret();
+
+            if (update_settings)
+            {
+                //must save lap to settings
+                List<String> list_laps = getSpecificSetting(new string[] { "cStopwatch", this.Name, "Laps" });
+                list_laps.InsertRange(0, new string[] { "cStopwatch", this.Name, "Laps" });
+                list_laps.Add(text_lap);
+                replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, list_laps.ToArray());
+            }
         }
     }
 }

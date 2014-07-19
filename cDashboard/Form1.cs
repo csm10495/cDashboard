@@ -1037,6 +1037,26 @@ namespace cDashboard
         #endregion
 
         #region Calls to fade_out()
+
+        /// <summary>
+        /// double click the notify icon
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            //bring up dash if it is down, bring it down if it is up
+            if (cD_tstate != timerstate.indash)
+            {
+                //  this.Focus();
+                fade_in();
+            }
+            else
+            {
+                fade_out();
+            }
+        }
+
         /// <summary>
         /// hides the dash, just by calling fade_in()
         /// </summary>
@@ -1142,6 +1162,7 @@ namespace cDashboard
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";StartDateTime;NULL");
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";TimerRunning;False");
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";EndDateTime;NULL");
+            sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";Laps");
             sw.Close();
 
             cStopwatch cStopwatch_new = new cStopwatch();
@@ -1733,25 +1754,6 @@ namespace cDashboard
             //save fixed settings
             saveSettingsList(list_settings);
 
-        }
-
-        /// <summary>
-        /// double click the notify icon
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
-        {
-            //bring up dash if it is down, bring it down if it is up
-            if (cD_tstate != timerstate.indash)
-            {
-                //  this.Focus();
-                fade_in();
-            }
-            else
-            {
-                fade_out();
-            }
         }
 
         /// <summary>
