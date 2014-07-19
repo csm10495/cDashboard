@@ -33,9 +33,11 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.xToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label_time = new System.Windows.Forms.Label();
             this.sw_timer = new System.Windows.Forms.Timer(this.components);
             this.label_started_time = new System.Windows.Forms.Label();
+            this.lToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,21 +45,35 @@
             // 
             this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sToolStripMenuItem});
+            this.sToolStripMenuItem,
+            this.xToolStripMenuItem,
+            this.lToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(255, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.menuStrip1_MouseDown);
             // 
             // sToolStripMenuItem
             // 
-            this.sToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
-            this.sToolStripMenuItem.Size = new System.Drawing.Size(26, 20);
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(25, 20);
             this.sToolStripMenuItem.Text = "S";
             this.sToolStripMenuItem.Click += new System.EventHandler(this.sToolStripMenuItem_Click);
+            // 
+            // xToolStripMenuItem
+            // 
+            this.xToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.xToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.xToolStripMenuItem.Name = "xToolStripMenuItem";
+            this.xToolStripMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.xToolStripMenuItem.Size = new System.Drawing.Size(27, 20);
+            this.xToolStripMenuItem.Text = "X";
+            this.xToolStripMenuItem.Click += new System.EventHandler(this.xToolStripMenuItem_Click);
             // 
             // label_time
             // 
@@ -70,6 +86,7 @@
             this.label_time.TabIndex = 2;
             this.label_time.Text = "00:00:00.00";
             this.label_time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_time.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_time_MouseDown);
             // 
             // sw_timer
             // 
@@ -86,6 +103,16 @@
             this.label_started_time.TabIndex = 3;
             this.label_started_time.Text = "Click the Triangle then \"(Re)Start\" to Start";
             this.label_started_time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_started_time.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_started_time_MouseDown);
+            // 
+            // lToolStripMenuItem
+            // 
+            this.lToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.lToolStripMenuItem.Name = "lToolStripMenuItem";
+            this.lToolStripMenuItem.Size = new System.Drawing.Size(25, 20);
+            this.lToolStripMenuItem.Text = "L";
+            this.lToolStripMenuItem.Click += new System.EventHandler(this.lToolStripMenuItem_Click);
             // 
             // cStopwatch
             // 
@@ -96,7 +123,7 @@
             this.Controls.Add(this.label_started_time);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label_time);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "cStopwatch";
@@ -105,6 +132,7 @@
             this.TransparencyKey = System.Drawing.Color.Transparent;
             this.Load += new System.EventHandler(this.cStopwatch_Load);
             this.ResizeEnd += new System.EventHandler(this.cStopwatch_ResizeEnd);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cStopwatch_MouseDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -119,5 +147,7 @@
         private System.Windows.Forms.Label label_started_time;
         internal System.Windows.Forms.Timer sw_timer;
         private System.Windows.Forms.ToolStripMenuItem sToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lToolStripMenuItem;
     }
 }

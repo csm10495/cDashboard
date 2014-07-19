@@ -60,16 +60,16 @@ namespace cDashboard
             TimeSpan tmp = (datetime_2 - startTime);
 
             //attempted fix for auto changing of TimeSpan.ToString()
-            string string_span = Convert.ToInt16(tmp.TotalHours).ToString().PadLeft(2, '0') +":" + tmp.Minutes.ToString().PadLeft(2, '0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
+            string string_span = Convert.ToInt16(tmp.TotalHours).ToString().PadLeft(2, '0') + ":" + tmp.Minutes.ToString().PadLeft(2, '0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
 
             label_time.Text = string_span;
 
             //attempts
-            while (label_time.Width > this.Width)
+            while (label_time.Width > this.Width && label_time.Text.Length != 11)
             {
                 label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .001F);
             }
-            
+
             label_started_time.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
         }
 
@@ -162,6 +162,70 @@ namespace cDashboard
                 //handle move
                 replaceSetting(new string[] { "cStopwatch", this.Name, "Location" }, new string[] { "cStopwatch", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
             }
+        }
+
+        /// <summary>
+        /// this is the close button for the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void xToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #region Form Moving
+
+        /// <summary>
+        /// used to drag the form via the menustrip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// move form on mousedown
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cStopwatch_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// move form on mousedown
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_time_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        /// <summary>
+        /// move form on mousedown
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_started_time_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// makes new lap
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Doesn't do anything yet");
         }
     }
 }

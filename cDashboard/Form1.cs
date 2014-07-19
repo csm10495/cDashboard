@@ -1228,12 +1228,13 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// show about box
+        /// fades out the dash and then shows the about box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            fade_out();
             Form about = new cAbout();
             about.Show();
         }

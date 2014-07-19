@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace cDashboard
 {
@@ -27,8 +28,7 @@ namespace cDashboard
         protected readonly string SETTINGS_LOCATION = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\";
         #endregion
 
-        //this exists as an interface because all cForms seem to have
-        //various things in common
+        //this exists as an interface because all cForms seem to have various things in common
         #region Settings List Related Methods
 
         /// <summary>
@@ -251,6 +251,114 @@ namespace cDashboard
                 File.Move(f, f.Substring(0, f.LastIndexOf("\\") + 1) + rand_ints[x]);
                 x++;
             }
+        }
+
+        //import both the SendMessage method and the ReleaseCapture method from user32.dll
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        /// <summary>
+        /// calls the user32.dll to move the form
+        /// </summary>
+        /// <param name="e"></param>
+        protected void dragForm(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                //removes mouse capture from current object, and allows it to be sent elsewhere
+                ReleaseCapture();
+
+                //WM_NCLBUTTONDOWN = 0xA1
+                //HT_CAPTION = 0x2
+                //send a windows message that the left mouse button is down on the titlebar 
+                SendMessage(this.Handle, 0xA1, 0x2, 0);
+            }
+        }
+
+        /// <summary>
+        /// Windows Message processor to resize form
+        /// </summary>
+        /// <param name="m"></param>
+        protected void formResizer(ref Message m)
+        {
+            //WINDOWS API CODES 
+            //WM_NCHITTEST = 0x84
+            //HTLEFT = 10
+            //HTRIGHT = 11
+            //HTTOP = 12
+            //HTTOPLEFT = 13
+            //HTTOPRIGHT = 14
+            //HTBOTTOM = 15
+            //HTBOTTOMLEFT = 16
+            //HTBOTTOMRIGHT = 17
+            if (m.Msg == 0x84)
+            {
+                //get the lower 4 bits
+                int x = (int)(m.LParam.ToInt64() & 0xFFFF);
+                //get higher 4 bits
+                int y = (int)((m.LParam.ToInt64() & 0xFFFF0000) >> 16);
+                Point pt = PointToClient(new Point(x, y));
+
+                //top
+                if (pt.Y <= 10 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(12);
+                }
+
+                //bottom
+                if (pt.Y >= ClientSize.Height - 10 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(15);
+                }
+
+                //left
+                if (pt.X <= 15 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(10);
+                }
+
+                //right
+                if (pt.X >= ClientSize.Width - 15 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(11);
+                }
+
+                //bottom right
+                if (pt.X >= ClientSize.Width - 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 16 : 17);
+                }
+
+                //bottom left
+                if (pt.X <= 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 17 : 16);
+                }
+
+                //top left
+                if (pt.X <= 15 && pt.Y <= 15 && ClientSize.Height >= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 14 : 13);
+                }
+
+                //top right
+                //this also handles small forms
+                if (pt.X >= ClientSize.Width - 25 && pt.Y <= 25)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? 13 : 14);
+                }
+
+                //we get results between 10 and 17, so return
+                if (m.Result.ToInt32() <= 17 && m.Result.ToInt32() >= 10)
+                {
+                    return;
+                }
+            }
+
+            //if this isn't the message we are modifying, let it go
+            base.WndProc(ref m);
         }
     }
 }

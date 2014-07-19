@@ -29,7 +29,6 @@ namespace cDashboard
 
         #endregion
 
-
         /// <summary>
         /// form loading void
         /// </summary>
@@ -190,6 +189,25 @@ namespace cDashboard
             rtb.SaveFile(saveFileDialog1.FileName);
         }
 
+        /// <summary>
+        /// form close button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void xToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// used to move form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menustrip_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragForm(e);
+        }
         #endregion
 
         #region ContextMenu
@@ -247,7 +265,14 @@ namespace cDashboard
 
         #endregion
 
-
+        /// <summary>
+        /// grabs all relevant Windows Messages
+        /// </summary>
+        /// <param name="m"></param>
+        protected override void WndProc(ref Message m)
+        {
+            formResizer(ref m);
+        }
 
     }
 }

@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
+
 
 namespace cDashboard
 {
@@ -39,12 +39,6 @@ namespace cDashboard
 
         #region Form Dragging and Resizing
 
-        //import both the SendMessage method and the ReleaseCapture method from user32.dll
-        [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
-
         /// <summary>
         /// calls method for moving form
         /// </summary>
@@ -63,24 +57,6 @@ namespace cDashboard
         private void cPic_MouseDown(object sender, MouseEventArgs e)
         {
             dragForm(e);
-        }
-
-        /// <summary>
-        /// calls the user32.dll to move the form
-        /// </summary>
-        /// <param name="e"></param>
-        private void dragForm(MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                //removes mouse capture from current object, and allows it to be sent elsewhere
-                ReleaseCapture();
-
-                //WM_NCLBUTTONDOWN = 0xA1
-                //HT_CAPTION = 0x2
-                //send a windows message that the left mouse button is down on the titlebar 
-                SendMessage(this.Handle, 0xA1, 0x2, 0);
-            }
         }
 
         /// <summary>
@@ -398,84 +374,7 @@ namespace cDashboard
         /// <param name="m"></param>
         protected override void WndProc(ref Message m)
         {
-            //WINDOWS API CODES 
-            //WM_NCHITTEST = 0x84
-            //HTLEFT = 10
-            //HTRIGHT = 11
-            //HTTOP = 12
-            //HTTOPLEFT = 13
-            //HTTOPRIGHT = 14
-            //HTBOTTOM = 15
-            //HTBOTTOMLEFT = 16
-            //HTBOTTOMRIGHT = 17
-            if (m.Msg == 0x84)
-            {
-                //get the lower 4 bits
-                int x = (int)(m.LParam.ToInt64() & 0xFFFF);
-                //get higher 4 bits
-                int y = (int)((m.LParam.ToInt64() & 0xFFFF0000) >> 16);
-                Point pt = PointToClient(new Point(x, y));
-
-                //top
-                if (pt.Y <= 10 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(12);
-                }
-
-                //bottom
-                if (pt.Y >= ClientSize.Height - 10 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(15);
-                }
-
-                //left
-                if (pt.X <= 15 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(10);
-                }
-
-                //right
-                if (pt.X >= ClientSize.Width - 15 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(11);
-                }
-
-                //bottom right
-                if (pt.X >= ClientSize.Width - 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(IsMirrored ? 16 : 17);
-                }
-
-                //bottom left
-                if (pt.X <= 25 && pt.Y >= ClientSize.Height - 25 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(IsMirrored ? 17 : 16);
-                }
-
-                //top left
-                if (pt.X <= 15 && pt.Y <= 15 && ClientSize.Height >= 25)
-                {
-                    m.Result = (IntPtr)(IsMirrored ? 14 : 13);
-                }
-
-                //top right
-                //this also handles small forms
-                if (pt.X >= ClientSize.Width - 25 && pt.Y <= 25)
-                {
-                    m.Result = (IntPtr)(IsMirrored ? 13 : 14);
-                }
-
-                //we results between 10 and 17, so return
-                if (m.Result.ToInt32() <= 17 && m.Result.ToInt32() >= 10)
-                {
-                    //hiding the menustrip again is a failsafe, it will prevent most chances for error
-                    menuStrip1.Visible = false; 
-                    return;
-                }
-            }
-
-            //if this isn't the message we are modifying, let it go
-            base.WndProc(ref m);
+            formResizer(ref m);
         }
     }
 }

@@ -48,6 +48,7 @@
             this.changeFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abcdeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveThisTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.xToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtb_contextmenu.SuspendLayout();
             this.menustrip.SuspendLayout();
             this.SuspendLayout();
@@ -127,12 +128,14 @@
             // 
             // rtb
             // 
+            this.rtb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtb.ContextMenuStrip = this.rtb_contextmenu;
-            this.rtb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtb.Location = new System.Drawing.Point(0, 24);
+            this.rtb.Location = new System.Drawing.Point(1, 25);
             this.rtb.Name = "rtb";
-            this.rtb.Size = new System.Drawing.Size(284, 238);
+            this.rtb.Size = new System.Drawing.Size(282, 235);
             this.rtb.TabIndex = 0;
             this.rtb.Text = "";
             this.rtb.TextChanged += new System.EventHandler(this.rtb_TextChanged);
@@ -143,13 +146,15 @@
             this.menustrip.Font = new System.Drawing.Font("Webdings", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.abcdeToolStripMenuItem});
+            this.abcdeToolStripMenuItem,
+            this.xToolStripMenuItem});
             this.menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menustrip.Location = new System.Drawing.Point(0, 0);
             this.menustrip.Name = "menustrip";
-            this.menustrip.Size = new System.Drawing.Size(284, 24);
+            this.menustrip.Size = new System.Drawing.Size(284, 25);
             this.menustrip.TabIndex = 1;
             this.menustrip.Text = "menuStrip1";
+            this.menustrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.menustrip_MouseDown);
             // 
             // toolStripMenuItem1
             // 
@@ -158,7 +163,7 @@
             this.changeFontToolStripMenuItem});
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Wingdings 3", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(28, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(28, 21);
             this.toolStripMenuItem1.Text = "p";
             // 
             // changeBackcolorToolStripMenuItem
@@ -183,7 +188,7 @@
             this.saveThisTextToolStripMenuItem});
             this.abcdeToolStripMenuItem.Font = new System.Drawing.Font("Wingdings 3", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.abcdeToolStripMenuItem.Name = "abcdeToolStripMenuItem";
-            this.abcdeToolStripMenuItem.Size = new System.Drawing.Size(28, 20);
+            this.abcdeToolStripMenuItem.Size = new System.Drawing.Size(28, 21);
             this.abcdeToolStripMenuItem.Text = "q";
             // 
             // saveThisTextToolStripMenuItem
@@ -194,6 +199,15 @@
             this.saveThisTextToolStripMenuItem.Text = "Save this text...";
             this.saveThisTextToolStripMenuItem.Click += new System.EventHandler(this.saveThisTextToolStripMenuItem_Click);
             // 
+            // xToolStripMenuItem
+            // 
+            this.xToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.xToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xToolStripMenuItem.Name = "xToolStripMenuItem";
+            this.xToolStripMenuItem.Size = new System.Drawing.Size(29, 21);
+            this.xToolStripMenuItem.Text = "X";
+            this.xToolStripMenuItem.Click += new System.EventHandler(this.xToolStripMenuItem_Click);
+            // 
             // cSticky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,6 +215,7 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.rtb);
             this.Controls.Add(this.menustrip);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menustrip;
             this.MaximizeBox = false;
@@ -236,5 +251,6 @@
         private System.Windows.Forms.ToolStripMenuItem abcdeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveThisTextToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem;
     }
 }
