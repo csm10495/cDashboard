@@ -79,11 +79,10 @@ namespace cDashboard
         }
         #endregion
 
-
         /// <summary>
         /// forces a center alignment for the RTBL
         /// </summary>
-        public void centerAlignRTBL()
+        private void centerAlignRTBL()
         {
             richtextbox_lap.SelectAll();
             richtextbox_lap.SelectionAlignment = HorizontalAlignment.Center;
@@ -98,16 +97,30 @@ namespace cDashboard
             //get current time
             startTime = DateTime.UtcNow;
 
-            replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", startTime.Ticks.ToString() });
+            string string_origStartTime = getSpecificSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" })[0];
+            string string_origEndTime = getSpecificSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" })[0];
+
+            long origStartTime = 0;
+            if (string_origStartTime != "NULL")
+                origStartTime = Convert.ToInt64(string_origStartTime);
+
+            long origEndTime = 0;
+            if (string_origEndTime != "NULL")
+                origEndTime = Convert.ToInt64(string_origEndTime);
+
+            replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", (startTime.Ticks - (origEndTime - origStartTime)).ToString() });
+
+            startTime = new DateTime(startTime.Ticks - (origEndTime - origStartTime));
             //finally, start timer
             sw_timer.Start();
 
-            richtextbox_lap.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
+            //updates the start time
+            string s = richtextbox_lap.Lines[0].Substring(0);
+            string[] lines = richtextbox_lap.Lines;
 
-            //reset form size
-            this.Size = new Size(255, 93);
+            lines[0] = "cStopwatch start time: " + startTime.ToLocalTime().ToString(); 
+            richtextbox_lap.Lines = lines;
 
-            //force center alignment
             centerAlignRTBL();
         }
 
@@ -121,14 +134,14 @@ namespace cDashboard
             TimeSpan tmp = (datetime_2 - startTime);
 
             //attempted fix for auto changing of TimeSpan.ToString()
-            string string_span = Convert.ToInt16(tmp.TotalHours).ToString().PadLeft(2, '0') + ":" + tmp.Minutes.ToString().PadLeft(2, '0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
+            string string_span = Convert.ToInt64(tmp.TotalHours).ToString().PadLeft(2, '0') + ":" + tmp.Minutes.ToString().PadLeft(2, '0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
 
             label_time.Text = string_span;
 
             //attempts
             while (label_time.Width > this.Width && label_time.Text.Length != 11)
             {
-                label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .001F);
+                label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .0001F);
             }
         }
 
@@ -159,7 +172,7 @@ namespace cDashboard
             {
                 startTime = new DateTime(Convert.ToInt64(string_start_time));
                 setLabel_TimeText(DateTime.UtcNow);
-                richtextbox_lap.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
+                richtextbox_lap.Text = "cStopwatch start time: " + startTime.ToLocalTime().ToString();
             }
 
             //see if timer was running on close
@@ -208,10 +221,10 @@ namespace cDashboard
                 start_stopwatch();
                 replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "True" });
                 replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", "NULL" });
-                replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, new string[] { "cStopwatch", this.Name, "Laps" });
             }
             else
             {
+                //pause timer
                 string stop_ticks = DateTime.UtcNow.Ticks.ToString();
                 sw_timer.Stop();
                 replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "False" });
@@ -285,6 +298,30 @@ namespace cDashboard
                 list_laps.Add(text_lap);
                 replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, list_laps.ToArray());
             }
+        }
+
+        /// <summary>
+        /// reset button for timer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            richtextbox_lap.Text = "\"S\" to Start/Stop. \"L\" to Lap. \"R\" to Reset";
+
+            //reset all settings
+            replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", "NULL" });
+            replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", "NULL" });
+            replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "False" });
+            replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, new string[] { "cStopwatch", this.Name, "Laps" });
+            label_time.Text = "00:00:00.00";
+            sw_timer.Stop();
+
+            //reset form size
+            this.Size = new Size(255, 93);
+
+            //force center alignment
+            centerAlignRTBL();
         }
     }
 }

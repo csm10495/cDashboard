@@ -35,6 +35,7 @@
             this.sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label_time = new System.Windows.Forms.Label();
             this.sw_timer = new System.Windows.Forms.Timer(this.components);
             this.richtextbox_lap = new System.Windows.Forms.RichTextBox();
@@ -47,9 +48,11 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sToolStripMenuItem,
             this.xToolStripMenuItem,
-            this.lToolStripMenuItem});
+            this.lToolStripMenuItem,
+            this.rToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.ShowItemToolTips = true;
             this.menuStrip1.Size = new System.Drawing.Size(255, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
@@ -62,6 +65,7 @@
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
             this.sToolStripMenuItem.Size = new System.Drawing.Size(25, 20);
             this.sToolStripMenuItem.Text = "S";
+            this.sToolStripMenuItem.ToolTipText = "Start/Stop";
             this.sToolStripMenuItem.Click += new System.EventHandler(this.sToolStripMenuItem_Click);
             // 
             // xToolStripMenuItem
@@ -73,6 +77,7 @@
             this.xToolStripMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.xToolStripMenuItem.Size = new System.Drawing.Size(27, 20);
             this.xToolStripMenuItem.Text = "X";
+            this.xToolStripMenuItem.ToolTipText = "Close";
             this.xToolStripMenuItem.Click += new System.EventHandler(this.xToolStripMenuItem_Click);
             // 
             // lToolStripMenuItem
@@ -82,7 +87,18 @@
             this.lToolStripMenuItem.Name = "lToolStripMenuItem";
             this.lToolStripMenuItem.Size = new System.Drawing.Size(25, 20);
             this.lToolStripMenuItem.Text = "L";
+            this.lToolStripMenuItem.ToolTipText = "Lap";
             this.lToolStripMenuItem.Click += new System.EventHandler(this.lToolStripMenuItem_Click);
+            // 
+            // rToolStripMenuItem
+            // 
+            this.rToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.rToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.rToolStripMenuItem.Name = "rToolStripMenuItem";
+            this.rToolStripMenuItem.Size = new System.Drawing.Size(27, 20);
+            this.rToolStripMenuItem.Text = "R";
+            this.rToolStripMenuItem.ToolTipText = "Restart";
+            this.rToolStripMenuItem.Click += new System.EventHandler(this.rToolStripMenuItem_Click);
             // 
             // label_time
             // 
@@ -116,7 +132,7 @@
             this.richtextbox_lap.ReadOnly = true;
             this.richtextbox_lap.Size = new System.Drawing.Size(255, 112);
             this.richtextbox_lap.TabIndex = 4;
-            this.richtextbox_lap.Text = "Click the \"S\" to Start. \"L\" to Lap.";
+            this.richtextbox_lap.Text = "\"S\" to Start/Stop. \"L\" to Lap. \"R\" to Reset";
             this.richtextbox_lap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.richtextbox_lap_MouseDown);
             // 
             // cStopwatch
@@ -155,5 +171,6 @@
         private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lToolStripMenuItem;
         public System.Windows.Forms.RichTextBox richtextbox_lap;
+        private System.Windows.Forms.ToolStripMenuItem rToolStripMenuItem;
     }
 }
