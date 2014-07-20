@@ -323,5 +323,37 @@ namespace cDashboard
             //force center alignment
             centerAlignRTBL();
         }
+
+        /// <summary>
+        /// returns a string from a timespan
+        /// </summary>
+        /// <param name="tmp">timespan</param>
+        /// <returns></returns>
+        private string timeSpanToString(TimeSpan tmp)
+        {
+            return Convert.ToInt64(tmp.TotalHours).ToString().PadLeft(2, '0') + ":" + tmp.Minutes.ToString().PadLeft(2, '0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
+        }
+
+        /// <summary>
+        /// converts string to timespan
+        /// 00:13:30.32 -> Timespan 13 min, 30 seconds, 32 milliseconds
+        /// </summary>
+        /// <returns></returns>
+        private TimeSpan stringToTimeSpan(string s)
+        {
+            //get hours
+            string hours = s.Substring(0, s.IndexOf(":"));
+            s = s.Substring(s.IndexOf(":") + 1);
+
+            string minutes = s.Substring(0, s.IndexOf(":"));
+            s = s.Substring(s.IndexOf(":") + 1);
+
+            string seconds = s.Substring(0, s.IndexOf("."));
+            s = s.Substring(s.IndexOf(".") + 1);
+
+            string milliseconds = s;
+
+            return new TimeSpan(0, Convert.ToInt16(hours), Convert.ToInt16(minutes), Convert.ToInt16(seconds), Convert.ToInt16(milliseconds));
+        }
     }
 }
