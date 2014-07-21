@@ -73,7 +73,7 @@ namespace cDashboard
             {
                 //check for blank lines or ones that start with #
                 if (tmp_line != "") //&& tmp_line.Substring(0, 1) != "#") 
-                                    //changed line to maintain comment structure of settings file
+                //changed line to maintain comment structure of settings file
                 {
                     //this will be the list that will be added to settings_list
                     List<string> tmp_list = new List<string>();
@@ -146,10 +146,10 @@ namespace cDashboard
         protected void saveSettingsList(List<List<string>> list_settings)
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash");
-           // sw.WriteLine("# cDashBoard Settings File");
-           // sw.WriteLine("# A # tells the program to ignore this line");
-           // sw.WriteLine("# Don't edit this file unless you know what you are doing");
-           // removed so that this isn't printed over and over...
+            // sw.WriteLine("# cDashBoard Settings File");
+            // sw.WriteLine("# A # tells the program to ignore this line");
+            // sw.WriteLine("# Don't edit this file unless you know what you are doing");
+            // removed so that this isn't printed over and over...
             foreach (List<string> currentline in list_settings)
             {
                 sw.WriteLine(string.Join(";", currentline));
@@ -353,6 +353,12 @@ namespace cDashboard
                 //we get results between 10 and 17, so return
                 if (m.Result.ToInt32() <= 17 && m.Result.ToInt32() >= 10)
                 {
+                    //special handling for if this is a cPic...
+                    //hide the menustrip again as a failsafe, it will prevent most chances for error
+                    if (this is cPic)
+                    {
+                        ((cPic)this).menuStrip1.Visible = false;
+                    }
                     return;
                 }
             }

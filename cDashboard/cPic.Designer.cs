@@ -199,7 +199,6 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem FileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cPicLayoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox cPicLayoutComboBox;
@@ -209,5 +208,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FileLocation;
         public System.Windows.Forms.DataGridView dgv_sm;
         private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem;
+        public System.Windows.Forms.MenuStrip menuStrip1;
     }
 }
