@@ -77,6 +77,7 @@
             this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
             this.setFavoriteStickyColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setFavoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setDateTimeColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
@@ -336,10 +337,11 @@
             this.setFadeTimeToolStripMenuItem,
             this.setFavoriteStickyColorToolStripMenuItem,
             this.setFavoriteFontToolStripMenuItem,
+            this.setDateTimeColorToolStripMenuItem,
             this.exportBackupToolStripMenuItem,
             this.importCDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // setCDashDefaultMonitorToolStripMenuItem
@@ -446,6 +448,13 @@
             this.setFavoriteFontToolStripMenuItem.Text = "Set Favorite Sticky Font...";
             this.setFavoriteFontToolStripMenuItem.Click += new System.EventHandler(this.setFavoriteFontToolStripMenuItem_Click);
             // 
+            // setDateTimeColorToolStripMenuItem
+            // 
+            this.setDateTimeColorToolStripMenuItem.Name = "setDateTimeColorToolStripMenuItem";
+            this.setDateTimeColorToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.setDateTimeColorToolStripMenuItem.Text = "Set UI Text Color...";
+            this.setDateTimeColorToolStripMenuItem.Click += new System.EventHandler(this.setDateTimeColorToolStripMenuItem_Click);
+            // 
             // exportBackupToolStripMenuItem
             // 
             this.exportBackupToolStripMenuItem.Name = "exportBackupToolStripMenuItem";
@@ -547,6 +556,7 @@
         private System.Windows.Forms.ToolStripComboBox combobox_wallpaper;
         public System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Timer fadetimer;
+        private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
     }
 }
 

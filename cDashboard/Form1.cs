@@ -204,6 +204,13 @@ namespace cDashboard
                         int_fade_milliseconds = Convert.ToInt32(currentline[2]);
                     }
 
+                    if (currentline[1] == "DateTimeStripColor")
+                    {
+                        button_time.ForeColor = Color.FromArgb(Convert.ToInt32(currentline[2]), Convert.ToInt32(currentline[3]), Convert.ToInt32(currentline[4]));
+                        button_date.ForeColor = Color.FromArgb(Convert.ToInt32(currentline[2]), Convert.ToInt32(currentline[3]), Convert.ToInt32(currentline[4]));
+                        menuStrip1.ForeColor = Color.FromArgb(Convert.ToInt32(currentline[2]), Convert.ToInt32(currentline[3]), Convert.ToInt32(currentline[4]));
+                    }
+
                     if (currentline[1] == "FavoriteStickyColor")
                     {
                         if (currentline[2] == "NULL")
@@ -485,6 +492,8 @@ namespace cDashboard
                 sw.WriteLine("cDash;Wallpaper;False");
                 sw.WriteLine("cDash;WallpaperImage;NULL");
                 sw.WriteLine("cDash;WallpaperImageLayout;None");
+                sw.WriteLine("cDash;DateTimeStripColor;0;0;0");
+
                 sw.Close();
 
                 //if there is more than one monitor, check which monitor the user wants to use
@@ -1777,6 +1786,38 @@ namespace cDashboard
         private void cDashboard_MouseLeave(object sender, EventArgs e)
         {
             menuStrip1.Focus();
+        }
+
+        /// <summary>
+        /// Set date/time/strip color as displayed in Dash
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setDateTimeColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show the color selection dialog
+            DialogResult result = colorDialog1.ShowDialog();
+
+            List<string> find = new List<string>();
+            List<string> replace = new List<string>();
+            find.Add("cDash");
+            find.Add("DateTimeStripColor");
+            replace.Add("cDash");
+            replace.Add("DateTimeStripColor");
+
+            //if the user clicks Ok, set the color, otherwise cancel
+            if (result == DialogResult.OK)
+            {
+                FavoriteStickyColor = colorDialog1.Color;
+                replace.Add(colorDialog1.Color.R.ToString());
+                replace.Add(colorDialog1.Color.G.ToString());
+                replace.Add(colorDialog1.Color.B.ToString());
+                replaceSetting(find, replace);
+            }
+
+            button_time.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
+            button_date.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
+            menuStrip1.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
         }
 
     }
