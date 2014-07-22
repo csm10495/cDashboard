@@ -99,6 +99,8 @@ namespace cDashboard
 
             string string_origStartTime = getSpecificSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" })[0];
             string string_origEndTime = getSpecificSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" })[0];
+            string string_origLapTime = getSpecificSetting(new string[] { "cStopwatch", this.Name, "LapTime" })[0];
+
 
             long origStartTime = 0;
             if (string_origStartTime != "NULL")
@@ -108,7 +110,19 @@ namespace cDashboard
             if (string_origEndTime != "NULL")
                 origEndTime = Convert.ToInt64(string_origEndTime);
 
+            long origLapTime = 0;
+            if (string_origLapTime != "NULL")
+                origLapTime = Convert.ToInt64(string_origLapTime);
+
+            //calculate new laptime
+            string newLapTime = "NULL";
+            if ((origLapTime + (origEndTime - origStartTime)) != 0)
+            {
+                newLapTime = (origLapTime + ((startTime.Ticks - (origEndTime - origStartTime)) - origStartTime)).ToString();
+            }
+
             replaceSetting(new string[] { "cStopwatch", this.Name, "StartDateTime" }, new string[] { "cStopwatch", this.Name, "StartDateTime", (startTime.Ticks - (origEndTime - origStartTime)).ToString() });
+            replaceSetting(new string[] { "cStopwatch", this.Name, "LapTime" }, new string[] { "cStopwatch", this.Name, "LapTime", newLapTime });
 
             startTime = new DateTime(startTime.Ticks - (origEndTime - origStartTime));
             //finally, start timer
@@ -184,6 +198,7 @@ namespace cDashboard
             //if the timer was left running, start it again, and set text to stop
             if (timer_running)
             {
+               
                 sw_timer.Start();
             }
 
@@ -203,6 +218,9 @@ namespace cDashboard
 
             //force center alignment
             centerAlignRTBL();
+
+            //make lap only work if timer is running
+            lToolStripMenuItem.Enabled = sw_timer.Enabled;
 
             //to allow the rest of the class to know loading has completed
             CompletedForm_Load = true;
@@ -233,6 +251,9 @@ namespace cDashboard
                 //we update the label text one more time to make sure it reflects what we save to settings
                 setLabel_TimeText(new DateTime(Convert.ToInt64(stop_ticks)));
             }
+
+            //make lap only work if timer is running
+            lToolStripMenuItem.Enabled = sw_timer.Enabled;
         }
 
         /// <summary>
@@ -276,10 +297,26 @@ namespace cDashboard
         /// <param name="update_settings">true if settings should be resaved</param>
         private void addLap(string text_lap, bool update_settings)
         {
+            //get approx tick value
+            DateTime now = DateTime.UtcNow;
+
             //don't add more space to form after certain time
             if (richtextbox_lap.Lines.Count() < 7)
             {
                 this.Height += 16;
+            }
+
+            //make text_lap equal to the proper lap length (time from last lap till now)
+            string string_laptime = getSpecificSetting(new string[] { "cStopwatch", this.Name, "LapTime" })[0];
+
+            //if we have a previous laptime, convert to long, use
+            if (string_laptime != "NULL" && update_settings)
+            {
+                long long_laptime = Convert.ToInt64(string_laptime);
+
+                DateTime datetime_laptime = new DateTime(long_laptime);
+
+                text_lap = timeSpanToString((now - datetime_laptime));
             }
 
             //add lap to richtextbox
@@ -297,7 +334,11 @@ namespace cDashboard
                 list_laps.InsertRange(0, new string[] { "cStopwatch", this.Name, "Laps" });
                 list_laps.Add(text_lap);
                 replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, list_laps.ToArray());
+                //replace setting
+                replaceSetting(new string[] { "cStopwatch", this.Name, "LapTime" }, new string[] { "cStopwatch", this.Name, "LapTime", now.Ticks.ToString() });
             }
+
+
         }
 
         /// <summary>
@@ -314,6 +355,7 @@ namespace cDashboard
             replaceSetting(new string[] { "cStopwatch", this.Name, "EndDateTime" }, new string[] { "cStopwatch", this.Name, "EndDateTime", "NULL" });
             replaceSetting(new string[] { "cStopwatch", this.Name, "TimerRunning" }, new string[] { "cStopwatch", this.Name, "TimerRunning", "False" });
             replaceSetting(new string[] { "cStopwatch", this.Name, "Laps" }, new string[] { "cStopwatch", this.Name, "Laps" });
+            replaceSetting(new string[] { "cStopwatch", this.Name, "LapTime" }, new string[] { "cStopwatch", this.Name, "LapTime", "NULL" });
             label_time.Text = "00:00:00.00";
             sw_timer.Stop();
 
@@ -322,6 +364,9 @@ namespace cDashboard
 
             //force center alignment
             centerAlignRTBL();
+
+            //make lap only work if timer is running
+            lToolStripMenuItem.Enabled = false;
         }
 
         /// <summary>

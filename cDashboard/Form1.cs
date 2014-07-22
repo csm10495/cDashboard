@@ -1163,6 +1163,7 @@ namespace cDashboard
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";TimerRunning;False");
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";EndDateTime;NULL");
             sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";Laps");
+            sw.WriteLine("cStopwatch;" + long_unique_timestamp.ToString() + ";LapTime;NULL");
             sw.Close();
 
             cStopwatch cStopwatch_new = new cStopwatch();
