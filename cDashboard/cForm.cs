@@ -373,7 +373,6 @@ namespace cDashboard
             base.WndProc(ref m);
         }
 
-
         #region Events
 
         /// <summary>

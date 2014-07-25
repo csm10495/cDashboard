@@ -1106,6 +1106,38 @@ namespace cDashboard
         #region Menustrip Items
 
         /// <summary>
+        /// Set date/time/strip color as displayed in Dash
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void setDateTimeColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show the color selection dialog
+            DialogResult result = colorDialog1.ShowDialog();
+
+            List<string> find = new List<string>();
+            List<string> replace = new List<string>();
+            find.Add("cDash");
+            find.Add("DateTimeStripColor");
+            replace.Add("cDash");
+            replace.Add("DateTimeStripColor");
+
+            //if the user clicks Ok, set the color, otherwise cancel
+            if (result == DialogResult.OK)
+            {
+                FavoriteStickyColor = colorDialog1.Color;
+                replace.Add(colorDialog1.Color.R.ToString());
+                replace.Add(colorDialog1.Color.G.ToString());
+                replace.Add(colorDialog1.Color.B.ToString());
+                replaceSetting(find, replace);
+            }
+
+            button_time.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
+            button_date.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
+            menuStrip1.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
+        }
+
+        /// <summary>
         /// called to set a wallpaper as the background of the dash as opposed to simply a color
         /// </summary>
         /// <param name="sender"></param>
@@ -1780,38 +1812,6 @@ namespace cDashboard
         private void cDashboard_MouseLeave(object sender, EventArgs e)
         {
             menuStrip1.Focus();
-        }
-
-        /// <summary>
-        /// Set date/time/strip color as displayed in Dash
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void setDateTimeColorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //show the color selection dialog
-            DialogResult result = colorDialog1.ShowDialog();
-
-            List<string> find = new List<string>();
-            List<string> replace = new List<string>();
-            find.Add("cDash");
-            find.Add("DateTimeStripColor");
-            replace.Add("cDash");
-            replace.Add("DateTimeStripColor");
-
-            //if the user clicks Ok, set the color, otherwise cancel
-            if (result == DialogResult.OK)
-            {
-                FavoriteStickyColor = colorDialog1.Color;
-                replace.Add(colorDialog1.Color.R.ToString());
-                replace.Add(colorDialog1.Color.G.ToString());
-                replace.Add(colorDialog1.Color.B.ToString());
-                replaceSetting(find, replace);
-            }
-
-            button_time.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
-            button_date.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
-            menuStrip1.ForeColor = Color.FromArgb(colorDialog1.Color.R, colorDialog1.Color.G, colorDialog1.Color.B);
         }
 
     }
