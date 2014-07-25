@@ -222,7 +222,6 @@
             this.Name = "cSticky";
             this.Text = "cSticky";
             this.Load += new System.EventHandler(this.cSticky_Load);
-            this.ResizeEnd += new System.EventHandler(this.cSticky_ResizeEnd);
             this.rtb_contextmenu.ResumeLayout(false);
             this.menustrip.ResumeLayout(false);
             this.menustrip.PerformLayout();

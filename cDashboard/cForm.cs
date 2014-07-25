@@ -26,6 +26,12 @@ namespace cDashboard
         /// location for settings related files
         /// </summary>
         protected readonly string SETTINGS_LOCATION = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\cDashBoard\\";
+
+        /// <summary>
+        /// represents if Form_Load Completion
+        /// </summary>
+        protected bool CompletedForm_Load = false;
+
         #endregion
 
         //this exists as an interface because all cForms seem to have various things in common
@@ -366,5 +372,31 @@ namespace cDashboard
             //if this isn't the message we are modifying, let it go
             base.WndProc(ref m);
         }
+
+
+        #region Events
+
+        /// <summary>
+        /// Will be fired upon changing of
+        /// form size
+        /// form location
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cForm_ResizeEnd(object sender, EventArgs e)
+        {
+            if (CompletedForm_Load)
+            {
+                //handle move
+                replaceSetting(new string[] { this.GetType().Name, this.Name, "Location" }, new string[] { this.GetType().Name, this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
+
+                //handle resize
+                replaceSetting(new string[] { this.GetType().Name, this.Name, "Size" }, new string[] { this.GetType().Name, this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString() });
+            }
+        }
+
+        #endregion
+
+     
     }
 }

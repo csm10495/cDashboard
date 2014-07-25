@@ -20,15 +20,6 @@ namespace cDashboard
             InitializeComponent();
         }
 
-        #region Global Variables
-
-        /// <summary>
-        /// used with locking
-        /// </summary>
-        bool CompletedForm_Load = false;
-
-        #endregion
-
         /// <summary>
         /// form loading void
         /// </summary>
@@ -53,24 +44,6 @@ namespace cDashboard
             if (CompletedForm_Load == true)
             {
                 rtb.SaveFile(SETTINGS_LOCATION + this.Name + ".rtf");
-            }
-        }
-
-        /// <summary>
-        /// when the resizing is complete, save the new size
-        /// this also fires when the form is moved, so save new location
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cSticky_ResizeEnd(object sender, EventArgs e)
-        {
-            if (CompletedForm_Load == true)
-            {
-                //handle resize
-                replaceSetting(new string[] { "cSticky", this.Name, "Size" }, new string[] { "cSticky", this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString() });
-
-                //handle move
-                replaceSetting(new string[] { "cSticky", this.Name, "Location" }, new string[] { "cSticky", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
             }
         }
 

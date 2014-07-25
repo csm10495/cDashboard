@@ -39,6 +39,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "cForm";
             this.Text = "cForm";
+            this.ResizeEnd += new System.EventHandler(this.cForm_ResizeEnd);
             this.ResumeLayout(false);
 
         }

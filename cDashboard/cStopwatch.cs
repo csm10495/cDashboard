@@ -15,15 +15,12 @@ namespace cDashboard
     public partial class cStopwatch : cForm
     {
         #region Global Variables
+
         /// <summary>
         /// signifies the exact time that the stopwatch was started
         /// </summary>
         public DateTime startTime;
 
-        /// <summary>
-        /// signifies that form loading has finished
-        /// </summary>
-        bool CompletedForm_Load = false;
         #endregion
 
         #region Constructor
@@ -254,20 +251,6 @@ namespace cDashboard
 
             //make lap only work if timer is running
             lToolStripMenuItem.Enabled = sw_timer.Enabled;
-        }
-
-        /// <summary>
-        /// this will save the new location of the form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cStopwatch_ResizeEnd(object sender, EventArgs e)
-        {
-            if (CompletedForm_Load)
-            {
-                //handle move
-                replaceSetting(new string[] { "cStopwatch", this.Name, "Location" }, new string[] { "cStopwatch", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
-            }
         }
 
         /// <summary>

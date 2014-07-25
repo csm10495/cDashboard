@@ -60,11 +60,6 @@ namespace cDashboard
         bool TildeIsDown = false;
 
         /// <summary>
-        /// This will be changed to true after the form load is completed to allow stickies to be saved without conflicting locks
-        /// </summary>
-        bool CompletedForm_Load = false;
-
-        /// <summary>
         /// opacity level of the dashboard
         /// </summary>
         int OpacityLevel = -1;
@@ -578,7 +573,6 @@ namespace cDashboard
                 }
             }
         }
-
 
         /// <summary>
         /// If the size of the dashboard changed, the monitor or resolution must have changed.

@@ -184,7 +184,6 @@
             this.Text = "cPic";
             this.TransparencyKey = System.Drawing.Color.Black;
             this.Load += new System.EventHandler(this.cPic_Load);
-            this.ResizeEnd += new System.EventHandler(this.cPic_ResizeEnd);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cPic_MouseDown);
             this.MouseEnter += new System.EventHandler(this.cPic_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.cPic_MouseLeave);

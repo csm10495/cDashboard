@@ -22,11 +22,6 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// marks if the form has finished loading
-        /// </summary>
-        bool CompletedForm_Load = false;
-
-        /// <summary>
         /// called when the form has finished loading
         /// used with locking
         /// </summary>
@@ -68,12 +63,6 @@ namespace cDashboard
         {
             if (CompletedForm_Load == true)
             {
-                //handle resize
-                replaceSetting(new string[] { "cPic", this.Name, "Size" }, new string[] { "cPic", this.Name, "Size", this.Size.Width.ToString(), this.Size.Height.ToString() });
-
-                //handle move
-                replaceSetting(new string[] { "cPic", this.Name, "Location" }, new string[] { "cPic", this.Name, "Location", this.Location.X.ToString(), this.Location.Y.ToString() });
-
                 //hide menustrip
                 menuStrip1.Visible = false;
             }
