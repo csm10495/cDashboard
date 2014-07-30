@@ -395,7 +395,5 @@ namespace cDashboard
         }
 
         #endregion
-
-     
     }
 }

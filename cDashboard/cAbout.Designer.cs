@@ -34,6 +34,8 @@
             this.button_close = new System.Windows.Forms.Button();
             this.Line = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label_weather_data = new System.Windows.Forms.LinkLabel();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.picture_icon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,9 +76,9 @@
             // 
             this.button_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_close.Font = new System.Drawing.Font("Arial Black", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_close.Location = new System.Drawing.Point(223, 143);
+            this.button_close.Location = new System.Drawing.Point(223, 163);
             this.button_close.Name = "button_close";
-            this.button_close.Size = new System.Drawing.Size(226, 69);
+            this.button_close.Size = new System.Drawing.Size(226, 49);
             this.button_close.TabIndex = 3;
             this.button_close.Text = "Okay";
             this.button_close.UseVisualStyleBackColor = true;
@@ -98,11 +100,34 @@
             this.panel1.Size = new System.Drawing.Size(226, 2);
             this.panel1.TabIndex = 5;
             // 
+            // label_weather_data
+            // 
+            this.label_weather_data.AutoSize = true;
+            this.label_weather_data.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_weather_data.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.label_weather_data.Location = new System.Drawing.Point(242, 144);
+            this.label_weather_data.Name = "label_weather_data";
+            this.label_weather_data.Size = new System.Drawing.Size(188, 16);
+            this.label_weather_data.TabIndex = 6;
+            this.label_weather_data.TabStop = true;
+            this.label_weather_data.Text = "Weather Data from wunderground.com";
+            this.label_weather_data.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.label_weather_data_LinkClicked);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.Black;
+            this.panel2.Location = new System.Drawing.Point(223, 142);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(226, 2);
+            this.panel2.TabIndex = 5;
+            // 
             // cAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 221);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.label_weather_data);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Line);
             this.Controls.Add(this.button_close);
@@ -133,6 +158,8 @@
         private System.Windows.Forms.Button button_close;
         private System.Windows.Forms.Panel Line;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.LinkLabel label_weather_data;
+        private System.Windows.Forms.Panel panel2;
 
     }
 }

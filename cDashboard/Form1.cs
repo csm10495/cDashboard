@@ -74,6 +74,12 @@ namespace cDashboard
         /// </summary>
         Font FavoriteStickyFont;
 
+        /// <summary>
+        /// represents the number of seconds in this cycle
+        /// used for knowing when to update cWeather(s)
+        /// </summary>
+        int TimerCounter = 0;
+
         #endregion
 
         #region Constructor
@@ -181,6 +187,25 @@ namespace cDashboard
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
                 {
+
+                    //special handling for global cWeather settings
+                    if (currentline[1] == "cWeather")
+                    {
+                        if (currentline[2] == "Unit")
+                        { 
+                            if(currentline[3] == "F")
+                            {
+                                fToolStripMenuItem.Checked = true;
+                                cToolStripMenuItem.Checked = false;
+                            }
+                            else
+                            {
+                                cToolStripMenuItem.Checked = true;
+                                fToolStripMenuItem.Checked = false;
+                            }
+                        }
+                    }
+
                     if (currentline[1] == "BackColor")
                     {
                         this.BackColor = Color.FromArgb(Convert.ToInt32(currentline[2]), Convert.ToInt32(currentline[3]), Convert.ToInt32(currentline[4]));
@@ -264,6 +289,41 @@ namespace cDashboard
                             this.BackgroundImageLayout = ImageLayout.Zoom;
                         }
                     }
+                }
+                //Handling for cWeather
+                else if (currentline[0] == "cWeather")
+                {
+                    //this would mean that this form already exists
+                    if (!(Controls.Find(currentline[1], true).Length > 0))
+                    {
+                        cWeather cWeather_new = new cWeather();
+                        cWeather_new.Name = currentline[1];
+                        cWeather_new.TopLevel = false;
+                        cWeather_new.Parent = this;
+                        Controls.Add(cWeather_new);
+                    }
+
+                    //get form by name
+                    cWeather this_cWeather = (cWeather)this.Controls.Find(currentline[1], true)[0];
+
+                    if (currentline[2] == "Location")
+                    {
+                        this_cWeather.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
+
+                    if (currentline[2] == "ZipCode")
+                    {
+                        this_cWeather.ZipCode = currentline[3];
+
+                        //if zip code is set, get weather info
+                        if (this_cWeather.ZipCode != "NULL")
+                        {
+                            this_cWeather.getWeatherInfo();
+                        }
+                    }
+
+                    this_cWeather.Show();
+                    this_cWeather.BringToFront();
                 }
                 else if (currentline[0] == "cPic")
                 {
@@ -488,6 +548,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;WallpaperImage;NULL");
                 sw.WriteLine("cDash;WallpaperImageLayout;None");
                 sw.WriteLine("cDash;DateTimeStripColor;0;0;0");
+                sw.WriteLine("cDash;cWeather;Unit;F");
 
                 sw.Close();
 
@@ -508,7 +569,6 @@ namespace cDashboard
 
             }
         }
-
         #endregion
 
         #region Monitor Settings
@@ -796,11 +856,28 @@ namespace cDashboard
         /// <summary>
         /// cues the form's fade out process
         /// </summary>
-        private void fade_out()
+        public void fade_out()
         {
             cD_tstate = timerstate.fadeout;
 
             fadetimer.Start();
+        }
+
+        /// <summary>
+        /// adds to TimerCounter and updates cWeathers if 7200 seconds (2 hours) have elapsed
+        /// </summary>
+        private void updateCWeather()
+        {
+            TimerCounter++;
+
+            if (TimerCounter > 7200)
+            {
+                TimerCounter = 0;
+                foreach (cWeather this_cWeather in this.Controls.OfType<cWeather>())
+                {
+                    this_cWeather.getWeatherInfo();
+                }
+            }
         }
 
         /// <summary>
@@ -811,6 +888,7 @@ namespace cDashboard
         private void uitimer_Tick(object sender, EventArgs e)
         {
             updateTimeDate();
+            updateCWeather();
         }
 
         /// <summary>
@@ -861,7 +939,7 @@ namespace cDashboard
                 if (this.Opacity >= (Convert.ToDouble(OpacityLevel) * 1 / 100))
                 {
                     cD_tstate = timerstate.indash; //We set the timerstate to indash to allow for timekeeping
-                    this.Opacity = Convert.ToDouble("." + OpacityLevel);
+                    this.Opacity = Convert.ToDouble(OpacityLevel) / 100;
                     fadetimertime = 0;
                     fadetimer.Stop();
                 }
@@ -1104,6 +1182,64 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+        /// <summary>
+        /// Change cWeather unit to °F
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void fToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cToolStripMenuItem.Checked = false;
+            fToolStripMenuItem.Checked = true;
+
+            replaceSetting(new string[] { "cDash", "cWeather", "Unit" }, new string[] { "cDash", "cWeather", "Unit", "F" });
+
+            //force refresh
+            TimerCounter = 99999;
+        }
+
+        /// <summary>
+        /// Change cWeather unit to °C
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fToolStripMenuItem.Checked = false;
+            cToolStripMenuItem.Checked = true;
+
+            replaceSetting(new string[] { "cDash", "cWeather", "Unit" }, new string[] { "cDash", "cWeather", "Unit", "C" });
+
+            //force refresh
+            TimerCounter = 99999;
+        }
+
+        /// <summary>
+        /// create new cWeather widget
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCWeatherToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            cWeather cWeather_new = new cWeather("NULL");
+            cWeather_new.Name = long_unique_timestamp.ToString();
+            cWeather_new.Location = new Point(10, 25);
+            cWeather_new.TopLevel = false;
+            cWeather_new.Parent = this;
+
+            Controls.Add(cWeather_new);
+            cWeather_new.Show();
+            cWeather_new.BringToFront();
+
+            //add the cWeather to settings
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
+            sw.WriteLine("cWeather;" + long_unique_timestamp.ToString() + ";ZipCode;" + "NULL");
+            sw.WriteLine("cWeather;" + long_unique_timestamp.ToString() + ";Location;10;25");
+            sw.Close();
+        }
 
         /// <summary>
         /// Set date/time/strip color as displayed in Dash
@@ -1412,7 +1548,7 @@ namespace cDashboard
             //if the user sets this to low, it could be hard to use/see
             if (Convert.ToInt32(textbox_opacity.Text) <= 15)
             {
-                MessageBox.Show("The Opacity level must be greater than 15 and less than 100");
+                MessageBox.Show("The Opacity level must be greater than 15 and less than 101");
                 textbox_opacity.Text = OpacityLevel.ToString();
                 return;
             }
@@ -1428,14 +1564,13 @@ namespace cDashboard
                 return;
             }
 
-            //if the user gives 100 (or greater) we must save it as 99 to make sure that 
-            //the it goes 99 -> .99 instead of 100 -> .10
+            //any number over 99 will save as 100
             if (OpacityLevel > 99)
             {
-                OpacityLevel = 99;
+                OpacityLevel = 100;
             }
 
-            this.Opacity = Convert.ToDouble("." + OpacityLevel.ToString());
+            this.Opacity = Convert.ToDouble(OpacityLevel) / 100;
 
             //replace the setting
             List<string> find = new List<string>();
@@ -1447,8 +1582,6 @@ namespace cDashboard
             replace.Add("Opacity");
             replace.Add(OpacityLevel.ToString());
             replaceSetting(find, replace);
-
-
         }
 
         /// <summary>
@@ -1727,6 +1860,7 @@ namespace cDashboard
         }
         #endregion
 
+        #region Extra Events
         /// <summary>
         /// called if a control is removed
         /// ex: if the x button is clicked on a child from, handle deleting the cForm
@@ -1813,7 +1947,7 @@ namespace cDashboard
         {
             menuStrip1.Focus();
         }
-
+        #endregion
     }
 
 }

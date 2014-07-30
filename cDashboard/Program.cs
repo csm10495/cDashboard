@@ -16,7 +16,7 @@ namespace cDashboard
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new cDashboard());
+              Application.Run(new cDashboard());
         }
     }
 }

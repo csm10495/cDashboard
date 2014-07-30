@@ -27,5 +27,15 @@ namespace cDashboard
         {
             this.Close();
         }
+
+        /// <summary>
+        /// opens wunderground.com with APIREF
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_weather_data_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"http://www.wunderground.com/?apiref=8468212cff0ab452");
+        }
     }
 }
