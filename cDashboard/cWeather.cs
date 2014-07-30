@@ -94,12 +94,6 @@ namespace cDashboard
                 return;
             }
 
-            if (!isOnline())
-            {
-                label_instructions.Text = "  Couldn't complete request, you are offline";
-                return;
-            }
-
             hideAllPanelsExcept(ref panel_refreshing);
             //API call #1
             //API call #2
@@ -130,6 +124,12 @@ namespace cDashboard
         /// <param name="e"></param>
         private void backgroundWorker_refresh_DoWork(object sender, DoWorkEventArgs e)
         {
+            if (!isOnline())
+            {
+                label_instructions.Text = "  Couldn't complete request, you are offline";
+                return;
+            }
+
             dict_conditions = getDictFromJsonUrl("http://api.wunderground.com/api/" + APIKEY + "/conditions/q/" + ZipCode + ".json");
             dict_forecast = getDictFromJsonUrl("http://api.wunderground.com/api/" + APIKEY + "/forecast/q/" + ZipCode + ".json");
         }
@@ -375,6 +375,7 @@ namespace cDashboard
                 label_instructions.Text = "  Couldn't complete request, you are offline";
                 return;
             }
+
             Dictionary<string, dynamic> dict_ip = getDictFromJsonUrl(@"http://www.telize.com/geoip");
             string latitude = dict_ip["latitude"].ToString();
             string longitude = dict_ip["longitude"].ToString();
