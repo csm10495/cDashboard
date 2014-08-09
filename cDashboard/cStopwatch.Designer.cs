@@ -32,10 +32,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label_time = new System.Windows.Forms.Label();
             this.sw_timer = new System.Windows.Forms.Timer(this.components);
             this.label_started_time = new System.Windows.Forms.Label();
-            this.sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,8 +50,18 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // sToolStripMenuItem
+            // 
+            this.sToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.sToolStripMenuItem.Name = "sToolStripMenuItem";
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(26, 20);
+            this.sToolStripMenuItem.Text = "S";
+            this.sToolStripMenuItem.Click += new System.EventHandler(this.sToolStripMenuItem_Click);
+            // 
             // label_time
             // 
+            this.label_time.AutoSize = true;
             this.label_time.Font = new System.Drawing.Font("Arial", 33.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_time.ForeColor = System.Drawing.Color.White;
             this.label_time.Location = new System.Drawing.Point(-3, 21);
@@ -76,15 +86,6 @@
             this.label_started_time.TabIndex = 3;
             this.label_started_time.Text = "Click the Triangle then \"(Re)Start\" to Start";
             this.label_started_time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // sToolStripMenuItem
-            // 
-            this.sToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.sToolStripMenuItem.Name = "sToolStripMenuItem";
-            this.sToolStripMenuItem.Size = new System.Drawing.Size(26, 20);
-            this.sToolStripMenuItem.Text = "S";
-            this.sToolStripMenuItem.Click += new System.EventHandler(this.sToolStripMenuItem_Click);
             // 
             // cStopwatch
             // 

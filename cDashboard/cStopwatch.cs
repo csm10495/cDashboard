@@ -48,16 +48,6 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// start the stopwatch from the menustrip
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
         /// sets the text of the label_time 
         /// </summary>
         /// <param name="tmp"></param>
@@ -67,16 +57,15 @@ namespace cDashboard
             TimeSpan tmp = (datetime_2 - startTime);
 
             //attempted fix for auto changing of TimeSpan.ToString()
-            string string_span = tmp.TotalHours.ToString().PadLeft(2, '0').Substring(0, tmp.TotalHours.ToString().PadLeft(2, '0').IndexOf("."))  + ":" + tmp.Minutes.ToString().PadLeft(2,'0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2) ;
+            string string_span = Convert.ToInt16(tmp.TotalHours).ToString().PadLeft(2, '0') +":" + tmp.Minutes.ToString().PadLeft(2, '0') + ":" + tmp.Seconds.ToString().PadLeft(2, '0') + "." + tmp.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
 
-            label_time.Text = tmp.ToString().PadRight(12,'0');
+            label_time.Text = string_span;
 
-            //tmp removal
-            //label_time.Text = tmp.ToString().Substring(0, tmp.ToString().IndexOf(".") + 3);
-            //while (label_time.Width > this.Width)
-            //{
-            //    label_time.Font = new Font(label_time.Font.FontFamily, label_time.Font.Size - 1);
-            //}
+            //attempts
+            while (label_time.Width > this.Width)
+            {
+                label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .001F);
+            }
             
             label_started_time.Text = "cStopwatch started on: " + startTime.ToLocalTime().ToString();
         }
