@@ -124,12 +124,6 @@ namespace cDashboard
         /// <param name="e"></param>
         private void backgroundWorker_refresh_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (!isOnline())
-            {
-                label_instructions.Text = "  Couldn't complete request, you are offline";
-                return;
-            }
-
             dict_conditions = getDictFromJsonUrl("http://api.wunderground.com/api/" + APIKEY + "/conditions/q/" + ZipCode + ".json");
             dict_forecast = getDictFromJsonUrl("http://api.wunderground.com/api/" + APIKEY + "/forecast/q/" + ZipCode + ".json");
         }
@@ -203,12 +197,42 @@ namespace cDashboard
         /// <returns></returns>
         private Dictionary<string, dynamic> getDictFromJsonUrl(string url)
         {
-            WebRequest request = WebRequest.Create(url);
-            WebResponse response = request.GetResponse();
-            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
-            string string_url_text = reader.ReadToEnd();
+            //predeclare before try/catch
+            WebRequest request;
+            WebResponse response;
+            System.IO.StreamReader reader;
+            Dictionary<string, dynamic> dict;
 
-            Dictionary<string, dynamic> dict = new JavaScriptSerializer().Deserialize<Dictionary<string, dynamic>>(string_url_text);
+            //try/catch is used to detect connectivity
+            //any catch should be the result of a lack of internet access
+            try
+            {
+                request = WebRequest.Create(url);
+                response = request.GetResponse();
+                reader = new System.IO.StreamReader(response.GetResponseStream());
+                string string_url_text = reader.ReadToEnd();
+                dict = new JavaScriptSerializer().Deserialize<Dictionary<string, dynamic>>(string_url_text);
+            }
+            catch
+            {
+                hideAllPanelsExcept(ref panel_zip_input);
+
+                //invoke on proper thread if needed
+                if (panel_zip_input.InvokeRequired)
+                {
+                    panel_zip_input.Invoke(new MethodInvoker(delegate
+                    {
+                        label_instructions.Text = "  Couldn't complete request, you are offline";
+                    }));
+                }
+                else
+                {
+                    label_instructions.Text = "  Couldn't complete request, you are offline";
+                }
+
+                return null;
+            }
+
 
             //special handling for weather api
             if (dict.ContainsKey("response"))
@@ -349,16 +373,40 @@ namespace cDashboard
         /// <param name="p">panel to be shown</param>
         private void hideAllPanelsExcept(ref Panel p)
         {
-            label_instructions.Text = "Input a zip code, city, state, or country, city.";
+            Panel pp = p;
 
-            foreach (Panel c in this.Controls.OfType<Panel>())
+            //invoke on proper thread (if necessary)
+            if (panel_zip_input.InvokeRequired)
             {
-                if (c != p)
+                panel_zip_input.Invoke(new MethodInvoker(delegate
                 {
-                    c.Hide();
-                }
+
+                    label_instructions.Text = "Input a zip code, city, state, or country, city.";
+
+                    foreach (Panel c in this.Controls.OfType<Panel>())
+                    {
+                        if (c != pp)
+                        {
+                            c.Hide();
+                        }
+                    }
+                    pp.Show();
+                }));
             }
-            p.Show();
+            else
+            {
+                label_instructions.Text = "Input a zip code, city, state, or country, city.";
+
+                foreach (Panel c in this.Controls.OfType<Panel>())
+                {
+                    if (c != pp)
+                    {
+                        c.Hide();
+                    }
+                }
+                pp.Show();
+            }
+
         }
 
         /// <summary>
@@ -369,14 +417,12 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_auto_locate_Click(object sender, EventArgs e)
         {
-
-            if (!isOnline())
-            {
-                label_instructions.Text = "  Couldn't complete request, you are offline";
-                return;
-            }
-
             Dictionary<string, dynamic> dict_ip = getDictFromJsonUrl(@"http://www.telize.com/geoip");
+
+            //avoid continuing if getDic
+            if (dict_ip == null)
+                return;
+
             string latitude = dict_ip["latitude"].ToString();
             string longitude = dict_ip["longitude"].ToString();
 
@@ -387,27 +433,5 @@ namespace cDashboard
             getWeatherInfo();
         }
 
-        /// <summary>
-        /// true: Online
-        /// false: Offline
-        /// use Google Free Public DNS address as Ping-Point
-        /// </summary>
-        /// <returns></returns>
-        private bool isOnline()
-        {
-            //error would mean, fail to ping, so return false for offline
-            try
-            {
-                if (new Ping().Send("8.8.8.8").Status == IPStatus.Success)
-                    return true;
-                else
-                    return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-        }
     }
 }
