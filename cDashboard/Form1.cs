@@ -161,7 +161,6 @@ namespace cDashboard
             //THE settings_list WILL NOT INCLUDE BLANK LINES OR LINES STARTING WITH #
             List<List<string>> settings_list = getSettingsList();
 
-
             //Read settings and create stickies
             createStickiesFromFiles(settings_list);
 

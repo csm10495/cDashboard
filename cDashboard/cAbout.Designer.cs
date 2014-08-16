@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cAbout));
             this.picture_icon = new System.Windows.Forms.PictureBox();
             this.label_project_name = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label_weather_data = new System.Windows.Forms.LinkLabel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.timer_animation = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picture_icon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,11 +123,17 @@
             this.panel2.Size = new System.Drawing.Size(226, 2);
             this.panel2.TabIndex = 5;
             // 
+            // timer_animation
+            // 
+            this.timer_animation.Interval = 1;
+            this.timer_animation.Tick += new System.EventHandler(this.timer_animation_Tick);
+            // 
             // cAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 221);
+            this.Controls.Add(this.picture_icon);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.label_weather_data);
             this.Controls.Add(this.panel1);
@@ -133,7 +141,6 @@
             this.Controls.Add(this.button_close);
             this.Controls.Add(this.label_details);
             this.Controls.Add(this.label_project_name);
-            this.Controls.Add(this.picture_icon);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -144,6 +151,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "cAbout cDashboard";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.cAbout_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picture_icon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,6 +168,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.LinkLabel label_weather_data;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Timer timer_animation;
 
     }
 }

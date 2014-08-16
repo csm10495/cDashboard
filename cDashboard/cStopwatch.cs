@@ -152,7 +152,8 @@ namespace cDashboard
             //attempts
             while (label_time.Width > this.Width && label_time.Text.Length != 11)
             {
-                label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .0001F);
+                //lowered precision from .0001F to .1F to speed up application startup
+                label_time.Font = new Font(label_time.Font.FontFamily, Convert.ToSingle(label_time.Font.Size) - .1F);
             }
         }
 
