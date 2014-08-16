@@ -124,7 +124,6 @@ namespace cDashboard
             }
         }
 
-
         /// <summary>
         /// change the font of the current cSticky
         /// </summary>
@@ -132,6 +131,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void changeFontToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //make fontdialog reflect current font of rtb
+            fontDialog1.Font = rtb.SelectionFont;
+
             DialogResult dr = fontDialog1.ShowDialog();
 
             //only do something, if user clicks ok
