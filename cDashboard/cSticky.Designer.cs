@@ -128,6 +128,7 @@
             // 
             // rtb
             // 
+            this.rtb.AcceptsTab = true;
             this.rtb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -215,7 +216,6 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.rtb);
             this.Controls.Add(this.menustrip);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menustrip;
             this.MaximizeBox = false;
