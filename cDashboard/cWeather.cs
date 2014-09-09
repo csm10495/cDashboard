@@ -19,24 +19,25 @@ namespace cDashboard
     {
         #region Global Variables
         /// <summary>
-        /// api key for weather underground api
+        /// APPID used by the Yahoo API
         /// </summary>
-        private readonly string APIKEY = "9252b3b729b18d24";
-
-        /// <summary>
-        /// a dictionary from the json for local conditions
-        /// </summary>
-        private Dictionary<string, dynamic> dict_conditions;
+        private readonly string APPID = "dj0yJmk9b1dCT3RzQ0xxU2lSJmQ9WVdrOVRrZE9ZV042TkdNbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD0yOA--";
 
         /// <summary>
         /// a dictionary from the json for local forecast
+        /// from Yahoo
         /// </summary>
-        private Dictionary<string, dynamic> dict_forecast;
+        private Dictionary<string, dynamic> dict_y_forecast;
 
         /// <summary>
-        /// zip code represented as a string
+        /// Yahoo Where on Earth ID represented by a string
         /// </summary>
-        public string ZipCode = "";
+        public string WOEID = "";
+
+        /// <summary>
+        /// flag will be tripped to say if the user is offline
+        /// </summary>
+        private bool OfflineFlag = false;
         #endregion
 
         #region Constructors
@@ -51,12 +52,12 @@ namespace cDashboard
         /// <summary>
         /// Constructor with zip
         /// </summary>
-        public cWeather(string string_zip)
+        public cWeather(string string_w)
         {
             InitializeComponent();
 
-            ZipCode = string_zip;
-            if (ZipCode == "NULL")
+            WOEID = string_w;
+            if (WOEID == "NULL" || WOEID == "" || WOEID == null)
             {
                 hideAllPanelsExcept(ref panel_zip_input);
             }
@@ -67,10 +68,19 @@ namespace cDashboard
         /// <summary>
         /// updates label_zip with loc
         /// makes sure the sizing of the label is good
+        /// updated to remove Yahoo prefix
         /// </summary>
         /// <param name="loc">text to update label with</param>
         private void updateLabelZip(string loc)
         {
+            //remove Yahoo prefix
+            loc = loc.Substring(loc.IndexOf("Yahoo! Weather - ") + 17);
+
+            //remove whitespace and get rid of possible trailing commas
+            loc = loc.Trim();
+            if (loc[loc.Length - 1] == ',')
+                loc = loc.Substring(0, loc.Length - 1);
+
             //update label_zip to have the observation display location
             label_zip.Text = loc;
 
@@ -88,33 +98,17 @@ namespace cDashboard
         public void getWeatherInfo()
         {
             //if location is null, don't bother trying to get data
-            if (ZipCode == "NULL" || ZipCode == "")
+            if (WOEID == "NULL" || WOEID == "" || WOEID == null)
             {
                 hideAllPanelsExcept(ref panel_zip_input);
+                label_instructions.Text = "       Location not found, please try again";
                 return;
             }
 
             hideAllPanelsExcept(ref panel_refreshing);
-            //API call #1
-            //API call #2
-            backgroundWorker_refresh.RunWorkerAsync();
-        }
 
-        /// <summary>
-        /// returns current wind conditions
-        /// </summary>
-        /// <returns></returns>
-        private string getWind()
-        {
-            int wind = Convert.ToInt16(dict_conditions["current_observation"]["wind_mph"]);
-            if (wind != 0)
-            {
-                return "Wind: " + wind + " MPH " + dict_conditions["current_observation"]["wind_dir"];
-            }
-            else
-            {
-                return "Calm, No Wind";
-            }
+            //API Calls for WOEID, Weather
+            backgroundWorker_refresh.RunWorkerAsync();
         }
 
         /// <summary>
@@ -124,8 +118,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void backgroundWorker_refresh_DoWork(object sender, DoWorkEventArgs e)
         {
-            dict_conditions = getDictFromJsonUrl("http://api.wunderground.com/api/" + APIKEY + "/conditions/q/" + ZipCode + ".json");
-            dict_forecast = getDictFromJsonUrl("http://api.wunderground.com/api/" + APIKEY + "/forecast/q/" + ZipCode + ".json");
+            //at this point a WOEID should exist
+
+            dict_y_forecast = getDictFromJsonUrl("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D" + WOEID + "&format=json&u=f");
         }
 
         /// <summary>
@@ -135,15 +130,16 @@ namespace cDashboard
         /// <param name="e"></param>
         private void backgroundWorker_refresh_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //if dict_conditions is null, invalid ZipCode was provided
-            if (dict_conditions == null)
+            //this can only happen if something went wrong
+            //ex: no internet
+            if (dict_y_forecast == null)
                 return;
 
             //updates the label_zip with correct location and size
-            updateLabelZip(dict_conditions["current_observation"]["display_location"]["full"]);
+            updateLabelZip(dict_y_forecast["query"]["results"]["channel"]["title"]);
 
             //updates pictureBox_weather_img with the current icon
-            pictureBox_weather_img.Load(dict_conditions["current_observation"]["icon_url"]);
+            pictureBox_weather_img.Load(getImageURLFromYDescription(dict_y_forecast["query"]["results"]["channel"]["item"]["description"]));
 
             //set label to say when data was fetched
             refreshDataToolStripMenuItem.Text = "Refresh Data Now   -   (Last Updated: " + DateTime.Now.ToString() + ")";
@@ -155,39 +151,138 @@ namespace cDashboard
             if (getSpecificSetting(new string[] { "cDash", "cWeather", "Unit" })[0] == "F")
             {
                 //get current temperature and put into label_current_temp
-                label_current_temp.Text = Convert.ToInt16(dict_conditions["current_observation"]["temp_f"]) + "°F";
+                label_current_temp.Text = Convert.ToInt16(dict_y_forecast["query"]["results"]["channel"]["item"]["condition"]["temp"]) + "°F";
 
                 //get high and put into label_high
-                label_high.Text = "High: " + dict_forecast["forecast"]["simpleforecast"]["forecastday"][0]["high"]["fahrenheit"] + "°F";
+                label_high.Text = "High: " + dict_y_forecast["query"]["results"]["channel"]["item"]["forecast"][0]["high"] + "°F";
 
                 //get low and put into label_low
-                label_low.Text = "Low: " + dict_forecast["forecast"]["simpleforecast"]["forecastday"][0]["low"]["fahrenheit"] + "°F";
+                label_low.Text = "Low: " + dict_y_forecast["query"]["results"]["channel"]["item"]["forecast"][0]["low"] + "°F";
             }
             else  //handle celsius
             {
                 //get current temperature and put into label_current_temp
-                label_current_temp.Text = Convert.ToInt16(dict_conditions["current_observation"]["temp_c"]) + "°C";
+                label_current_temp.Text = (getCelsius(Convert.ToDouble(dict_y_forecast["query"]["results"]["channel"]["item"]["condition"]["temp"]))) + "°C";
 
                 //get high and put into label_high
-                label_high.Text = "High: " + dict_forecast["forecast"]["simpleforecast"]["forecastday"][0]["high"]["celsius"] + "°C";
+                label_high.Text = "High: " + (getCelsius(Convert.ToDouble(dict_y_forecast["query"]["results"]["channel"]["item"]["forecast"][0]["high"]))) + "°C";
 
                 //get low and put into label_low
-                label_low.Text = "Low: " + dict_forecast["forecast"]["simpleforecast"]["forecastday"][0]["low"]["celsius"] + "°C";
+                label_low.Text = "Low: " + (getCelsius(Convert.ToDouble(dict_y_forecast["query"]["results"]["channel"]["item"]["forecast"][0]["low"]))).ToString() + "°C";
             }
 
+
             //get current humidity and put into label_humidity
-            label_humidity.Text = "Humidity: " + dict_conditions["current_observation"]["relative_humidity"];
+            label_humidity.Text = "Humidity: " + dict_y_forecast["query"]["results"]["channel"]["atmosphere"]["humidity"] + "%";
 
             //get current wind and put into label_wind
             label_wind.Text = getWind();
 
-            //get precip chance and put into label_pop
-            label_pop.Text = dict_forecast["forecast"]["simpleforecast"]["forecastday"][0]["pop"] + "% Chance of Rain";
+            //get visibility, chance and put into label_visibility
+            label_precip.Text = getPrecip();
 
             //get weather string and put into label_weather
-            label_weather.Text = dict_conditions["current_observation"]["weather"];
+            label_weather.Text = (dict_y_forecast["query"]["results"]["channel"]["item"]["condition"]["text"]).Trim();
 
+            //bring up the weather
             hideAllPanelsExcept(ref panel_weather_ui);
+        }
+
+        /// <summary>
+        /// get string relating to precipitation/later conditions 
+        /// </summary>
+        /// <returns></returns>
+        private string getPrecip()
+        {
+            string baro_state = dict_y_forecast["query"]["results"]["channel"]["atmosphere"]["rising"];
+
+            //steady
+            if (baro_state == "0")
+            {
+                return "➔ Similar";
+            }
+            else if (baro_state == "1") //rising
+            {
+                return "➔ Clearing";
+            }
+            else if (baro_state == "2") //falling
+            {
+                return "➔ Precipitation";
+            }
+
+            //shouldn't ever happen
+            return "➔ Odd Conditions";
+        }
+
+        /// <summary>
+        /// uses the Yahoo API to get a WOEID (Where on Earth ID) for a location
+        /// </summary>
+        /// <param name="zip">given location as a string</param>
+        /// <returns></returns>
+        private string getWOEID(string zip)
+        {
+            Dictionary<string, dynamic> d_tmp = getDictFromJsonUrl("http://where.yahooapis.com/v1/places.q('" + zip + "')?appid=" + APPID + "&format=json");
+
+            if (d_tmp == null)
+                return null;
+            else
+                return (d_tmp["places"]["place"][0]["woeid"]).ToString();
+        }
+
+        /// <summary>
+        /// returns current wind conditions
+        /// </summary>
+        /// <returns></returns>
+        private string getWind()
+        {
+            //when there is no wind data, an error will be thrown
+            try
+            {
+                int wind = Convert.ToInt16(dict_y_forecast["query"]["results"]["channel"]["wind"]["speed"]);
+                int wind_dir = Convert.ToInt16(dict_y_forecast["query"]["results"]["channel"]["wind"]["direction"]);
+                if (wind != 0)
+                {
+                    int val = Convert.ToInt16((wind_dir / 22.5) + .5);
+                    string[] arr = { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW" };
+
+                    return "Wind: " + wind + " MPH " + arr[(val % 16)];
+                }
+                else
+                {
+                    return "Calm, No Wind";
+                }
+            }
+            catch
+            {
+                return "No Wind Data";
+            }
+        }
+
+        /// <summary>
+        /// returns URL for .gif from Yahoo Weather Description
+        /// </summary>
+        /// <param name="y_description">description text from Yahoo API</param>
+        /// <returns></returns>
+        private string getImageURLFromYDescription(string y_description)
+        {
+            try
+            {
+                return y_description.Substring(y_description.IndexOf("<img src=\"") + 10, y_description.IndexOf(".gif") - 6 - y_description.IndexOf("<img src=\""));
+            }
+            catch
+            {
+                return "http://www.yahoo.com/favicon.ico";
+            }
+        }
+
+        /// <summary>
+        /// converts farenheit to celcius
+        /// </summary>
+        /// <param name="f">temp in f</param>
+        /// <returns></returns>
+        private int getCelsius(double f)
+        {
+            return Convert.ToInt16((5.0 / 9.0) * (f - 32.0));
         }
 
         /// <summary>
@@ -215,6 +310,8 @@ namespace cDashboard
             }
             catch
             {
+                OfflineFlag = true;
+
                 hideAllPanelsExcept(ref panel_zip_input);
 
                 //invoke on proper thread if needed
@@ -222,54 +319,60 @@ namespace cDashboard
                 {
                     panel_zip_input.Invoke(new MethodInvoker(delegate
                     {
-                        label_instructions.Text = "  Couldn't complete request, you are offline";
+                        label_instructions.Text = "Couldn't complete request, you may be offline";
                     }));
                 }
                 else
                 {
-                    label_instructions.Text = "  Couldn't complete request, you are offline";
+                    label_instructions.Text = "Couldn't complete request, you may be offline";
                 }
 
                 return null;
             }
 
+            //return dict if using Telize for this call
+            //avoids confusing logic
+            if (url.Contains("telize"))
+                return dict;
 
-            //special handling for weather api
-            if (dict.ContainsKey("response"))
+            //no places found for woeid
+            if (url.Contains("where.yah") && Convert.ToInt16(dict["places"]["total"]) == 0)
             {
-                //special handling for error
-                if (dict["response"].ContainsKey("error"))
+                //invoke on proper thread
+                panel_zip_input.Invoke(new MethodInvoker(delegate
                 {
-                    //invoke on proper thread
-                    panel_zip_input.Invoke(new MethodInvoker(delegate
-                    {
-                        hideAllPanelsExcept(ref panel_zip_input);
-                        label_instructions.Text = "       Location not found, please try again";
-                    }));
+                    hideAllPanelsExcept(ref panel_zip_input);
+                    label_instructions.Text = "       Location not found, please try again";
+                }));
 
-                    ZipCode = "NULL";
-                    replaceSetting(new string[] { "cWeather", this.Name, "ZipCode" }, new string[] { "cWeather", this.Name, "ZipCode", "NULL" });
+                WOEID = "NULL";
+                replaceSetting(new string[] { "cWeather", this.Name, "WOEID" }, new string[] { "cWeather", this.Name, "WOEID", "NULL" });
 
-                    return null;
-                }
+                return null;
+            }
 
-                //special handling for ambiguity
-                if (dict["response"].ContainsKey("results"))
+            //woeid found! but no weather data available (eg: atlantic ocean)
+            if (!url.Contains("where.yah") && dict["query"]["results"]["channel"]["title"] == "Yahoo! Weather - Error")
+            {
+                //invoke on proper thread
+                panel_zip_input.Invoke(new MethodInvoker(delegate
                 {
-                    string zmw = dict["response"]["results"][0]["zmw"];
-                    ZipCode = "zmw:" + zmw;
-                    replaceSetting(new string[] { "cWeather", this.Name, "ZipCode" }, new string[] { "cWeather", this.Name, "ZipCode", ZipCode });
-                    string new_url = url.Substring(0, url.LastIndexOf(@"/") + 1) + ZipCode + ".json";
-                    return getDictFromJsonUrl(new_url);
-                }
+                    hideAllPanelsExcept(ref panel_zip_input);
+                    label_instructions.Text = "       No data available, please try again";
+                }));
+
+                WOEID = "NULL";
+                replaceSetting(new string[] { "cWeather", this.Name, "WOEID" }, new string[] { "cWeather", this.Name, "WOEID", "NULL" });
+
+                return null;
             }
 
             return dict;
+
         }
         #endregion
 
         #region MenuStrip Related
-
         /// <summary>
         /// used to change location for weather data
         /// </summary>
@@ -288,7 +391,8 @@ namespace cDashboard
         /// <param name="e"></param>
         private void refreshDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            getWeatherInfo();
+            if (!backgroundWorker_refresh.IsBusy)
+                getWeatherInfo();
         }
 
         /// <summary>
@@ -310,7 +414,6 @@ namespace cDashboard
         {
             this.Close();
         }
-
         #endregion
 
         /// <summary>
@@ -320,8 +423,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_set_Click(object sender, EventArgs e)
         {
-            ZipCode = rtb_input.Text;
-            replaceSetting(new string[] { "cWeather", this.Name, "ZipCode" }, new string[] { "cWeather", this.Name, "ZipCode", ZipCode });
+            WOEID = getWOEID(rtb_input.Text);
+
+            replaceSetting(new string[] { "cWeather", this.Name, "WOEID" }, new string[] { "cWeather", this.Name, "WOEID", WOEID });
 
             getWeatherInfo();
         }
@@ -336,7 +440,7 @@ namespace cDashboard
             rtb_input.SelectionAlignment = System.Windows.Forms.HorizontalAlignment.Center;
 
             //if location is null, don't bother trying to get data
-            if (ZipCode == "NULL" || ZipCode == "")
+            if (WOEID == "NULL" || WOEID == "" || WOEID == null)
             {
                 hideAllPanelsExcept(ref panel_zip_input);
             }
@@ -364,7 +468,7 @@ namespace cDashboard
         {
             //call fade_out, then open web browser
             ((cDashboard)this.Parent).fade_out();
-            System.Diagnostics.Process.Start(dict_conditions["current_observation"]["forecast_url"] + "?apiref=8468212cff0ab452");
+            System.Diagnostics.Process.Start(dict_y_forecast["query"]["results"]["channel"]["item"]["link"]);
         }
 
         /// <summary>
@@ -381,7 +485,8 @@ namespace cDashboard
                 panel_zip_input.Invoke(new MethodInvoker(delegate
                 {
 
-                    label_instructions.Text = "Input a zip code, city, state, or country, city.";
+                    if (!OfflineFlag)
+                        label_instructions.Text = "Input a zip code, city, state, or country, city.";
 
                     foreach (Panel c in this.Controls.OfType<Panel>())
                     {
@@ -395,7 +500,8 @@ namespace cDashboard
             }
             else
             {
-                label_instructions.Text = "Input a zip code, city, state, or country, city.";
+                if (!OfflineFlag)
+                    label_instructions.Text = "Input a zip code, city, state, or country, city.";
 
                 foreach (Panel c in this.Controls.OfType<Panel>())
                 {
@@ -426,12 +532,11 @@ namespace cDashboard
             string latitude = dict_ip["latitude"].ToString();
             string longitude = dict_ip["longitude"].ToString();
 
-            ZipCode = latitude + "," + longitude;
-            replaceSetting(new string[] { "cWeather", this.Name, "ZipCode" }, new string[] { "cWeather", this.Name, "ZipCode", ZipCode });
+            WOEID = getWOEID(latitude + "," + longitude);
+            replaceSetting(new string[] { "cWeather", this.Name, "WOEID" }, new string[] { "cWeather", this.Name, "WOEID", WOEID });
 
             //gets weather info based on new geolocated location
             getWeatherInfo();
         }
-
     }
 }

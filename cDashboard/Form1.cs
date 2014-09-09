@@ -310,12 +310,12 @@ namespace cDashboard
                         this_cWeather.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
                     }
 
-                    if (currentline[2] == "ZipCode")
+                    if (currentline[2] == "WOEID")
                     {
-                        this_cWeather.ZipCode = currentline[3];
+                        this_cWeather.WOEID = currentline[3];
 
-                        //if zip code is set, get weather info
-                        if (this_cWeather.ZipCode != "NULL")
+                        //if WOEID is set, get weather info
+                        if (this_cWeather.WOEID != "NULL")
                         {
                             this_cWeather.getWeatherInfo();
                         }
@@ -1235,7 +1235,7 @@ namespace cDashboard
 
             //add the cWeather to settings
             System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
-            sw.WriteLine("cWeather;" + long_unique_timestamp.ToString() + ";ZipCode;" + "NULL");
+            sw.WriteLine("cWeather;" + long_unique_timestamp.ToString() + ";WOEID;" + "NULL");
             sw.WriteLine("cWeather;" + long_unique_timestamp.ToString() + ";Location;10;25");
             sw.Close();
         }

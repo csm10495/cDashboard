@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cWeather));
             this.button_set = new System.Windows.Forms.Button();
             this.panel_zip_input = new System.Windows.Forms.Panel();
@@ -40,25 +41,26 @@
             this.changeLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_weather_ui = new System.Windows.Forms.Panel();
-            this.pictureBox_attrib = new System.Windows.Forms.PictureBox();
             this.label_zip = new System.Windows.Forms.Label();
             this.label_weather = new System.Windows.Forms.Label();
-            this.label_pop = new System.Windows.Forms.Label();
-            this.label_wind = new System.Windows.Forms.Label();
+            this.label_precip = new System.Windows.Forms.Label();
             this.label_humidity = new System.Windows.Forms.Label();
             this.label_low = new System.Windows.Forms.Label();
             this.label_high = new System.Windows.Forms.Label();
             this.label_current_temp = new System.Windows.Forms.Label();
             this.pictureBox_weather_img = new System.Windows.Forms.PictureBox();
+            this.pictureBox_attrib = new System.Windows.Forms.PictureBox();
+            this.label_wind = new System.Windows.Forms.Label();
             this.panel_refreshing = new System.Windows.Forms.Panel();
             this.label_refreshing = new System.Windows.Forms.Label();
             this.pictureBox_logo = new System.Windows.Forms.PictureBox();
             this.backgroundWorker_refresh = new System.ComponentModel.BackgroundWorker();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.panel_zip_input.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.panel_weather_ui.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_attrib)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_weather_img)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_attrib)).BeginInit();
             this.panel_refreshing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_logo)).BeginInit();
             this.SuspendLayout();
@@ -114,7 +116,7 @@
             this.label_instructions.Location = new System.Drawing.Point(3, 4);
             this.label_instructions.MaximumSize = new System.Drawing.Size(400, 0);
             this.label_instructions.Name = "label_instructions";
-            this.label_instructions.Size = new System.Drawing.Size(275, 15);
+            this.label_instructions.Size = new System.Drawing.Size(273, 15);
             this.label_instructions.TabIndex = 2;
             this.label_instructions.Text = "Input a zip code, city, state, or country, city.";
             // 
@@ -185,33 +187,22 @@
             // panel_weather_ui
             // 
             this.panel_weather_ui.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.panel_weather_ui.Controls.Add(this.pictureBox_attrib);
             this.panel_weather_ui.Controls.Add(this.label_zip);
             this.panel_weather_ui.Controls.Add(this.label_weather);
-            this.panel_weather_ui.Controls.Add(this.label_pop);
-            this.panel_weather_ui.Controls.Add(this.label_wind);
+            this.panel_weather_ui.Controls.Add(this.label_precip);
             this.panel_weather_ui.Controls.Add(this.label_humidity);
             this.panel_weather_ui.Controls.Add(this.label_low);
             this.panel_weather_ui.Controls.Add(this.label_high);
             this.panel_weather_ui.Controls.Add(this.label_current_temp);
             this.panel_weather_ui.Controls.Add(this.pictureBox_weather_img);
+            this.panel_weather_ui.Controls.Add(this.pictureBox_attrib);
+            this.panel_weather_ui.Controls.Add(this.label_wind);
             this.panel_weather_ui.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_weather_ui.Location = new System.Drawing.Point(0, 24);
             this.panel_weather_ui.Name = "panel_weather_ui";
             this.panel_weather_ui.Size = new System.Drawing.Size(280, 125);
             this.panel_weather_ui.TabIndex = 3;
             this.panel_weather_ui.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_weather_ui_MouseDown);
-            // 
-            // pictureBox_attrib
-            // 
-            this.pictureBox_attrib.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_attrib.Image")));
-            this.pictureBox_attrib.Location = new System.Drawing.Point(8, 102);
-            this.pictureBox_attrib.Name = "pictureBox_attrib";
-            this.pictureBox_attrib.Size = new System.Drawing.Size(92, 19);
-            this.pictureBox_attrib.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox_attrib.TabIndex = 10;
-            this.pictureBox_attrib.TabStop = false;
-            this.pictureBox_attrib.Click += new System.EventHandler(this.pictureBox_attrib_Click);
             // 
             // label_zip
             // 
@@ -227,44 +218,33 @@
             this.label_zip.TabIndex = 0;
             this.label_zip.Text = "11581";
             this.label_zip.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_zip, "Location for this weather information");
             // 
             // label_weather
             // 
             this.label_weather.AutoSize = true;
             this.label_weather.Font = new System.Drawing.Font("Arial Narrow", 11F, System.Drawing.FontStyle.Bold);
             this.label_weather.ForeColor = System.Drawing.Color.White;
-            this.label_weather.Location = new System.Drawing.Point(4, 60);
+            this.label_weather.Location = new System.Drawing.Point(4, 58);
             this.label_weather.Name = "label_weather";
             this.label_weather.Size = new System.Drawing.Size(91, 20);
             this.label_weather.TabIndex = 9;
             this.label_weather.Text = "Partly Cloudy";
             this.label_weather.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_weather, "Current weather condition");
             // 
-            // label_pop
+            // label_precip
             // 
-            this.label_pop.AutoSize = true;
-            this.label_pop.Font = new System.Drawing.Font("Arial Narrow", 11F, System.Drawing.FontStyle.Bold);
-            this.label_pop.ForeColor = System.Drawing.Color.White;
-            this.label_pop.Location = new System.Drawing.Point(4, 82);
-            this.label_pop.Name = "label_pop";
-            this.label_pop.Size = new System.Drawing.Size(136, 20);
-            this.label_pop.TabIndex = 8;
-            this.label_pop.Text = "000% Chance of Rain";
-            this.label_pop.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label_wind
-            // 
-            this.label_wind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_wind.BackColor = System.Drawing.Color.Transparent;
-            this.label_wind.Font = new System.Drawing.Font("Arial Narrow", 13F, System.Drawing.FontStyle.Bold);
-            this.label_wind.ForeColor = System.Drawing.Color.White;
-            this.label_wind.Location = new System.Drawing.Point(120, 98);
-            this.label_wind.Name = "label_wind";
-            this.label_wind.Size = new System.Drawing.Size(160, 23);
-            this.label_wind.TabIndex = 7;
-            this.label_wind.Text = "Wind: 000 MPH SSE";
-            this.label_wind.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label_precip.AutoSize = true;
+            this.label_precip.Font = new System.Drawing.Font("Arial Narrow", 11F, System.Drawing.FontStyle.Bold);
+            this.label_precip.ForeColor = System.Drawing.Color.White;
+            this.label_precip.Location = new System.Drawing.Point(4, 80);
+            this.label_precip.Name = "label_precip";
+            this.label_precip.Size = new System.Drawing.Size(136, 20);
+            this.label_precip.TabIndex = 8;
+            this.label_precip.Text = "000% Chance of Rain";
+            this.label_precip.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_precip, "Later...");
             // 
             // label_humidity
             // 
@@ -279,6 +259,7 @@
             this.label_humidity.TabIndex = 6;
             this.label_humidity.Text = "Humidity: ";
             this.label_humidity.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_humidity, "Humidity percentage");
             // 
             // label_low
             // 
@@ -291,6 +272,7 @@
             this.label_low.TabIndex = 5;
             this.label_low.Text = "Low: ";
             this.label_low.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_low, "Low temperature for the day");
             // 
             // label_high
             // 
@@ -303,6 +285,7 @@
             this.label_high.TabIndex = 4;
             this.label_high.Text = "High:";
             this.label_high.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_high, "High temperature for the day");
             // 
             // label_current_temp
             // 
@@ -317,6 +300,7 @@
             this.label_current_temp.TabIndex = 3;
             this.label_current_temp.Text = "110°F";
             this.label_current_temp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_current_temp, "Current Temperature");
             // 
             // pictureBox_weather_img
             // 
@@ -324,8 +308,37 @@
             this.pictureBox_weather_img.Location = new System.Drawing.Point(6, 5);
             this.pictureBox_weather_img.Name = "pictureBox_weather_img";
             this.pictureBox_weather_img.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox_weather_img.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox_weather_img.TabIndex = 1;
             this.pictureBox_weather_img.TabStop = false;
+            this.toolTip.SetToolTip(this.pictureBox_weather_img, "Weather icon");
+            // 
+            // pictureBox_attrib
+            // 
+            this.pictureBox_attrib.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_attrib.Image")));
+            this.pictureBox_attrib.Location = new System.Drawing.Point(2, 94);
+            this.pictureBox_attrib.Name = "pictureBox_attrib";
+            this.pictureBox_attrib.Size = new System.Drawing.Size(130, 35);
+            this.pictureBox_attrib.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox_attrib.TabIndex = 10;
+            this.pictureBox_attrib.TabStop = false;
+            this.toolTip.SetToolTip(this.pictureBox_attrib, "Yahoooooo!");
+            this.pictureBox_attrib.Click += new System.EventHandler(this.pictureBox_attrib_Click);
+            // 
+            // label_wind
+            // 
+            this.label_wind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_wind.BackColor = System.Drawing.Color.Transparent;
+            this.label_wind.Font = new System.Drawing.Font("Arial Narrow", 13F, System.Drawing.FontStyle.Bold);
+            this.label_wind.ForeColor = System.Drawing.Color.White;
+            this.label_wind.Location = new System.Drawing.Point(120, 98);
+            this.label_wind.Name = "label_wind";
+            this.label_wind.Size = new System.Drawing.Size(160, 23);
+            this.label_wind.TabIndex = 7;
+            this.label_wind.Text = "Wind: 000 MPH SSE";
+            this.label_wind.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label_wind, "Wind speed and direction");
             // 
             // panel_refreshing
             // 
@@ -352,9 +365,9 @@
             // pictureBox_logo
             // 
             this.pictureBox_logo.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_logo.Image")));
-            this.pictureBox_logo.Location = new System.Drawing.Point(26, 41);
+            this.pictureBox_logo.Location = new System.Drawing.Point(8, 32);
             this.pictureBox_logo.Name = "pictureBox_logo";
-            this.pictureBox_logo.Size = new System.Drawing.Size(227, 71);
+            this.pictureBox_logo.Size = new System.Drawing.Size(260, 84);
             this.pictureBox_logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox_logo.TabIndex = 1;
             this.pictureBox_logo.TabStop = false;
@@ -371,10 +384,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(280, 149);
+            this.Controls.Add(this.panel_weather_ui);
             this.Controls.Add(this.panel_zip_input);
             this.Controls.Add(this.panel_refreshing);
-            this.Controls.Add(this.panel_weather_ui);
             this.Controls.Add(this.menuStrip);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "cWeather";
             this.Text = "cWeather";
@@ -385,8 +399,8 @@
             this.menuStrip.PerformLayout();
             this.panel_weather_ui.ResumeLayout(false);
             this.panel_weather_ui.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_attrib)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_weather_img)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_attrib)).EndInit();
             this.panel_refreshing.ResumeLayout(false);
             this.panel_refreshing.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_logo)).EndInit();
@@ -414,7 +428,7 @@
         private System.Windows.Forms.Label label_high;
         private System.Windows.Forms.Label label_humidity;
         private System.Windows.Forms.Label label_wind;
-        private System.Windows.Forms.Label label_pop;
+        private System.Windows.Forms.Label label_precip;
         private System.Windows.Forms.Label label_weather;
         private System.Windows.Forms.PictureBox pictureBox_attrib;
         private System.Windows.Forms.Panel panel_refreshing;
@@ -422,5 +436,6 @@
         private System.Windows.Forms.PictureBox pictureBox_logo;
         private System.ComponentModel.BackgroundWorker backgroundWorker_refresh;
         private System.Windows.Forms.Button button_auto_locate;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
