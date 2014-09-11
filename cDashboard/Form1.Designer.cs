@@ -65,9 +65,10 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setCDashDefaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cDashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashBackgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setCDashBackcolorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.setCDashBackcolorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashWallpaperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCDashWallpaperImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.combobox_wallpaper = new System.Windows.Forms.ToolStripComboBox();
@@ -76,14 +77,17 @@
             this.setFadeTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setInMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
+            this.setDateTimeColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cStickyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favoriteColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.favoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCWeatherUnitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setFavoriteStickyColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setFavoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setDateTimeColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importCDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -203,8 +207,8 @@
             this.newCPicToolStripMenuItem,
             this.newCStopwatchToolStripMenuItem,
             this.newCWeatherToolStripMenuItem,
-            this.hideToolStripMenuItem,
             this.aboutToolStripMenuItem,
+            this.hideToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
@@ -343,42 +347,48 @@
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setCDashDefaultMonitorToolStripMenuItem,
+            this.cDashToolStripMenuItem,
+            this.cStickyToolStripMenuItem,
+            this.cWeatherToolStripMenuItem,
+            this.cDashDataToolStripMenuItem});
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences";
+            // 
+            // cDashToolStripMenuItem
+            // 
+            this.cDashToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.defaultMonitorToolStripMenuItem,
             this.cDashBackgroundToolStripMenuItem,
             this.setOpacityToolStripMenuItem,
             this.setFadeTimeToolStripMenuItem,
-            this.setCWeatherUnitToolStripMenuItem,
-            this.setFavoriteStickyColorToolStripMenuItem,
-            this.setFavoriteFontToolStripMenuItem,
-            this.setDateTimeColorToolStripMenuItem,
-            this.exportBackupToolStripMenuItem,
-            this.importCDashDataToolStripMenuItem});
-            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.preferencesToolStripMenuItem.Text = "Preferences";
+            this.setDateTimeColorToolStripMenuItem});
+            this.cDashToolStripMenuItem.Name = "cDashToolStripMenuItem";
+            this.cDashToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.cDashToolStripMenuItem.Text = "cDash...";
             // 
-            // setCDashDefaultMonitorToolStripMenuItem
+            // defaultMonitorToolStripMenuItem
             // 
-            this.setCDashDefaultMonitorToolStripMenuItem.Name = "setCDashDefaultMonitorToolStripMenuItem";
-            this.setCDashDefaultMonitorToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setCDashDefaultMonitorToolStripMenuItem.Text = "Set Default Monitor...";
-            this.setCDashDefaultMonitorToolStripMenuItem.Click += new System.EventHandler(this.setCDashDefaultMonitorToolStripMenuItem_Click);
+            this.defaultMonitorToolStripMenuItem.Name = "defaultMonitorToolStripMenuItem";
+            this.defaultMonitorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.defaultMonitorToolStripMenuItem.Text = "Default Monitor...";
+            this.defaultMonitorToolStripMenuItem.Click += new System.EventHandler(this.defaultMonitorToolStripMenuItem_Click);
             // 
             // cDashBackgroundToolStripMenuItem
             // 
             this.cDashBackgroundToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setCDashBackcolorToolStripMenuItem1,
+            this.setCDashBackcolorToolStripMenuItem,
             this.cDashWallpaperToolStripMenuItem});
             this.cDashBackgroundToolStripMenuItem.Name = "cDashBackgroundToolStripMenuItem";
-            this.cDashBackgroundToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.cDashBackgroundToolStripMenuItem.Text = "cDash Background";
+            this.cDashBackgroundToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.cDashBackgroundToolStripMenuItem.Text = "Background";
             // 
-            // setCDashBackcolorToolStripMenuItem1
+            // setCDashBackcolorToolStripMenuItem
             // 
-            this.setCDashBackcolorToolStripMenuItem1.Name = "setCDashBackcolorToolStripMenuItem1";
-            this.setCDashBackcolorToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
-            this.setCDashBackcolorToolStripMenuItem1.Text = "Set cDash Backcolor....";
-            this.setCDashBackcolorToolStripMenuItem1.Click += new System.EventHandler(this.setCDashBackcolorToolStripMenuItem1_Click);
+            this.setCDashBackcolorToolStripMenuItem.Name = "setCDashBackcolorToolStripMenuItem";
+            this.setCDashBackcolorToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.setCDashBackcolorToolStripMenuItem.Text = "Set cDash Backcolor....";
+            this.setCDashBackcolorToolStripMenuItem.Click += new System.EventHandler(this.setCDashBackcolorToolStripMenuItem_Click);
             // 
             // cDashWallpaperToolStripMenuItem
             // 
@@ -388,14 +398,13 @@
             this.cDashWallpaperToolStripMenuItem.Name = "cDashWallpaperToolStripMenuItem";
             this.cDashWallpaperToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.cDashWallpaperToolStripMenuItem.Text = "cDash Wallpaper";
-            this.cDashWallpaperToolStripMenuItem.DropDownOpened += new System.EventHandler(this.cDashWallpaperToolStripMenuItem_DropDownOpened);
             // 
             // setCDashWallpaperImageToolStripMenuItem
             // 
             this.setCDashWallpaperImageToolStripMenuItem.Name = "setCDashWallpaperImageToolStripMenuItem";
             this.setCDashWallpaperImageToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
             this.setCDashWallpaperImageToolStripMenuItem.Text = "Set cDash Wallpaper Image...";
-            this.setCDashWallpaperImageToolStripMenuItem.Click += new System.EventHandler(this.setCDashWallpaperImageToolStripMenuItem_Click);
+            this.setCDashWallpaperImageToolStripMenuItem.Click += new System.EventHandler(this.setCDashWallpaperImageToolStripMenuItem_Click_1);
             // 
             // combobox_wallpaper
             // 
@@ -407,17 +416,17 @@
             "Zoom"});
             this.combobox_wallpaper.Name = "combobox_wallpaper";
             this.combobox_wallpaper.Size = new System.Drawing.Size(121, 23);
-            this.combobox_wallpaper.SelectedIndexChanged += new System.EventHandler(this.combobox_wallpaper_SelectedIndexChanged);
+            this.combobox_wallpaper.SelectedIndexChanged += new System.EventHandler(this.combobox_wallpaper_SelectedIndexChanged_1);
             // 
             // setOpacityToolStripMenuItem
             // 
             this.setOpacityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.textbox_opacity});
             this.setOpacityToolStripMenuItem.Name = "setOpacityToolStripMenuItem";
-            this.setOpacityToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setOpacityToolStripMenuItem.Text = "Set Opacity...";
-            this.setOpacityToolStripMenuItem.DropDownClosed += new System.EventHandler(this.setOpacityToolStripMenuItem_DropDownClosed);
-            this.setOpacityToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setOpacityToolStripMenuItem_DropDownOpened);
+            this.setOpacityToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.setOpacityToolStripMenuItem.Text = "Opacity...";
+            this.setOpacityToolStripMenuItem.DropDownClosed += new System.EventHandler(this.setOpacityToolStripMenuItem_DropDownClosed_1);
+            this.setOpacityToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setOpacityToolStripMenuItem_DropDownOpened_1);
             // 
             // textbox_opacity
             // 
@@ -429,8 +438,8 @@
             this.setFadeTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setInMillisecondsToolStripMenuItem});
             this.setFadeTimeToolStripMenuItem.Name = "setFadeTimeToolStripMenuItem";
-            this.setFadeTimeToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setFadeTimeToolStripMenuItem.Text = "Set Fade Time...";
+            this.setFadeTimeToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.setFadeTimeToolStripMenuItem.Text = "Fade Time...";
             // 
             // setInMillisecondsToolStripMenuItem
             // 
@@ -439,13 +448,51 @@
             this.setInMillisecondsToolStripMenuItem.Name = "setInMillisecondsToolStripMenuItem";
             this.setInMillisecondsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.setInMillisecondsToolStripMenuItem.Text = "Set in Milliseconds...";
-            this.setInMillisecondsToolStripMenuItem.DropDownClosed += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownClosed_1);
-            this.setInMillisecondsToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownOpened);
+            this.setInMillisecondsToolStripMenuItem.DropDownClosed += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownClosed);
+            this.setInMillisecondsToolStripMenuItem.DropDownOpened += new System.EventHandler(this.setInMillisecondsToolStripMenuItem_DropDownOpened_1);
             // 
             // textbox_fadetime
             // 
             this.textbox_fadetime.Name = "textbox_fadetime";
             this.textbox_fadetime.Size = new System.Drawing.Size(100, 23);
+            // 
+            // setDateTimeColorToolStripMenuItem
+            // 
+            this.setDateTimeColorToolStripMenuItem.Name = "setDateTimeColorToolStripMenuItem";
+            this.setDateTimeColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.setDateTimeColorToolStripMenuItem.Text = "UI Text Color...";
+            this.setDateTimeColorToolStripMenuItem.Click += new System.EventHandler(this.setDateTimeColorToolStripMenuItem_Click_1);
+            // 
+            // cStickyToolStripMenuItem
+            // 
+            this.cStickyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.favoriteColorToolStripMenuItem1,
+            this.favoriteFontToolStripMenuItem});
+            this.cStickyToolStripMenuItem.Name = "cStickyToolStripMenuItem";
+            this.cStickyToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.cStickyToolStripMenuItem.Text = "cSticky...";
+            // 
+            // favoriteColorToolStripMenuItem1
+            // 
+            this.favoriteColorToolStripMenuItem1.Name = "favoriteColorToolStripMenuItem1";
+            this.favoriteColorToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.favoriteColorToolStripMenuItem1.Text = "Favorite Color";
+            this.favoriteColorToolStripMenuItem1.Click += new System.EventHandler(this.favoriteColorToolStripMenuItem1_Click);
+            // 
+            // favoriteFontToolStripMenuItem
+            // 
+            this.favoriteFontToolStripMenuItem.Name = "favoriteFontToolStripMenuItem";
+            this.favoriteFontToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.favoriteFontToolStripMenuItem.Text = "Favorite Font";
+            this.favoriteFontToolStripMenuItem.Click += new System.EventHandler(this.favoriteFontToolStripMenuItem_Click);
+            // 
+            // cWeatherToolStripMenuItem
+            // 
+            this.cWeatherToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setCWeatherUnitToolStripMenuItem});
+            this.cWeatherToolStripMenuItem.Name = "cWeatherToolStripMenuItem";
+            this.cWeatherToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.cWeatherToolStripMenuItem.Text = "cWeather...";
             // 
             // setCWeatherUnitToolStripMenuItem
             // 
@@ -453,57 +500,45 @@
             this.fToolStripMenuItem,
             this.cToolStripMenuItem});
             this.setCWeatherUnitToolStripMenuItem.Name = "setCWeatherUnitToolStripMenuItem";
-            this.setCWeatherUnitToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setCWeatherUnitToolStripMenuItem.Text = "Set cWeather Unit...";
+            this.setCWeatherUnitToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.setCWeatherUnitToolStripMenuItem.Text = "Temperature Unit...";
             // 
             // fToolStripMenuItem
             // 
             this.fToolStripMenuItem.Name = "fToolStripMenuItem";
             this.fToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
             this.fToolStripMenuItem.Text = "°F";
-            this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click);
+            this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click_1);
             // 
             // cToolStripMenuItem
             // 
             this.cToolStripMenuItem.Name = "cToolStripMenuItem";
             this.cToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
             this.cToolStripMenuItem.Text = "°C";
-            this.cToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click);
+            this.cToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click_1);
             // 
-            // setFavoriteStickyColorToolStripMenuItem
+            // cDashDataToolStripMenuItem
             // 
-            this.setFavoriteStickyColorToolStripMenuItem.Name = "setFavoriteStickyColorToolStripMenuItem";
-            this.setFavoriteStickyColorToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setFavoriteStickyColorToolStripMenuItem.Text = "Set Favorite Sticky Color...";
-            this.setFavoriteStickyColorToolStripMenuItem.Click += new System.EventHandler(this.setFavoriteStickyColorToolStripMenuItem_Click);
+            this.cDashDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToolStripMenuItem,
+            this.importToolStripMenuItem});
+            this.cDashDataToolStripMenuItem.Name = "cDashDataToolStripMenuItem";
+            this.cDashDataToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.cDashDataToolStripMenuItem.Text = "cDash Data...";
             // 
-            // setFavoriteFontToolStripMenuItem
+            // exportToolStripMenuItem
             // 
-            this.setFavoriteFontToolStripMenuItem.Name = "setFavoriteFontToolStripMenuItem";
-            this.setFavoriteFontToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setFavoriteFontToolStripMenuItem.Text = "Set Favorite Sticky Font...";
-            this.setFavoriteFontToolStripMenuItem.Click += new System.EventHandler(this.setFavoriteFontToolStripMenuItem_Click);
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
-            // setDateTimeColorToolStripMenuItem
+            // importToolStripMenuItem
             // 
-            this.setDateTimeColorToolStripMenuItem.Name = "setDateTimeColorToolStripMenuItem";
-            this.setDateTimeColorToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.setDateTimeColorToolStripMenuItem.Text = "Set UI Text Color...";
-            this.setDateTimeColorToolStripMenuItem.Click += new System.EventHandler(this.setDateTimeColorToolStripMenuItem_Click);
-            // 
-            // exportBackupToolStripMenuItem
-            // 
-            this.exportBackupToolStripMenuItem.Name = "exportBackupToolStripMenuItem";
-            this.exportBackupToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.exportBackupToolStripMenuItem.Text = "Export cDash Data...";
-            this.exportBackupToolStripMenuItem.Click += new System.EventHandler(this.exportBackupToolStripMenuItem_Click);
-            // 
-            // importCDashDataToolStripMenuItem
-            // 
-            this.importCDashDataToolStripMenuItem.Name = "importCDashDataToolStripMenuItem";
-            this.importCDashDataToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.importCDashDataToolStripMenuItem.Text = "Import cDash Data...";
-            this.importCDashDataToolStripMenuItem.Click += new System.EventHandler(this.importCDashDataToolStripMenuItem_Click);
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // fadetimer
             // 
@@ -565,38 +600,42 @@
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setCDashDefaultMonitorToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip notifyicon_menustrip;
         private System.Windows.Forms.ToolStripMenuItem exitCDashboardToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setOpacityToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox textbox_opacity;
         private System.Windows.Forms.ToolStripMenuItem favoriteColorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setFavoriteStickyColorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setFavoriteFontToolStripMenuItem;
         private System.Windows.Forms.Button button_time;
         private System.Windows.Forms.Button button_date;
-        private System.Windows.Forms.ToolStripMenuItem setFadeTimeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
         private System.Windows.Forms.ToolStripMenuItem newCPicToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportBackupToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.ToolStripMenuItem importCDashDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCStopwatchToolStripMenuItem;
+        public System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Timer fadetimer;
+        private System.Windows.Forms.ToolStripMenuItem newCWeatherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cDashDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cStickyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem favoriteColorToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem favoriteFontToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cDashToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem defaultMonitorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cDashBackgroundToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setCDashBackcolorToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem setCDashBackcolorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cDashWallpaperToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setCDashWallpaperImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox combobox_wallpaper;
-        public System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Timer fadetimer;
-        private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newCWeatherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setOpacityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox textbox_opacity;
+        private System.Windows.Forms.ToolStripMenuItem setFadeTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setInMillisecondsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox textbox_fadetime;
+        private System.Windows.Forms.ToolStripMenuItem cWeatherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setCWeatherUnitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
     }
 }
 

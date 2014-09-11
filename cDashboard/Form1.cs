@@ -649,7 +649,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setCDashDefaultMonitorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void defaultMonitorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             multiMonitorSetup(false);
         }
@@ -869,7 +869,7 @@ namespace cDashboard
         {
             TimerCounter++;
 
-            if (TimerCounter > 7200)
+            if (TimerCounter > 3600)
             {
                 TimerCounter = 0;
                 foreach (cWeather this_cWeather in this.Controls.OfType<cWeather>())
@@ -1186,7 +1186,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void fToolStripMenuItem_Click(object sender, EventArgs e)
+        private void fToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             cToolStripMenuItem.Checked = false;
             fToolStripMenuItem.Checked = true;
@@ -1202,7 +1202,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cToolStripMenuItem_Click(object sender, EventArgs e)
+        private void cToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             fToolStripMenuItem.Checked = false;
             cToolStripMenuItem.Checked = true;
@@ -1245,7 +1245,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setDateTimeColorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void setDateTimeColorToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             //show the color selection dialog
             DialogResult result = colorDialog1.ShowDialog();
@@ -1277,7 +1277,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setCDashWallpaperImageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void setCDashWallpaperImageToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             //represents the a unique time stamp for use as name of form / image
             long long_unique_timestamp = DateTime.Now.Ticks;
@@ -1352,7 +1352,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exportBackupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dr = folderBrowserDialog1.ShowDialog();
             if (dr == DialogResult.OK)
@@ -1380,7 +1380,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void importCDashDataToolStripMenuItem_Click(object sender, EventArgs e)
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dr = folderBrowserDialog1.ShowDialog();
             if (dr == DialogResult.OK)
@@ -1464,7 +1464,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setCDashBackcolorToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void setCDashBackcolorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //show the color selection dialog
             DialogResult result = colorDialog1.ShowDialog();
@@ -1530,7 +1530,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setOpacityToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        private void setOpacityToolStripMenuItem_DropDownOpened_1(object sender, EventArgs e)
         {
             //make sure it displays the current opacity
             textbox_opacity.Text = OpacityLevel.ToString();
@@ -1541,7 +1541,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setOpacityToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        private void setOpacityToolStripMenuItem_DropDownClosed_1(object sender, EventArgs e)
         {
 
             //if the user sets this to low, it could be hard to use/see
@@ -1627,7 +1627,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setFavoriteStickyColorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void favoriteColorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //show the color selection dialog
             DialogResult result = colorDialog1.ShowDialog();
@@ -1655,7 +1655,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setFavoriteFontToolStripMenuItem_Click(object sender, EventArgs e)
+        private void favoriteFontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fontDialog1.ShowColor = false;
 
@@ -1688,7 +1688,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setInMillisecondsToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        private void setInMillisecondsToolStripMenuItem_DropDownOpened_1(object sender, EventArgs e)
         {
             //set textbox text equal to saved fade length
             textbox_fadetime.Text = int_fade_milliseconds.ToString();
@@ -1699,7 +1699,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setInMillisecondsToolStripMenuItem_DropDownClosed_1(object sender, EventArgs e)
+        private void setInMillisecondsToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
         {
             //if the casting fails, then break gracefully
             try
@@ -1795,7 +1795,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void combobox_wallpaper_SelectedIndexChanged(object sender, EventArgs e)
+        private void combobox_wallpaper_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             string string_layout = "";
 
