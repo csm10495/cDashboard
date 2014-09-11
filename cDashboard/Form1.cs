@@ -178,6 +178,7 @@ namespace cDashboard
         {
             string FSFN = ""; //Favorite Sticky Font Name
             float FSFS = -1; //Favorite Sticky Font Size
+            bool BoardlessMode = false;
 
             foreach (List<string> currentline in settings_list)
             {
@@ -186,13 +187,22 @@ namespace cDashboard
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
                 {
+                    //handle BoardlessMode setting
+                    if (currentline[1] == "BoardlessMode")
+                    {
+                        if (currentline[2] == "True")
+                        {
+                            BoardlessMode = true;
+                            boardlessModeToolStripMenuItem.Checked = true;
+                        }
+                    }
 
                     //special handling for global cWeather settings
                     if (currentline[1] == "cWeather")
                     {
                         if (currentline[2] == "Unit")
-                        { 
-                            if(currentline[3] == "F")
+                        {
+                            if (currentline[3] == "F")
                             {
                                 fToolStripMenuItem.Checked = true;
                                 cToolStripMenuItem.Checked = false;
@@ -407,6 +417,12 @@ namespace cDashboard
                 }
             }
             FavoriteStickyFont = new Font(FSFN, FSFS);
+
+            if (BoardlessMode)
+            {
+                goBoardless();
+            }
+
             //move dash to set monitor
             moveToPrimaryMonitor();
         }
@@ -548,6 +564,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;WallpaperImageLayout;None");
                 sw.WriteLine("cDash;DateTimeStripColor;0;0;0");
                 sw.WriteLine("cDash;cWeather;Unit;F");
+                sw.WriteLine("cDash;BoardlessMode;False");
 
                 sw.Close();
 
@@ -565,8 +582,9 @@ namespace cDashboard
                     saveSettingsList(list_settings);
                 }
 
-
+                notifyIcon1.ShowBalloonTip(8, "Welcome to cDashboard!", "To bring up (or bring down) the dash, either use the keyboard shortcut, Ctrl-~, or double-click this icon.", ToolTipIcon.Info);
             }
+
         }
         #endregion
 
@@ -1182,6 +1200,96 @@ namespace cDashboard
 
         #region Menustrip Items
         /// <summary>
+        /// Toggles BoardlessMode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void boardlessModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            boardlessModeToolStripMenuItem.Checked = !boardlessModeToolStripMenuItem.Checked;
+
+            if (boardlessModeToolStripMenuItem.Checked)
+                goBoardless();
+            else
+                goNotBoardless();
+        }
+
+        /// <summary>
+        /// Toggles a transparent background
+        /// </summary>
+        private void goBoardless()
+        {
+            if (this.BackgroundImage != null)
+            {
+                this.BackgroundImage.Dispose();
+                this.BackgroundImage = null;
+            }
+            this.BackColor = Color.Fuchsia;
+            this.TransparencyKey = Color.Fuchsia;
+
+            button_date.Visible = false;
+            button_time.Visible = false;
+
+            boardlessModeToolStripMenuItem.Checked = true;
+        }
+
+        /// <summary>
+        /// Toggles a non-transparent background
+        /// </summary>
+        private void goNotBoardless()
+        {
+            if (UseWallpaperImage)
+            {
+                string layout = getSpecificSetting(new string[] { "cDash", "WallpaperImageLayout" })[0];
+
+                if (layout == "Center")
+                {
+                    this.BackgroundImageLayout = ImageLayout.Center;
+                }
+                else if (layout == "None")
+                {
+                    this.BackgroundImageLayout = ImageLayout.None;
+                }
+                else if (layout == "Stretch")
+                {
+                    this.BackgroundImageLayout = ImageLayout.Stretch;
+                }
+                else if (layout == "Tile")
+                {
+                    this.BackgroundImageLayout = ImageLayout.Tile;
+                }
+                else if (layout == "Zoom")
+                {
+                    this.BackgroundImageLayout = ImageLayout.Zoom;
+                }
+
+                this.BackgroundImage = Image.FromFile(getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0]);
+            }
+
+            List<string> list_backcolor = getSpecificSetting(new string[] { "cDash", "BackColor" });
+            this.BackColor = Color.FromArgb(Convert.ToInt16(list_backcolor[0]), Convert.ToInt16(list_backcolor[1]), Convert.ToInt16(list_backcolor[2]));
+
+            button_time.Visible = true;
+            button_date.Visible = true;
+            this.TransparencyKey = Color.Empty;
+            boardlessModeToolStripMenuItem.Checked = false;
+        }
+
+        /// <summary>
+        /// Whenever boardless mode is activated/deactivated this will be called to save the
+        /// boardless mode setting to the settings file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void boardlessModeToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (boardlessModeToolStripMenuItem.Checked)
+                replaceSetting(new string[] { "cDash", "BoardlessMode" }, new string[] { "cDash", "BoardlessMode", "True" });
+            else
+                replaceSetting(new string[] { "cDash", "BoardlessMode" }, new string[] { "cDash", "BoardlessMode", "False" });
+        }
+
+        /// <summary>
         /// Change cWeather unit to °F
         /// </summary>
         /// <param name="sender"></param>
@@ -1298,7 +1406,11 @@ namespace cDashboard
                 string string_old_file_location = getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0];
                 if (System.IO.File.Exists(string_old_file_location))
                 {
-                    this.BackgroundImage.Dispose();
+                    if (this.BackgroundImage != null)
+                    {
+                        this.BackgroundImage.Dispose();
+                        this.BackgroundImage = null;
+                    }
                     System.IO.File.Delete(string_old_file_location);
                 }
 
@@ -1313,6 +1425,8 @@ namespace cDashboard
                 UseWallpaperImage = true;
                 replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "True" });
                 replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", SETTINGS_LOCATION + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName) });
+
+                boardlessModeToolStripMenuItem.Checked = false;
             }
         }
 
@@ -1499,9 +1613,12 @@ namespace cDashboard
                 if (UseWallpaperImage)
                 {
                     //remove image if currently in use
-                    this.BackgroundImage.Dispose();
-                    this.BackgroundImage = null;
-                    //         this.Visible = false;
+                    if (this.BackgroundImage != null)
+                    {
+                        this.BackgroundImage.Dispose();
+                        this.BackgroundImage = null;
+                    }
+
                     //remove wallpaper image
                     System.IO.File.Delete(getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0]);
 
@@ -1512,6 +1629,8 @@ namespace cDashboard
                     replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "False" });
                     replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", "NULL" });
                 }
+
+                boardlessModeToolStripMenuItem.Checked = false;
             }
         }
 
@@ -1834,7 +1953,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cDashWallpaperToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        private void cDashWallpaperToolStripMenuItem_DropDownOpened_1(object sender, EventArgs e)
         {
             if (this.BackgroundImageLayout == ImageLayout.Center)
             {
@@ -1948,5 +2067,4 @@ namespace cDashboard
         }
         #endregion
     }
-
 }

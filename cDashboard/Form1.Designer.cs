@@ -60,8 +60,8 @@
             this.newCPicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +78,7 @@
             this.setInMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
             this.setDateTimeColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boardlessModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cStickyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoriteColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.favoriteFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -315,19 +316,19 @@
             this.newCWeatherToolStripMenuItem.Text = "New cWeather...";
             this.newCWeatherToolStripMenuItem.Click += new System.EventHandler(this.newCWeatherToolStripMenuItem_Click);
             // 
-            // hideToolStripMenuItem
-            // 
-            this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.hideToolStripMenuItem.Text = "Hide";
-            this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
-            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // hideToolStripMenuItem
+            // 
+            this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.hideToolStripMenuItem.Text = "Hide";
+            this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -362,7 +363,8 @@
             this.cDashBackgroundToolStripMenuItem,
             this.setOpacityToolStripMenuItem,
             this.setFadeTimeToolStripMenuItem,
-            this.setDateTimeColorToolStripMenuItem});
+            this.setDateTimeColorToolStripMenuItem,
+            this.boardlessModeToolStripMenuItem});
             this.cDashToolStripMenuItem.Name = "cDashToolStripMenuItem";
             this.cDashToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.cDashToolStripMenuItem.Text = "cDash...";
@@ -398,12 +400,13 @@
             this.cDashWallpaperToolStripMenuItem.Name = "cDashWallpaperToolStripMenuItem";
             this.cDashWallpaperToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.cDashWallpaperToolStripMenuItem.Text = "cDash Wallpaper";
+            this.cDashWallpaperToolStripMenuItem.DropDownOpened += new System.EventHandler(this.cDashWallpaperToolStripMenuItem_DropDownOpened_1);
             // 
             // setCDashWallpaperImageToolStripMenuItem
             // 
             this.setCDashWallpaperImageToolStripMenuItem.Name = "setCDashWallpaperImageToolStripMenuItem";
-            this.setCDashWallpaperImageToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.setCDashWallpaperImageToolStripMenuItem.Text = "Set cDash Wallpaper Image...";
+            this.setCDashWallpaperImageToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.setCDashWallpaperImageToolStripMenuItem.Text = "Wallpaper Image...";
             this.setCDashWallpaperImageToolStripMenuItem.Click += new System.EventHandler(this.setCDashWallpaperImageToolStripMenuItem_Click_1);
             // 
             // combobox_wallpaper
@@ -462,6 +465,14 @@
             this.setDateTimeColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.setDateTimeColorToolStripMenuItem.Text = "UI Text Color...";
             this.setDateTimeColorToolStripMenuItem.Click += new System.EventHandler(this.setDateTimeColorToolStripMenuItem_Click_1);
+            // 
+            // boardlessModeToolStripMenuItem
+            // 
+            this.boardlessModeToolStripMenuItem.Name = "boardlessModeToolStripMenuItem";
+            this.boardlessModeToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.boardlessModeToolStripMenuItem.Text = "Boardless Mode";
+            this.boardlessModeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.boardlessModeToolStripMenuItem_CheckedChanged);
+            this.boardlessModeToolStripMenuItem.Click += new System.EventHandler(this.boardlessModeToolStripMenuItem_Click);
             // 
             // cStickyToolStripMenuItem
             // 
@@ -636,6 +647,7 @@
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boardlessModeToolStripMenuItem;
     }
 }
 
