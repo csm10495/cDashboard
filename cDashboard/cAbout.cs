@@ -35,7 +35,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_weather_data_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(@"http://www.wunderground.com/?apiref=8468212cff0ab452");
+            System.Diagnostics.Process.Start(@"http://www.weather.yahoo.com");
         }
 
         /// <summary>

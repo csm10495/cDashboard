@@ -57,7 +57,7 @@
             this.label_project_name.Font = new System.Drawing.Font("Arial Black", 25.75F, System.Drawing.FontStyle.Bold);
             this.label_project_name.Location = new System.Drawing.Point(214, -1);
             this.label_project_name.Name = "label_project_name";
-            this.label_project_name.Size = new System.Drawing.Size(247, 50);
+            this.label_project_name.Size = new System.Drawing.Size(248, 50);
             this.label_project_name.TabIndex = 1;
             this.label_project_name.Text = "cDashboard";
             // 
@@ -107,12 +107,12 @@
             this.label_weather_data.AutoSize = true;
             this.label_weather_data.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_weather_data.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.label_weather_data.Location = new System.Drawing.Point(242, 144);
+            this.label_weather_data.Location = new System.Drawing.Point(254, 144);
             this.label_weather_data.Name = "label_weather_data";
-            this.label_weather_data.Size = new System.Drawing.Size(188, 16);
+            this.label_weather_data.Size = new System.Drawing.Size(169, 16);
             this.label_weather_data.TabIndex = 6;
             this.label_weather_data.TabStop = true;
-            this.label_weather_data.Text = "Weather Data from wunderground.com";
+            this.label_weather_data.Text = "Weather Data from Yahoo! Weather";
             this.label_weather_data.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.label_weather_data_LinkClicked);
             // 
             // panel2
