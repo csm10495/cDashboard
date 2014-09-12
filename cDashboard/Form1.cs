@@ -1,4 +1,4 @@
-﻿//cDashboard - An overlay for Microsoft Windows
+﻿//cDashboard - An information-based overlay for Microsoft Windows
 //(C) Charles Machalow 2014 under the MIT License
 using System;
 using System.Collections.Generic;

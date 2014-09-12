@@ -399,14 +399,14 @@
             this.combobox_wallpaper});
             this.cDashWallpaperToolStripMenuItem.Name = "cDashWallpaperToolStripMenuItem";
             this.cDashWallpaperToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.cDashWallpaperToolStripMenuItem.Text = "cDash Wallpaper";
+            this.cDashWallpaperToolStripMenuItem.Text = "Wallpaper";
             this.cDashWallpaperToolStripMenuItem.DropDownOpened += new System.EventHandler(this.cDashWallpaperToolStripMenuItem_DropDownOpened_1);
             // 
             // setCDashWallpaperImageToolStripMenuItem
             // 
             this.setCDashWallpaperImageToolStripMenuItem.Name = "setCDashWallpaperImageToolStripMenuItem";
-            this.setCDashWallpaperImageToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.setCDashWallpaperImageToolStripMenuItem.Text = "Wallpaper Image...";
+            this.setCDashWallpaperImageToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.setCDashWallpaperImageToolStripMenuItem.Text = "Image...";
             this.setCDashWallpaperImageToolStripMenuItem.Click += new System.EventHandler(this.setCDashWallpaperImageToolStripMenuItem_Click_1);
             // 
             // combobox_wallpaper
