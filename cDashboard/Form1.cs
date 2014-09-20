@@ -881,7 +881,7 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// adds to TimerCounter and updates cWeathers if 7200 seconds (2 hours) have elapsed
+        /// adds to TimerCounter and updates cWeathers if 3600 seconds (1 hour) have elapsed
         /// </summary>
         private void updateCWeather()
         {
