@@ -28,7 +28,7 @@ cStopwatch is a quick stopwatch that counts up from zero. It also maintains a re
 
 __cWeather__
 
-cWeather is a weather applet for cDashboard. It currently gets its data from the Wunderground API. The user can input any location (zip, city, state, country, city, etc...) cWeather can also try to find your location based on IP address, though this isn't overwhelmingly accurate, it is pretty cool. The applet will automatically refresh data on startup and every 2 hours, though it can be manually refreshed at any time.
+cWeather is a weather applet for cDashboard. It currently gets its data from the YQL (Yahoo Query Langauge) API. The user can input any location (zip, city, state, country, city, etc...) cWeather can also try to find your location based on IP address, though this isn't overwhelmingly accurate, it is pretty cool. The applet will automatically refresh data on startup and every 2 hours, though it can be manually refreshed at any time.
 
 Preferences
 ===========
