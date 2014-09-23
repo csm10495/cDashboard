@@ -105,6 +105,10 @@ namespace cDashboard
                 return;
             }
 
+            //return if worker is busy
+            if (backgroundWorker_refresh.IsBusy)
+                return;
+
             hideAllPanelsExcept(ref panel_refreshing);
 
             //API Calls for WOEID, Weather
