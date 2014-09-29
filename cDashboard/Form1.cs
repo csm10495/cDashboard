@@ -299,6 +299,30 @@ namespace cDashboard
                         }
                     }
                 }
+                //Handling for cBattery
+                else if (currentline[0] == "cBattery")
+                {
+                    //this would mean that this form already exists
+                    if (!(Controls.Find(currentline[1], true).Length > 0))
+                    {
+                        cBattery cBattery_new = new cBattery();
+                        cBattery_new.Name = currentline[1];
+                        cBattery_new.TopLevel = false;
+                        cBattery_new.Parent = this;
+                        Controls.Add(cBattery_new);
+                    }
+
+                    //get form by name
+                    cBattery this_cBattery = (cBattery)this.Controls.Find(currentline[1], true)[0];
+
+                    if (currentline[2] == "Location")
+                    {
+                        this_cBattery.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
+
+                    this_cBattery.Show();
+                    this_cBattery.BringToFront();
+                }
                 //Handling for cWeather
                 else if (currentline[0] == "cWeather")
                 {
@@ -867,6 +891,8 @@ namespace cDashboard
 
             this.Visible = true;
 
+            updateCBattery(); //updates all cBattery
+
             fadetimer.Start(); //begin timer
         }
 
@@ -894,6 +920,17 @@ namespace cDashboard
                 {
                     this_cWeather.getWeatherInfo();
                 }
+            }
+        }
+
+        /// <summary>
+        /// update cBatterys
+        /// </summary>
+        private void updateCBattery()
+        {
+            foreach (cBattery this_cBattery in this.Controls.OfType<cBattery>())
+            {
+                this_cBattery.update();
             }
         }
 
@@ -1199,6 +1236,32 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+        /// <summary>
+        /// creates a new cBattery
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCBatteryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            cBattery cBattery_new = new cBattery();
+            cBattery_new.Name = long_unique_timestamp.ToString();
+            cBattery_new.Location = new Point(10, 25);
+            cBattery_new.TopLevel = false;
+            cBattery_new.Parent = this;
+
+            Controls.Add(cBattery_new);
+            cBattery_new.Show();
+            cBattery_new.BringToFront();
+
+            //add the cBattery to settings
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
+            sw.WriteLine("cBattery;" + long_unique_timestamp.ToString() + ";Location;10;25");
+            sw.Close();
+        }
+
         /// <summary>
         /// Toggles BoardlessMode
         /// </summary>

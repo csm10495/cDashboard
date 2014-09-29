@@ -85,6 +85,12 @@
     <Compile Include="cAbout.Designer.cs">
       <DependentUpon>cAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="cBattery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cBattery.Designer.cs">
+      <DependentUpon>cBattery.cs</DependentUpon>
+    </Compile>
     <Compile Include="cForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +132,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="cAbout.resx">
       <DependentUpon>cAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cBattery.resx">
+      <DependentUpon>cBattery.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="cForm.resx">
       <DependentUpon>cForm.cs</DependentUpon>

@@ -90,6 +90,7 @@
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
+            this.newCBatteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -208,6 +209,7 @@
             this.newCPicToolStripMenuItem,
             this.newCStopwatchToolStripMenuItem,
             this.newCWeatherToolStripMenuItem,
+            this.newCBatteryToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.hideToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -353,7 +355,7 @@
             this.cWeatherToolStripMenuItem,
             this.cDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -556,6 +558,13 @@
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
+            // newCBatteryToolStripMenuItem
+            // 
+            this.newCBatteryToolStripMenuItem.Name = "newCBatteryToolStripMenuItem";
+            this.newCBatteryToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCBatteryToolStripMenuItem.Text = "New cBattery";
+            this.newCBatteryToolStripMenuItem.Click += new System.EventHandler(this.newCBatteryToolStripMenuItem_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -648,6 +657,7 @@
         private System.Windows.Forms.ToolStripMenuItem cToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boardlessModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newCBatteryToolStripMenuItem;
     }
 }
 
