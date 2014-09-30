@@ -32,8 +32,8 @@ namespace cDashboard
             {
                 if (SystemInformation.PowerStatus.BatteryLifePercent != 1)
                 {
-                    string battery_percent = SystemInformation.PowerStatus.BatteryLifePercent.ToString();
-                    label_battery_percentage.Text = battery_percent.Substring(battery_percent.IndexOf(".") + 1) + "%";
+                    string battery_percent = SystemInformation.PowerStatus.BatteryLifePercent.ToString("0.0%");
+                    label_battery_percentage.Text = battery_percent.Substring(0, battery_percent.IndexOf(".")) + "%";
 
                     //panel_battery setting via math
                     Single s = Convert.ToSingle(panel_height) * SystemInformation.PowerStatus.BatteryLifePercent;
