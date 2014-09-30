@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cBattery));
             this.label_battery_remaining = new System.Windows.Forms.Label();
             this.button_close = new System.Windows.Forms.Button();
             this.label_battery_percentage = new System.Windows.Forms.Label();
             this.panel_battery = new System.Windows.Forms.Panel();
             this.pictureBox_battery = new System.Windows.Forms.PictureBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_battery)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,6 +48,7 @@
             this.label_battery_remaining.Size = new System.Drawing.Size(103, 20);
             this.label_battery_remaining.TabIndex = 6;
             this.label_battery_remaining.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip.SetToolTip(this.label_battery_remaining, "Approximate amount of battery life left");
             this.label_battery_remaining.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_battery_remaining_MouseDown);
             // 
             // button_close
@@ -73,6 +76,7 @@
             this.label_battery_percentage.Size = new System.Drawing.Size(56, 20);
             this.label_battery_percentage.TabIndex = 1;
             this.label_battery_percentage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.label_battery_percentage, "Battery remaining percentage");
             this.label_battery_percentage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_battery_percentage_MouseDown);
             // 
             // panel_battery
@@ -82,6 +86,7 @@
             this.panel_battery.Name = "panel_battery";
             this.panel_battery.Size = new System.Drawing.Size(27, 45);
             this.panel_battery.TabIndex = 3;
+            this.toolTip.SetToolTip(this.panel_battery, "Visual representation of battery life remaining");
             this.panel_battery.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_battery_MouseDown);
             // 
             // pictureBox_battery
@@ -122,5 +127,6 @@
         private System.Windows.Forms.Panel panel_battery;
         private System.Windows.Forms.Button button_close;
         private System.Windows.Forms.Label label_battery_remaining;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
