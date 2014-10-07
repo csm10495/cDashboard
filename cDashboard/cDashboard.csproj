@@ -97,6 +97,12 @@
     <Compile Include="cForm.Designer.cs">
       <DependentUpon>cForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="cMote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cMote.Designer.cs">
+      <DependentUpon>cMote.cs</DependentUpon>
+    </Compile>
     <Compile Include="cPic.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="cForm.resx">
       <DependentUpon>cForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cMote.resx">
+      <DependentUpon>cMote.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="cPic.resx">
       <DependentUpon>cPic.cs</DependentUpon>

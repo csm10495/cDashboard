@@ -60,6 +60,7 @@
             this.newCPicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCBatteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,7 +91,7 @@
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
-            this.newCBatteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCMoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -210,6 +211,7 @@
             this.newCStopwatchToolStripMenuItem,
             this.newCWeatherToolStripMenuItem,
             this.newCBatteryToolStripMenuItem,
+            this.newCMoteToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.hideToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -318,6 +320,13 @@
             this.newCWeatherToolStripMenuItem.Text = "New cWeather...";
             this.newCWeatherToolStripMenuItem.Click += new System.EventHandler(this.newCWeatherToolStripMenuItem_Click);
             // 
+            // newCBatteryToolStripMenuItem
+            // 
+            this.newCBatteryToolStripMenuItem.Name = "newCBatteryToolStripMenuItem";
+            this.newCBatteryToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCBatteryToolStripMenuItem.Text = "New cBattery";
+            this.newCBatteryToolStripMenuItem.Click += new System.EventHandler(this.newCBatteryToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -355,7 +364,7 @@
             this.cWeatherToolStripMenuItem,
             this.cDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -558,12 +567,12 @@
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
-            // newCBatteryToolStripMenuItem
+            // newCMoteToolStripMenuItem
             // 
-            this.newCBatteryToolStripMenuItem.Name = "newCBatteryToolStripMenuItem";
-            this.newCBatteryToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.newCBatteryToolStripMenuItem.Text = "New cBattery";
-            this.newCBatteryToolStripMenuItem.Click += new System.EventHandler(this.newCBatteryToolStripMenuItem_Click);
+            this.newCMoteToolStripMenuItem.Name = "newCMoteToolStripMenuItem";
+            this.newCMoteToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCMoteToolStripMenuItem.Text = "New cMote";
+            this.newCMoteToolStripMenuItem.Click += new System.EventHandler(this.newCMoteToolStripMenuItem_Click);
             // 
             // cDashboard
             // 
@@ -658,6 +667,7 @@
         private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boardlessModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCBatteryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newCMoteToolStripMenuItem;
     }
 }
 
