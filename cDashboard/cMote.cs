@@ -11,6 +11,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace cDashboard
 {
@@ -34,7 +36,7 @@ namespace cDashboard
             CompletedForm_Load = true;
         }
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll")]
         static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
         /// <summary>
@@ -43,10 +45,14 @@ namespace cDashboard
         /// <param name="key"></param>
         private void cSendKey(byte key)
         {
-            keybd_event(key, 0, 0x0001 /*KEYEVENTF_EXTENDEDKEY*/, 0);
-            keybd_event(key, 0, 0x0002 /*KEYEVENTF_KEYUP*/, 0);
+            keybd_event(key, 0, 0x0001 /*KEYEVENTF_EXTENDEDKEY*/ | 0, 0); ;
+            //MessageBox.Show("DANG!");    //Why does this still fix the problem
+            keybd_event(key, 0, 0x0001 /*KEYEVENTF_EXTENDEDKEY*/ | 0x0002 /*KEYEVENTF_KEYUP*/, 0);
+
+            // System.Threading.Thread.Sleep(3000);
         }
 
+        #region Buttons
         /// <summary>
         /// send a global play/pause command via the Windows API
         /// </summary>
@@ -78,6 +84,36 @@ namespace cDashboard
         }
 
         /// <summary>
+        /// send a global mute command via the Windows API
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_vol_mute_Click(object sender, EventArgs e)
+        {
+            cSendKey(0xAD /*VK_VOLUME_MUTE*/);
+        }
+
+        /// <summary>
+        /// send a volume up command via Windows API
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_vol_up_Click(object sender, EventArgs e)
+        {
+            cSendKey(0xAF /*VK_VOLUME_UP*/);
+        }
+
+        /// <summary>
+        /// send a volume down command via Windows API
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_vol_down_Click(object sender, EventArgs e)
+        {
+            cSendKey(0xAE /*VK_VOLUME_DOWN*/);
+        }
+
+        /// <summary>
         /// closes this cForm
         /// </summary>
         /// <param name="sender"></param>
@@ -86,6 +122,7 @@ namespace cDashboard
         {
             this.Close();
         }
+        #endregion
 
         #region Dragging
         /// <summary>
@@ -96,6 +133,99 @@ namespace cDashboard
         private void cMote_MouseDown(object sender, MouseEventArgs e)
         {
             dragForm(e);
+        }
+        #endregion
+
+        /// <summary>
+        /// grabs JSON from URL
+        /// returns null on fail
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private Dictionary<string, dynamic> getDictFromJsonUrl(string url)
+        {
+            //predeclare before try/catch
+            WebRequest request;
+            WebResponse response;
+            System.IO.StreamReader reader;
+            Dictionary<string, dynamic> dict;
+
+            //try/catch is used to detect connectivity
+            //any catch should be the result of a lack of internet access
+            try
+            {
+                request = WebRequest.Create(url);
+                response = request.GetResponse();
+                reader = new System.IO.StreamReader(response.GetResponseStream());
+                string string_url_text = reader.ReadToEnd();
+                dict = new JavaScriptSerializer().Deserialize<Dictionary<string, dynamic>>(string_url_text);
+            }
+            catch
+            {
+                return null;
+            }
+
+            return dict;
+        }
+
+        #region Spotify Integration (STASH'd)
+        /// <summary>
+        /// testing album artwork data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_test_Click(object sender, EventArgs e)
+        {
+            getSpotifyInfo();
+        }
+
+        /// <summary>
+        /// gets Spotify information via API
+        /// </summary>
+        private void getSpotifyInfo()
+        {
+            //get Spotify process
+            Process[] processes = Process.GetProcesses();
+
+            foreach (Process process in processes)
+            {
+                //short circuit eval
+                //at this point process == spotify
+                if (process.MainWindowTitle.Length >= 7 && process.MainWindowTitle.Substring(0, 7) == "Spotify" && process.ProcessName.ToLower() == "spotify" && process.MainWindowTitle != "Spotify")
+                {
+
+                    string artist_and_song = process.MainWindowTitle.Substring(process.MainWindowTitle.IndexOf(" - ") + 3);
+                    string artist = artist_and_song.Substring(0, artist_and_song.IndexOf(" – "));     //need to handle error (happens when we catch spotify between songs or without a title)
+                    string song = artist_and_song.Substring(artist.Length + 3);
+
+                    //Spotify API call
+                    Dictionary<string, dynamic> dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=" + song + "&type=track");
+
+                    if (dict == null)
+                    {
+                        picturebox_albumart.Image = null;
+                        return;
+                    }
+
+                    //set true when we have gotten an img from the API
+                    bool gotImg = false;
+
+                    foreach (var i in dict["tracks"]["items"])
+                    {
+                        if (i["artists"][0]["name"] == artist)
+                        {
+                            string img_url = i["album"]["images"][0]["url"];
+                            picturebox_albumart.Load(img_url);
+                            gotImg = true;
+                            break;
+                        }
+                    }
+
+                    //blank out album art if we can't find it via API
+                    if (!gotImg)
+                        picturebox_albumart.Image = null;
+                }
+            }
         }
         #endregion
     }
