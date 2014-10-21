@@ -18,8 +18,6 @@ namespace cDashboard
 {
     public partial class cMote : cForm
     {
-        Dictionary<string, dynamic> dict;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -37,6 +35,16 @@ namespace cDashboard
         {
             this.Size = new Size(257, 118);
             getSpotifyInfo();
+
+            if (getSpecificSetting(new string[] { "cMote", this.Name, "SpotifyIntegration" })[0] == "False")
+            {
+                checkbox_spotify_integration.Checked = false;
+            }
+            else
+            {
+                checkbox_spotify_integration.Checked = true;
+            }
+
             CompletedForm_Load = true;
         }
 
@@ -65,8 +73,6 @@ namespace cDashboard
         private void button_play_pause_Click(object sender, EventArgs e)
         {
             cSendKey(0xB3 /*VK_MEDIA_PLAY_PAUSE*/);
-            getSpotifyInfo();
-            button_test.PerformClick();
         }
 
         /// <summary>
@@ -79,7 +85,6 @@ namespace cDashboard
             cSendKey(0xB0 /*VK_MEDIA_NEXT_TRACK*/);
             getSpotifyInfo();
             button_test.PerformClick();
-
         }
 
         /// <summary>
@@ -179,7 +184,28 @@ namespace cDashboard
             return dict;
         }
 
-        #region Spotify Integration (STASH'd)
+        #region Spotify Integration
+        /// <summary>
+        /// update SpotifyIntegration in the settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkbox_spotify_integration_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkbox_spotify_integration.Checked)
+            {
+                replaceSetting(new string[] { "cMote", this.Name, "SpotifyIntegration" }, new string[] { "cMote", this.Name, "SpotifyIntegration", "True" });
+                getSpotifyInfo();
+            }
+            else
+            {
+                replaceSetting(new string[] { "cMote", this.Name, "SpotifyIntegration" }, new string[] { "cMote", this.Name, "SpotifyIntegration", "False" });
+                picturebox_albumart.Image = null;
+                this.Size = new Size(257, 118);
+                return;
+            }
+        }
+
         /// <summary>
         /// testing album artwork data
         /// </summary>
@@ -191,10 +217,23 @@ namespace cDashboard
         }
 
         /// <summary>
+        /// gets Spotify information via API, threaded
+        /// </summary>
+        public void getSpotifyInfoViaThread()
+        {
+            System.Threading.Thread t1 = new System.Threading.Thread(getSpotifyInfo);
+            t1.Start();
+        }
+
+        /// <summary>
         /// gets Spotify information via API
         /// </summary>
         private void getSpotifyInfo()
         {
+            //cancel if spotify integration is not checked
+            if (!checkbox_spotify_integration.Checked)
+                return;
+
             //get Spotify process
             Process[] processes = Process.GetProcesses();
 
@@ -210,12 +249,24 @@ namespace cDashboard
                     string song = artist_and_song.Substring(artist.Length + 3);
 
                     //Spotify API call
-                    dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=" + song + "&type=track");
+                    Dictionary<string, dynamic> dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=" + song + "&type=track");
 
                     if (dict == null)
                     {
-                        picturebox_albumart.Image = null;
-                        this.Size = new Size(257, 118);
+                        if (picturebox_albumart.InvokeRequired)
+                        {
+                            picturebox_albumart.Invoke(new MethodInvoker(delegate
+                            {
+                                picturebox_albumart.Image = null;
+                                this.Size = new Size(257, 118);
+                            }));
+                        }
+                        else
+                        {
+                            picturebox_albumart.Image = null;
+                            this.Size = new Size(257, 118);
+                        }
+
                         return;
                     }
 
@@ -227,7 +278,18 @@ namespace cDashboard
                         if (i["artists"][0]["name"] == artist)
                         {
                             string img_url = i["album"]["images"][0]["url"];
-                            picturebox_albumart.Load(img_url);
+                            if (picturebox_albumart.InvokeRequired)
+                            {
+                                picturebox_albumart.Invoke(new MethodInvoker(delegate
+                                {
+                                    picturebox_albumart.Load(img_url);
+                                }));
+                            }
+                            else
+                            {
+                                picturebox_albumart.Load(img_url);
+                            }
+
                             gotImg = true;
                             break;
                         }
@@ -236,28 +298,58 @@ namespace cDashboard
                     //blank out album art, other things, if we can't find it via API
                     if (!gotImg)
                     {
-                        picturebox_albumart.Image = null;
-                        this.Size = new Size(257, 118);
+                        if (picturebox_albumart.InvokeRequired)
+                        {
+                            picturebox_albumart.Invoke(new MethodInvoker(delegate
+                            {
+                                picturebox_albumart.Image = null;
+                                this.Size = new Size(257, 118);
+                            }));
+                        }
+                        else
+                        {
+                            picturebox_albumart.Image = null;
+                            this.Size = new Size(257, 118);
+                        }
                         return;
                     }
                     else
                     {
-                        this.Size = new Size(257, 161);
-                        label_songname.Text = song;
-                        label_artist.Text = artist;
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new MethodInvoker(delegate
+                            {
+                                this.Size = new Size(257, 161);
+                                label_songname.Text = song;
+                                label_artist.Text = artist;
+                            }));
+                        }
+                        else
+                        {
+                            this.Size = new Size(257, 161);
+                            label_songname.Text = song;
+                            label_artist.Text = artist;
+                        }
                         return;
                     }
                 }
             }
-            picturebox_albumart.Image = null;
-            this.Size = new Size(257, 118);
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    picturebox_albumart.Image = null;
+                    this.Size = new Size(257, 118);
+                }));
+            }
+            else
+            {
+                picturebox_albumart.Image = null;
+                this.Size = new Size(257, 118);
+            }
+
         }
         #endregion
 
-
-        private void bg_request_DoWork(object sender, DoWorkEventArgs e)
-        {
-
-        }
     }
 }

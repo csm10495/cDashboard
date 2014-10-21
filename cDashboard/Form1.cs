@@ -919,6 +919,8 @@ namespace cDashboard
 
             updateCBattery(); //updates all cBattery
 
+            updateCMote(); //updates all cMote
+
             fadetimer.Start(); //begin timer
         }
 
@@ -957,6 +959,17 @@ namespace cDashboard
             foreach (cBattery this_cBattery in this.Controls.OfType<cBattery>())
             {
                 this_cBattery.update();
+            }
+        }
+
+        /// <summary>
+        /// updates all cMotes
+        /// </summary>
+        private void updateCMote()
+        {
+            foreach (cMote this_cMote in this.Controls.OfType<cMote>())
+            {
+                this_cMote.getSpotifyInfoViaThread();
             }
         }
 
@@ -1272,6 +1285,13 @@ namespace cDashboard
             //represents the a unique time stamp for use as name of form
             long long_unique_timestamp = DateTime.Now.Ticks;
 
+            //add the cMote to settings
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
+            sw.WriteLine("cMote;" + long_unique_timestamp.ToString() + ";Location;10;25");
+            sw.WriteLine("cMote;" + long_unique_timestamp.ToString() + ";SpotifyIntegration;False");
+            sw.Close();
+
+
             cMote cMote_new = new cMote();
             cMote_new.Name = long_unique_timestamp.ToString();
             cMote_new.Location = new Point(10, 25);
@@ -1281,12 +1301,9 @@ namespace cDashboard
             Controls.Add(cMote_new);
             cMote_new.Show();
             cMote_new.BringToFront();
-
-            //add the cMote to settings
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
-            sw.WriteLine("cMote;" + long_unique_timestamp.ToString() + ";Location;10;25");
-            sw.Close();
         }
+
+
 
         /// <summary>
         /// creates a new cBattery

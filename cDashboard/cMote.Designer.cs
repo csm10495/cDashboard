@@ -33,7 +33,6 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.label_artist = new System.Windows.Forms.Label();
             this.label_songname = new System.Windows.Forms.Label();
-            this.picturebox_albumart = new System.Windows.Forms.PictureBox();
             this.button_vol_up = new System.Windows.Forms.Button();
             this.button_play_pause = new System.Windows.Forms.Button();
             this.button_vol_down = new System.Windows.Forms.Button();
@@ -42,7 +41,8 @@
             this.button_previous = new System.Windows.Forms.Button();
             this.button_next = new System.Windows.Forms.Button();
             this.button_close = new System.Windows.Forms.Button();
-            this.bg_request = new System.ComponentModel.BackgroundWorker();
+            this.picturebox_albumart = new System.Windows.Forms.PictureBox();
+            this.checkbox_spotify_integration = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_albumart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,15 +71,6 @@
             this.label_songname.Text = "SongName";
             this.label_songname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.label_songname, "Song Name via Spotify");
-            // 
-            // picturebox_albumart
-            // 
-            this.picturebox_albumart.Location = new System.Drawing.Point(197, 104);
-            this.picturebox_albumart.Name = "picturebox_albumart";
-            this.picturebox_albumart.Size = new System.Drawing.Size(51, 49);
-            this.picturebox_albumart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picturebox_albumart.TabIndex = 5;
-            this.picturebox_albumart.TabStop = false;
             // 
             // button_vol_up
             // 
@@ -201,9 +192,29 @@
             this.button_close.UseVisualStyleBackColor = true;
             this.button_close.Click += new System.EventHandler(this.button_close_Click);
             // 
-            // bg_request
+            // picturebox_albumart
             // 
-            this.bg_request.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bg_request_DoWork);
+            this.picturebox_albumart.Location = new System.Drawing.Point(197, 104);
+            this.picturebox_albumart.Name = "picturebox_albumart";
+            this.picturebox_albumart.Size = new System.Drawing.Size(51, 49);
+            this.picturebox_albumart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picturebox_albumart.TabIndex = 5;
+            this.picturebox_albumart.TabStop = false;
+            this.toolTip.SetToolTip(this.picturebox_albumart, "Album Artwork via Spotify");
+            // 
+            // checkbox_spotify_integration
+            // 
+            this.checkbox_spotify_integration.AutoSize = true;
+            this.checkbox_spotify_integration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkbox_spotify_integration.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkbox_spotify_integration.ForeColor = System.Drawing.Color.White;
+            this.checkbox_spotify_integration.Location = new System.Drawing.Point(7, 3);
+            this.checkbox_spotify_integration.Name = "checkbox_spotify_integration";
+            this.checkbox_spotify_integration.Size = new System.Drawing.Size(29, 19);
+            this.checkbox_spotify_integration.TabIndex = 11;
+            this.checkbox_spotify_integration.Text = "S";
+            this.checkbox_spotify_integration.UseVisualStyleBackColor = true;
+            this.checkbox_spotify_integration.CheckedChanged += new System.EventHandler(this.checkbox_spotify_integration_CheckedChanged);
             // 
             // cMote
             // 
@@ -211,6 +222,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(257, 161);
+            this.Controls.Add(this.checkbox_spotify_integration);
             this.Controls.Add(this.label_artist);
             this.Controls.Add(this.label_songname);
             this.Controls.Add(this.picturebox_albumart);
@@ -246,6 +258,6 @@
         private System.Windows.Forms.Button button_vol_mute;
         private System.Windows.Forms.Label label_songname;
         private System.Windows.Forms.Label label_artist;
-        private System.ComponentModel.BackgroundWorker bg_request;
+        private System.Windows.Forms.CheckBox checkbox_spotify_integration;
     }
 }
