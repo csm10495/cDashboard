@@ -1,4 +1,5 @@
-﻿//cDashboard - An overlay for Microsoft Windows
+﻿//This file is part of cDashboard
+//cDashboard - An information-based overlay for Microsoft Windows
 //cWeather - A weather forcast widget for cDashboard 
 //(C) Charles Machalow 2014 under the MIT License
 using System;

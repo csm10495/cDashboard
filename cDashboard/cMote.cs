@@ -1,4 +1,5 @@
 ﻿//This file is part of cDashboard
+//cDashboard - An information-based overlay for Microsoft Windows
 //cMote - A media controller for cDashboard
 //(C) Charles Machalow 2014 under the MIT License
 using System;
@@ -36,13 +37,20 @@ namespace cDashboard
             this.Size = new Size(257, 118);
             getSpotifyInfo();
 
-            if (getSpecificSetting(new string[] { "cMote", this.Name, "SpotifyIntegration" })[0] == "False")
+            try
             {
-                checkbox_spotify_integration.Checked = false;
+                if (getSpecificSetting(new string[] { "cMote", this.Name, "SpotifyIntegration" })[0] == "False")
+                {
+                    checkbox_spotify_integration.Checked = false;
+                }
+                else
+                {
+                    checkbox_spotify_integration.Checked = true;
+                }
             }
-            else
+            catch (ArgumentOutOfRangeException) //the only real exception would be that this value doesn't exist in the settings
             {
-                checkbox_spotify_integration.Checked = true;
+                replaceSetting(new string[] { "cMote", this.Name, "SpotifyIntegration" }, new string[] { "cMote", this.Name, "SpotifyIntegration", "False" });
             }
 
             CompletedForm_Load = true;
