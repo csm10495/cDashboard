@@ -18,6 +18,8 @@ namespace cDashboard
 {
     public partial class cMote : cForm
     {
+        Dictionary<string, dynamic> dict;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -33,6 +35,8 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cMote_Load(object sender, EventArgs e)
         {
+            this.Size = new Size(257, 118);
+            getSpotifyInfo();
             CompletedForm_Load = true;
         }
 
@@ -61,6 +65,8 @@ namespace cDashboard
         private void button_play_pause_Click(object sender, EventArgs e)
         {
             cSendKey(0xB3 /*VK_MEDIA_PLAY_PAUSE*/);
+            getSpotifyInfo();
+            button_test.PerformClick();
         }
 
         /// <summary>
@@ -71,6 +77,9 @@ namespace cDashboard
         private void button_next_Click(object sender, EventArgs e)
         {
             cSendKey(0xB0 /*VK_MEDIA_NEXT_TRACK*/);
+            getSpotifyInfo();
+            button_test.PerformClick();
+
         }
 
         /// <summary>
@@ -81,6 +90,8 @@ namespace cDashboard
         private void button_previous_Click(object sender, EventArgs e)
         {
             cSendKey(0xB1 /*VK_MEDIA_PREV_TRACK*/);
+            getSpotifyInfo();
+            button_test.PerformClick();
         }
 
         /// <summary>
@@ -199,11 +210,12 @@ namespace cDashboard
                     string song = artist_and_song.Substring(artist.Length + 3);
 
                     //Spotify API call
-                    Dictionary<string, dynamic> dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=" + song + "&type=track");
+                    dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=" + song + "&type=track");
 
                     if (dict == null)
                     {
                         picturebox_albumart.Image = null;
+                        this.Size = new Size(257, 118);
                         return;
                     }
 
@@ -221,12 +233,31 @@ namespace cDashboard
                         }
                     }
 
-                    //blank out album art if we can't find it via API
+                    //blank out album art, other things, if we can't find it via API
                     if (!gotImg)
+                    {
                         picturebox_albumart.Image = null;
+                        this.Size = new Size(257, 118);
+                        return;
+                    }
+                    else
+                    {
+                        this.Size = new Size(257, 161);
+                        label_songname.Text = song;
+                        label_artist.Text = artist;
+                        return;
+                    }
                 }
             }
+            picturebox_albumart.Image = null;
+            this.Size = new Size(257, 118);
         }
         #endregion
+
+
+        private void bg_request_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
     }
 }
