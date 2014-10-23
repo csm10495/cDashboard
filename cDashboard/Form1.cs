@@ -133,7 +133,7 @@ namespace cDashboard
                 if (int_cDash_processes_found > 1)
                 {
                     MessageBox.Show("Another instance of cDashboard is already running.");
-                    Application.Exit();
+                    Environment.Exit(0);
                 }
             }
         }
