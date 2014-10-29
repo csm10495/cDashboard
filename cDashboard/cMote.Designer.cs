@@ -117,18 +117,17 @@
             // 
             // button_vol_mute
             // 
-            this.button_vol_mute.AutoSize = true;
             this.button_vol_mute.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.button_vol_mute.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button_vol_mute.BackgroundImage")));
             this.button_vol_mute.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button_vol_mute.FlatAppearance.BorderSize = 0;
             this.button_vol_mute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_vol_mute.Font = new System.Drawing.Font("Arial Narrow", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_vol_mute.ForeColor = System.Drawing.Color.White;
-            this.button_vol_mute.Location = new System.Drawing.Point(105, 76);
+            this.button_vol_mute.Location = new System.Drawing.Point(116, 86);
             this.button_vol_mute.Name = "button_vol_mute";
-            this.button_vol_mute.Size = new System.Drawing.Size(51, 43);
+            this.button_vol_mute.Size = new System.Drawing.Size(24, 25);
             this.button_vol_mute.TabIndex = 8;
-            this.button_vol_mute.Text = "🔇";
             this.button_vol_mute.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.toolTip.SetToolTip(this.button_vol_mute, "Volume Mute");
             this.button_vol_mute.UseVisualStyleBackColor = true;
