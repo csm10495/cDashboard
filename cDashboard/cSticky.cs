@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace cDashboard 
+namespace cDashboard
 {
     public partial class cSticky : cForm
     {
@@ -105,22 +105,9 @@ namespace cDashboard
             {
                 rtb.BackColor = colorDialog1.Color;
                 menustrip.BackColor = colorDialog1.Color;
+                this.BackColor = colorDialog1.Color;
 
-                List<string> find = new List<string>();
-                List<string> replace = new List<string>();
-
-                find.Add("cSticky");
-                replace.Add("cSticky");
-                string num = (this.Name);
-                find.Add(num);
-                replace.Add(num);
-                find.Add("BackColor");
-                replace.Add("BackColor");
-                replace.Add(rtb.BackColor.R.ToString());
-                replace.Add(rtb.BackColor.G.ToString());
-                replace.Add(rtb.BackColor.B.ToString());
-
-                replaceSetting(find, replace);
+                replaceSetting(new string[] { "cSticky", this.Name, "BackColor" }, new string[] { "cSticky", this.Name, "BackColor", rtb.BackColor.R.ToString(), rtb.BackColor.G.ToString(), rtb.BackColor.B.ToString() });
             }
         }
 
