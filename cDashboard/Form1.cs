@@ -1559,6 +1559,7 @@ namespace cDashboard
                 replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "True" });
                 replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", SETTINGS_LOCATION + long_unique_timestamp.ToString() + System.IO.Path.GetExtension(openFileDialog1.FileName) });
 
+                goNotBoardless();
                 boardlessModeToolStripMenuItem.Checked = false;
             }
         }
@@ -1762,7 +1763,7 @@ namespace cDashboard
                     replaceSetting(new string[] { "cDash", "Wallpaper" }, new string[] { "cDash", "Wallpaper", "False" });
                     replaceSetting(new string[] { "cDash", "WallpaperImage" }, new string[] { "cDash", "WallpaperImage", "NULL" });
                 }
-
+                goNotBoardless();
                 boardlessModeToolStripMenuItem.Checked = false;
             }
         }
@@ -1795,19 +1796,12 @@ namespace cDashboard
         /// <param name="e"></param>
         private void setOpacityToolStripMenuItem_DropDownClosed_1(object sender, EventArgs e)
         {
-
-            //if the user sets this to low, it could be hard to use/see
-            if (Convert.ToInt32(textbox_opacity.Text) <= 15)
-            {
-                MessageBox.Show("The Opacity level must be greater than 15 and less than 101");
-                textbox_opacity.Text = OpacityLevel.ToString();
-                return;
-            }
+            int tmp_OpacityLevel = -1;
 
             //if the casting fails, then break gracefully
             try
             {
-                OpacityLevel = Convert.ToInt32(textbox_opacity.Text);
+                tmp_OpacityLevel = Convert.ToInt32(textbox_opacity.Text);
             }
             catch
             {
@@ -1815,11 +1809,21 @@ namespace cDashboard
                 return;
             }
 
-            //any number over 99 will save as 100
-            if (OpacityLevel > 99)
+            //if the user sets this to low, it could be hard to use/see
+            if (tmp_OpacityLevel <= 15)
             {
-                OpacityLevel = 100;
+                MessageBox.Show("The Opacity level must be greater than 15 and less than 101");
+                textbox_opacity.Text = OpacityLevel.ToString();
+                return;
             }
+
+            //any number over 99 will save as 100
+            if (tmp_OpacityLevel > 99)
+            {
+                tmp_OpacityLevel = 100;
+            }
+
+            OpacityLevel = tmp_OpacityLevel;
 
             this.Opacity = Convert.ToDouble(OpacityLevel) / 100;
 
@@ -1953,6 +1957,8 @@ namespace cDashboard
         /// <param name="e"></param>
         private void setInMillisecondsToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
         {
+            int old_int_fade_milliseconds = int_fade_milliseconds; //hold value
+
             //if the casting fails, then break gracefully
             try
             {
@@ -1960,7 +1966,14 @@ namespace cDashboard
             }
             catch
             {
-                MessageBox.Show("The fade_time must be an integer!");
+                MessageBox.Show("The fade time must be an integer greater than zero and less than 2000!");
+                return;
+            }
+
+            if (int_fade_milliseconds <= 0 || int_fade_milliseconds > 2000)
+            {
+                MessageBox.Show("The fade time must be an integer greater than zero and less than 2000!");
+                int_fade_milliseconds = old_int_fade_milliseconds;
                 return;
             }
 
