@@ -614,6 +614,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;WallpaperImageLayout;None");
                 sw.WriteLine("cDash;DateTimeStripColor;0;0;0");
                 sw.WriteLine("cDash;cWeather;Unit;F");
+                sw.WriteLine("cDash;BackColor;123;123;123");
                 sw.WriteLine("cDash;BoardlessMode;False");
 
                 sw.Close();
