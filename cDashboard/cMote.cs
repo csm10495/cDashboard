@@ -57,19 +57,15 @@ namespace cDashboard
         }
 
         [DllImport("user32.dll")]
-        static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
 
         /// <summary>
         /// sends a virtual key stroke for the key 'key'
         /// </summary>
         /// <param name="key"></param>
-        private void cSendKey(byte key)
+        private void cSendKey(uint key)
         {
-            keybd_event(key, 0, 0x0001 /*KEYEVENTF_EXTENDEDKEY*/ | 0, 0); ;
-            //MessageBox.Show("DANG!");    //Why does this still fix the problem
-            keybd_event(key, 0, 0x0001 /*KEYEVENTF_EXTENDEDKEY*/ | 0x0002 /*KEYEVENTF_KEYUP*/, 0);
-
-            // System.Threading.Thread.Sleep(3000);
+            SendMessage(this.Handle, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
         }
 
         #region Buttons
@@ -80,7 +76,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_play_pause_Click(object sender, EventArgs e)
         {
-            cSendKey(0xB3 /*VK_MEDIA_PLAY_PAUSE*/);
+            cSendKey(14 /*PlayPause*/);
+            getSpotifyInfo();
+            button_test.PerformClick();
         }
 
         /// <summary>
@@ -90,7 +88,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_next_Click(object sender, EventArgs e)
         {
-            cSendKey(0xB0 /*VK_MEDIA_NEXT_TRACK*/);
+            cSendKey(11 /*MediaNext*/);
             getSpotifyInfo();
             button_test.PerformClick();
         }
@@ -102,7 +100,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_previous_Click(object sender, EventArgs e)
         {
-            cSendKey(0xB1 /*VK_MEDIA_PREV_TRACK*/);
+            cSendKey(12 /*MediaPrevious*/);
             getSpotifyInfo();
             button_test.PerformClick();
         }
@@ -114,7 +112,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_vol_mute_Click(object sender, EventArgs e)
         {
-            cSendKey(0xAD /*VK_VOLUME_MUTE*/);
+            cSendKey(8 /*VolumeMute*/);
         }
 
         /// <summary>
@@ -124,7 +122,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_vol_up_Click(object sender, EventArgs e)
         {
-            cSendKey(0xAF /*VK_VOLUME_UP*/);
+            cSendKey(10 /*VolumeUp*/);
         }
 
         /// <summary>
@@ -134,7 +132,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void button_vol_down_Click(object sender, EventArgs e)
         {
-            cSendKey(0xAE /*VK_VOLUME_DOWN*/);
+            cSendKey(9 /*VolumeDown*/);
         }
 
         /// <summary>
@@ -257,7 +255,7 @@ namespace cDashboard
                     string song = artist_and_song.Substring(artist.Length + 3);
 
                     //Spotify API call
-                    Dictionary<string, dynamic> dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=" + song + "&type=track");
+                    Dictionary<string, dynamic> dict = getDictFromJsonUrl("https://api.spotify.com/v1/search?q=track:" + song + "%20artist:" + artist + "&type=track");
 
                     if (dict == null)
                     {
