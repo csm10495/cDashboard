@@ -65,7 +65,23 @@ namespace cDashboard
         /// <param name="key"></param>
         private void cSendKey(uint key)
         {
+            Process spotify = getSpotifyProcess();
+            string spotify_window_title = "";
+            if (spotify != null)
+                spotify_window_title = spotify.MainWindowTitle;
+
             SendMessage(this.Handle, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
+
+            if (spotify != null)
+            {
+                int x = 0;
+                //if we check for a change 20 times and it is the same, then it probably is the same song
+                while (getSpotifyProcess().MainWindowTitle == spotify_window_title && x < 20)
+                {
+                   //busy waiting (not very good but eh...)
+                    x++;
+                }
+            }
         }
 
         #region Buttons
@@ -77,8 +93,7 @@ namespace cDashboard
         private void button_play_pause_Click(object sender, EventArgs e)
         {
             cSendKey(14 /*PlayPause*/);
-            getSpotifyInfo();
-            button_test.PerformClick();
+            getSpotifyInfoViaThread();
         }
 
         /// <summary>
@@ -89,8 +104,7 @@ namespace cDashboard
         private void button_next_Click(object sender, EventArgs e)
         {
             cSendKey(11 /*MediaNext*/);
-            getSpotifyInfo();
-            button_test.PerformClick();
+            getSpotifyInfoViaThread();
         }
 
         /// <summary>
@@ -101,8 +115,7 @@ namespace cDashboard
         private void button_previous_Click(object sender, EventArgs e)
         {
             cSendKey(12 /*MediaPrevious*/);
-            getSpotifyInfo();
-            button_test.PerformClick();
+            getSpotifyInfoViaThread();
         }
 
         /// <summary>
@@ -191,6 +204,19 @@ namespace cDashboard
         }
 
         #region Spotify Integration
+
+        /// <summary>
+        /// returns the spotify process
+        /// </summary>
+        /// <returns></returns>
+        private Process getSpotifyProcess()
+        {
+            if (Process.GetProcessesByName("Spotify").Length > 0)
+                return Process.GetProcessesByName("Spotify")[0];
+            else
+                return null;
+        }
+
         /// <summary>
         /// update SpotifyIntegration in the settings
         /// </summary>

@@ -76,9 +76,6 @@ namespace cDashboard
             {
                 label_battery_remaining.Text = "No Batt.";
             }
-
-
-
         }
 
         /// <summary>
