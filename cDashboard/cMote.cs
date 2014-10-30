@@ -35,7 +35,7 @@ namespace cDashboard
         private void cMote_Load(object sender, EventArgs e)
         {
             this.Size = new Size(257, 118);
-            getSpotifyInfo();
+            getSpotifyInfoViaThread();
 
             try
             {
