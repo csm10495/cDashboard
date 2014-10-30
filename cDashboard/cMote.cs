@@ -70,7 +70,7 @@ namespace cDashboard
             if (spotify != null)
                 spotify_window_title = spotify.MainWindowTitle;
 
-            SendMessage(this.Handle, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
+            SendMessage(((IntPtr)0xffff) /*HWND_BROADCAST*/, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
 
             if (spotify != null)
             {
