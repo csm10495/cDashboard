@@ -70,7 +70,7 @@ namespace cDashboard
             if (spotify != null)
                 spotify_window_title = spotify.MainWindowTitle;
 
-            SendMessage(((IntPtr)0xffff) /*HWND_BROADCAST*/, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
+            SendMessage(this.Handle, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
 
             if (spotify != null)
             {
@@ -78,7 +78,7 @@ namespace cDashboard
                 //if we check for a change 20 times and it is the same, then it probably is the same song
                 while (getSpotifyProcess().MainWindowTitle == spotify_window_title && x < 20)
                 {
-                   //busy waiting (not very good but eh...)
+                    //busy waiting (not very good but eh...)
                     x++;
                 }
             }
@@ -315,11 +315,13 @@ namespace cDashboard
                                 picturebox_albumart.Invoke(new MethodInvoker(delegate
                                 {
                                     picturebox_albumart.Load(img_url);
+                                    picturebox_albumart.Tag = img_url;
                                 }));
                             }
                             else
                             {
                                 picturebox_albumart.Load(img_url);
+                                picturebox_albumart.Tag = img_url;
                             }
 
                             gotImg = true;
@@ -382,6 +384,66 @@ namespace cDashboard
 
         }
         #endregion
+
+        /// <summary>
+        /// show huge cover art in cPic
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void picturebox_albumart_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form / image
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            string file = picturebox_albumart.Tag.ToString();
+
+            //get cover art
+            WebClient Client = new WebClient();
+            //the only exception is connection failed, so just abort.
+            try
+            {
+                Client.DownloadFile(file, SETTINGS_LOCATION + "tmp");
+                Client.Dispose();
+            }
+            catch (Exception) 
+            {
+                return;
+            }
+
+            //make directory
+            System.IO.Directory.CreateDirectory(SETTINGS_LOCATION + long_unique_timestamp.ToString());
+
+            System.IO.File.Move(SETTINGS_LOCATION + "tmp", SETTINGS_LOCATION + long_unique_timestamp.ToString() + "\\" + DateTime.Now.Ticks.ToString());
+            cPic cPic_new = new cPic();
+            cPic_new.Name = long_unique_timestamp.ToString();
+            cPic_new.Location = new Point(10, 25);
+            cPic_new.Size = new Size(640, 640);
+            cPic_new.TopLevel = false;
+            cPic_new.Parent = this.Parent;
+            cPic_new.Tag = 1;
+
+            //properly name, randomize files
+            randomizeFiles(cPic_new.Name);
+
+            //set cPic_new's background image equal to image number 1 from the folder
+            cPic_new.BackgroundImage = Image.FromFile(SETTINGS_LOCATION + cPic_new.Name + "\\1");
+
+            //changed default behavior to zoom
+            cPic_new.BackgroundImageLayout = ImageLayout.Zoom;
+
+            this.Parent.Controls.Add(cPic_new);
+            cPic_new.Show();
+            cPic_new.BringToFront();
+
+            //add the cPic to settings
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
+            sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";FolderName;" + long_unique_timestamp.ToString());
+            sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Size;350;400");
+            sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";Location;10;25");
+            sw.WriteLine("cPic;" + long_unique_timestamp.ToString() + ";ImageLayout;Zoom");
+            sw.Close();
+
+        }
 
     }
 }

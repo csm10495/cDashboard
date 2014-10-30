@@ -200,6 +200,7 @@
             this.picturebox_albumart.TabIndex = 5;
             this.picturebox_albumart.TabStop = false;
             this.toolTip.SetToolTip(this.picturebox_albumart, "Album Artwork via Spotify");
+            this.picturebox_albumart.Click += new System.EventHandler(this.picturebox_albumart_Click);
             // 
             // checkbox_spotify_integration
             // 
