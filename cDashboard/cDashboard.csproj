@@ -110,6 +110,12 @@
     <Compile Include="cPic.Designer.cs">
       <DependentUpon>cPic.cs</DependentUpon>
     </Compile>
+    <Compile Include="cReminder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cReminder.Designer.cs">
+      <DependentUpon>cReminder.cs</DependentUpon>
+    </Compile>
     <Compile Include="cSticky.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="cPic.resx">
       <DependentUpon>cPic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cReminder.resx">
+      <DependentUpon>cReminder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="cSticky.resx">
       <DependentUpon>cSticky.cs</DependentUpon>

@@ -1304,8 +1304,6 @@ namespace cDashboard
             cMote_new.BringToFront();
         }
 
-
-
         /// <summary>
         /// creates a new cBattery
         /// </summary>
@@ -2212,5 +2210,27 @@ namespace cDashboard
             menuStrip1.Focus();
         }
         #endregion
+
+        /// <summary>
+        /// add cReminder to the dash
+        /// NOTE: this is not saved in settings as it is a setup form, not persistent
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCReminderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            cReminder cReminder_new = new cReminder();
+            cReminder_new.Name = long_unique_timestamp.ToString();
+            cReminder_new.Location = new Point(10, 25);
+            cReminder_new.TopLevel = false;
+            cReminder_new.Parent = this;
+
+            Controls.Add(cReminder_new);
+            cReminder_new.Show();
+            cReminder_new.BringToFront();
+        }
     }
 }

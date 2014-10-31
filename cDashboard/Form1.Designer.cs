@@ -61,6 +61,7 @@
             this.newCStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCBatteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCMoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +92,7 @@
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
-            this.newCMoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCReminderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -212,6 +213,7 @@
             this.newCWeatherToolStripMenuItem,
             this.newCBatteryToolStripMenuItem,
             this.newCMoteToolStripMenuItem,
+            this.newCReminderToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.hideToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -232,7 +234,7 @@
             this.customColorToolStripMenuItem,
             this.favoriteColorToolStripMenuItem});
             this.newStickyToolStripMenuItem.Name = "newStickyToolStripMenuItem";
-            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newStickyToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.newStickyToolStripMenuItem.Text = "New cSticky";
             // 
             // redToolStripMenuItem
@@ -302,49 +304,56 @@
             // newCPicToolStripMenuItem
             // 
             this.newCPicToolStripMenuItem.Name = "newCPicToolStripMenuItem";
-            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCPicToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.newCPicToolStripMenuItem.Text = "New cPic...";
             this.newCPicToolStripMenuItem.Click += new System.EventHandler(this.newCPicToolStripMenuItem_Click);
             // 
             // newCStopwatchToolStripMenuItem
             // 
             this.newCStopwatchToolStripMenuItem.Name = "newCStopwatchToolStripMenuItem";
-            this.newCStopwatchToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCStopwatchToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.newCStopwatchToolStripMenuItem.Text = "New cStopwatch";
             this.newCStopwatchToolStripMenuItem.Click += new System.EventHandler(this.newCStopwatchToolStripMenuItem_Click);
             // 
             // newCWeatherToolStripMenuItem
             // 
             this.newCWeatherToolStripMenuItem.Name = "newCWeatherToolStripMenuItem";
-            this.newCWeatherToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCWeatherToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.newCWeatherToolStripMenuItem.Text = "New cWeather...";
             this.newCWeatherToolStripMenuItem.Click += new System.EventHandler(this.newCWeatherToolStripMenuItem_Click);
             // 
             // newCBatteryToolStripMenuItem
             // 
             this.newCBatteryToolStripMenuItem.Name = "newCBatteryToolStripMenuItem";
-            this.newCBatteryToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newCBatteryToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.newCBatteryToolStripMenuItem.Text = "New cBattery";
             this.newCBatteryToolStripMenuItem.Click += new System.EventHandler(this.newCBatteryToolStripMenuItem_Click);
+            // 
+            // newCMoteToolStripMenuItem
+            // 
+            this.newCMoteToolStripMenuItem.Name = "newCMoteToolStripMenuItem";
+            this.newCMoteToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.newCMoteToolStripMenuItem.Text = "New cMote";
+            this.newCMoteToolStripMenuItem.Click += new System.EventHandler(this.newCMoteToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.exitToolStripMenuItem.Text = "Exit cDashboard";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -364,7 +373,7 @@
             this.cWeatherToolStripMenuItem,
             this.cDashDataToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -567,12 +576,12 @@
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
-            // newCMoteToolStripMenuItem
+            // newCReminderToolStripMenuItem
             // 
-            this.newCMoteToolStripMenuItem.Name = "newCMoteToolStripMenuItem";
-            this.newCMoteToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.newCMoteToolStripMenuItem.Text = "New cMote";
-            this.newCMoteToolStripMenuItem.Click += new System.EventHandler(this.newCMoteToolStripMenuItem_Click);
+            this.newCReminderToolStripMenuItem.Name = "newCReminderToolStripMenuItem";
+            this.newCReminderToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.newCReminderToolStripMenuItem.Text = "New cReminder...";
+            this.newCReminderToolStripMenuItem.Click += new System.EventHandler(this.newCReminderToolStripMenuItem_Click);
             // 
             // cDashboard
             // 
@@ -668,6 +677,7 @@
         private System.Windows.Forms.ToolStripMenuItem boardlessModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCBatteryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCMoteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newCReminderToolStripMenuItem;
     }
 }
 
