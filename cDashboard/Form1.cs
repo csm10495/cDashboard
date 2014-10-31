@@ -21,6 +21,14 @@ namespace cDashboard
     public partial class cDashboard : cForm
     {
         #region Global Variables
+
+        /// <summary>
+        /// represents all cReminders as a dict
+        /// long -> ticks
+        /// string -> message
+        /// </summary>
+        SortedDictionary<long, string> dict_cReminders = new SortedDictionary<long, string>();
+
         /// <summary>
         /// this is the tick counter for the fade timer
         /// </summary>
@@ -185,6 +193,33 @@ namespace cDashboard
             foreach (List<string> currentline in settings_list)
             {
                 //Most global cDash settings
+                if (currentline[0] == "cReminders")
+                {
+                    //handle empty cReminders list
+                    if (currentline.Count == 1)
+                    {
+                        continue;
+                    }
+
+                    List<string> cReminders = currentline;
+                    cReminders.RemoveAt(0);
+
+                    if (cReminders.Count % 2 != 0)
+                    {
+                        MessageBox.Show("No message for certain cReminder?, this shouldn't happen.");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < cReminders.Count; i++)
+                        {
+                            long ticks = Convert.ToInt64(cReminders[i]);
+                            string msg = cReminders[i + 1];
+                            dict_cReminders.Add(ticks, msg);
+                            i++;
+                        }
+                    }
+                }
+
 
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
@@ -975,6 +1010,58 @@ namespace cDashboard
         }
 
         /// <summary>
+        /// checks for any expired cReminders, and display, remove them
+        /// </summary>
+        public void updateDictCReminders()
+        {
+            List<string> cReminders = getSpecificSetting(new string[] { "cReminders" });
+
+            if (cReminders.Count % 2 != 0)
+            {
+                MessageBox.Show("No message for certain cReminder?, this shouldn't happen.");
+            }
+            else
+            {
+                dict_cReminders.Clear();
+                for (int i = 0; i < cReminders.Count; i++)
+                {
+                    long ticks = Convert.ToInt64(cReminders[i]);
+                    string msg = cReminders[i + 1];
+                    dict_cReminders.Add(ticks, msg);
+                    i++;
+                }
+            }
+        }
+
+        /// <summary>
+        /// check if any cReminders should be displayed, display them
+        /// </summary>
+        private void checkForCReminders()
+        {
+            if (dict_cReminders.Count > 0)
+            {
+                if (DateTime.Now.Ticks > dict_cReminders.First().Key)
+                {
+                    long key = dict_cReminders.First().Key;
+                    string value = dict_cReminders.First().Value.ToString();
+                    dict_cReminders.Remove(dict_cReminders.First().Key);
+                    MessageBox.Show(value);
+
+                    //keep settings up-to-date
+                    List<string> cReminders = new List<string>();
+                    cReminders.Add("cReminders");
+                    foreach (KeyValuePair<long, string> i in dict_cReminders)
+                    {
+                        cReminders.Add(i.Key.ToString());
+                        cReminders.Add(i.Value.ToString());
+                    }
+
+                    replaceSetting(cReminders.GetRange(0, 1), cReminders);
+                }
+            }
+        }
+
+        /// <summary>
         /// timer tick
         /// </summary>
         /// <param name="sender"></param>
@@ -983,6 +1070,7 @@ namespace cDashboard
         {
             updateTimeDate();
             updateCWeather();
+            checkForCReminders();
         }
 
         /// <summary>
@@ -1012,7 +1100,6 @@ namespace cDashboard
                     this.Visible = false;
                     fadetimertime = 0;
                     fadetimer.Stop();
-                    uitimer.Stop();
                     //go to next image in slideshows
                     rotateCPic();
                 }
@@ -1023,9 +1110,6 @@ namespace cDashboard
             #region Fade In
             if (cD_tstate == timerstate.fadein)
             {
-                //start the timer that will update time/date
-                uitimer.Start();
-
                 //computes amount of change in opacity per clock tick then applies it
                 double double_change_in_opacity_per_tick = (Convert.ToDouble(OpacityLevel)) / Convert.ToDouble(int_fade_milliseconds) * 1 / 10;
                 this.Opacity = fadetimertime * double_change_in_opacity_per_tick;
@@ -1276,6 +1360,28 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+        /// <summary>
+        /// add cReminder to the dash
+        /// NOTE: this is not saved in settings as it is a setup form, not persistent
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCReminderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            cReminder cReminder_new = new cReminder();
+            cReminder_new.Name = long_unique_timestamp.ToString();
+            cReminder_new.Location = new Point(10, 25);
+            cReminder_new.TopLevel = false;
+            cReminder_new.Parent = this;
+
+            Controls.Add(cReminder_new);
+            cReminder_new.Show();
+            cReminder_new.BringToFront();
+        }
+
         /// <summary>
         /// creates an instance of cMote as a child form
         /// </summary>
@@ -2135,6 +2241,14 @@ namespace cDashboard
 
             List<List<string>> list_settings = getSettingsList();
 
+            //special handling for cReminder
+            if (this_control.GetType() == typeof(cReminder))
+            {
+                Controls.Remove(this_control);
+                this_control.Dispose();
+                return;
+            }
+
             //special deletion of associated files (cPic, cSticky)
             if (this_control.GetType() == typeof(cSticky))
             {
@@ -2210,27 +2324,5 @@ namespace cDashboard
             menuStrip1.Focus();
         }
         #endregion
-
-        /// <summary>
-        /// add cReminder to the dash
-        /// NOTE: this is not saved in settings as it is a setup form, not persistent
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void newCReminderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //represents the a unique time stamp for use as name of form
-            long long_unique_timestamp = DateTime.Now.Ticks;
-
-            cReminder cReminder_new = new cReminder();
-            cReminder_new.Name = long_unique_timestamp.ToString();
-            cReminder_new.Location = new Point(10, 25);
-            cReminder_new.TopLevel = false;
-            cReminder_new.Parent = this;
-
-            Controls.Add(cReminder_new);
-            cReminder_new.Show();
-            cReminder_new.BringToFront();
-        }
     }
 }

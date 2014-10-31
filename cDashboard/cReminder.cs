@@ -1,6 +1,6 @@
 ﻿//This file is part of cDashboard
 //cDashboard - An information-based overlay for Microsoft Windows
-//cReminder - A reminder notification for cDashboard
+//cReminder - A reminder setup prompt for cDashboard
 //(C) Charles Machalow 2014 under the MIT License
 using System;
 using System.Collections.Generic;
@@ -102,6 +102,9 @@ namespace cDashboard
 
             replaceSetting(find, cReminders);
 
+            //update the dict of cReminders in cDashboard
+            ((cDashboard)(this.Parent)).updateDictCReminders();
+           
             MessageBox.Show("Set cReminder for: " + rtb_message.Text + " for " + date_time.ToString());
             this.Close();
         }

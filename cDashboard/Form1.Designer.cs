@@ -62,6 +62,7 @@
             this.newCWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCBatteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCMoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCReminderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,13 +93,13 @@
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
-            this.newCReminderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // uitimer
             // 
+            this.uitimer.Enabled = true;
             this.uitimer.Interval = 1000;
             this.uitimer.Tick += new System.EventHandler(this.uitimer_Tick);
             // 
@@ -335,6 +336,13 @@
             this.newCMoteToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.newCMoteToolStripMenuItem.Text = "New cMote";
             this.newCMoteToolStripMenuItem.Click += new System.EventHandler(this.newCMoteToolStripMenuItem_Click);
+            // 
+            // newCReminderToolStripMenuItem
+            // 
+            this.newCReminderToolStripMenuItem.Name = "newCReminderToolStripMenuItem";
+            this.newCReminderToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.newCReminderToolStripMenuItem.Text = "New cReminder...";
+            this.newCReminderToolStripMenuItem.Click += new System.EventHandler(this.newCReminderToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -575,13 +583,6 @@
             // 
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
-            // 
-            // newCReminderToolStripMenuItem
-            // 
-            this.newCReminderToolStripMenuItem.Name = "newCReminderToolStripMenuItem";
-            this.newCReminderToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.newCReminderToolStripMenuItem.Text = "New cReminder...";
-            this.newCReminderToolStripMenuItem.Click += new System.EventHandler(this.newCReminderToolStripMenuItem_Click);
             // 
             // cDashboard
             // 
