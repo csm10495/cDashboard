@@ -19,6 +19,26 @@ namespace cDashboard
 {
     public partial class cMote : cForm
     {
+        #region Global Variables
+        //used for callback
+        private WinEventDelegate winEventProc;
+        delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+
+        //Spotify Hook IntPtr
+        IntPtr m_hhook = IntPtr.Zero;
+        #endregion
+
+        #region DLLImports
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, int dwFlags);
+
+        [DllImport("user32.dll")]
+        static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+        #endregion
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -36,6 +56,8 @@ namespace cDashboard
         {
             this.Size = new Size(257, 118);
             getSpotifyInfoViaThread();
+
+            hookSpotify();
 
             try
             {
@@ -56,8 +78,31 @@ namespace cDashboard
             CompletedForm_Load = true;
         }
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+        /// <summary>
+        /// form closing event, cleanup
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cMote_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //unhook
+            UnhookWinEvent(m_hhook);
+        }
+
+        /// <summary>
+        /// callback, called when Spotify window title changes
+        /// </summary>
+        /// <param name="hWinEventHook"></param>
+        /// <param name="eventType"></param>
+        /// <param name="hwnd"></param>
+        /// <param name="idObject"></param>
+        /// <param name="idChild"></param>
+        /// <param name="dwEventThread"></param>
+        /// <param name="dwmsEventTime"></param>
+        private void EventCallback(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        {
+            getSpotifyInfoViaThread();
+        }
 
         /// <summary>
         /// sends a virtual key stroke for the key 'key'
@@ -65,23 +110,7 @@ namespace cDashboard
         /// <param name="key"></param>
         private void cSendKey(uint key)
         {
-            Process spotify = getSpotifyProcess();
-            string spotify_window_title = "";
-            if (spotify != null)
-                spotify_window_title = spotify.MainWindowTitle;
-
             SendMessage(this.Handle, 0x319 /*WM_APPCOMMAND*/, this.Handle, (IntPtr)((int)key << 16));
-
-            if (spotify != null)
-            {
-                int x = 0;
-                //if we check for a change 20 times and it is the same, then it probably is the same song
-                while (getSpotifyProcess().MainWindowTitle == spotify_window_title && x < 20)
-                {
-                    //busy waiting (not very good but eh...)
-                    x++;
-                }
-            }
         }
 
         #region Buttons
@@ -93,7 +122,6 @@ namespace cDashboard
         private void button_play_pause_Click(object sender, EventArgs e)
         {
             cSendKey(14 /*PlayPause*/);
-            getSpotifyInfoViaThread();
         }
 
         /// <summary>
@@ -104,7 +132,6 @@ namespace cDashboard
         private void button_next_Click(object sender, EventArgs e)
         {
             cSendKey(11 /*MediaNext*/);
-            getSpotifyInfoViaThread();
         }
 
         /// <summary>
@@ -115,7 +142,6 @@ namespace cDashboard
         private void button_previous_Click(object sender, EventArgs e)
         {
             cSendKey(12 /*MediaPrevious*/);
-            getSpotifyInfoViaThread();
         }
 
         /// <summary>
@@ -171,6 +197,27 @@ namespace cDashboard
         }
         #endregion
 
+        #region Spotify Integration
+        /// <summary>
+        /// hooks the spotify process
+        /// </summary>
+        private void hookSpotify()
+        {
+            //only hook if possible
+            Process spotify = getSpotifyProcess();
+            if (spotify != null && m_hhook == IntPtr.Zero)
+            {
+                //must happen on proper thread
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    //setup system hook on Spotify process
+                    winEventProc = new WinEventDelegate(EventCallback);
+                    uint processId = Convert.ToUInt16(spotify.Id);
+                    m_hhook = SetWinEventHook(0x800C /*EVENT_OBJECT_NAMECHANGE*/, 0x800C /*EVENT_OBJECT_NAMECHANGE*/, IntPtr.Zero, winEventProc, processId, 0, 0 /*WINEVENT_OUTOFCONTEXT*/);
+                }));
+            }
+        }
+
         /// <summary>
         /// grabs JSON from URL
         /// returns null on fail
@@ -203,16 +250,14 @@ namespace cDashboard
             return dict;
         }
 
-        #region Spotify Integration
-
         /// <summary>
         /// returns the spotify process
         /// </summary>
         /// <returns></returns>
         private Process getSpotifyProcess()
         {
-            if (Process.GetProcessesByName("Spotify").Length > 0)
-                return Process.GetProcessesByName("Spotify")[0];
+            if (Process.GetProcessesByName("spotify").Length > 0)
+                return Process.GetProcessesByName("spotify")[0];
             else
                 return null;
         }
@@ -265,6 +310,9 @@ namespace cDashboard
             //cancel if spotify integration is not checked
             if (!checkbox_spotify_integration.Checked)
                 return;
+
+            //get hook if able
+            hookSpotify();
 
             //get Spotify process
             Process[] processes = Process.GetProcesses();
@@ -383,7 +431,6 @@ namespace cDashboard
             }
 
         }
-        #endregion
 
         /// <summary>
         /// show huge cover art in cPic
@@ -405,7 +452,7 @@ namespace cDashboard
                 Client.DownloadFile(file, SETTINGS_LOCATION + "tmp");
                 Client.Dispose();
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 return;
             }
@@ -444,6 +491,6 @@ namespace cDashboard
             sw.Close();
 
         }
-
+        #endregion
     }
 }

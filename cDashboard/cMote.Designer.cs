@@ -236,6 +236,7 @@
             this.Controls.Add(this.button_close);
             this.Name = "cMote";
             this.Text = "cMote";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.cMote_FormClosing);
             this.Load += new System.EventHandler(this.cMote_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cMote_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_albumart)).EndInit();
