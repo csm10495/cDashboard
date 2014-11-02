@@ -116,6 +116,12 @@
     <Compile Include="cReminder.Designer.cs">
       <DependentUpon>cReminder.cs</DependentUpon>
     </Compile>
+    <Compile Include="cRViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cRViewer.Designer.cs">
+      <DependentUpon>cRViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="cSticky.cs">
       <SubType>Form</SubType>
     </Compile>

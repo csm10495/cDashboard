@@ -192,7 +192,7 @@ namespace cDashboard
 
             foreach (List<string> currentline in settings_list)
             {
-                //Most global cDash settings
+                //cReminders
                 if (currentline[0] == "cReminders")
                 {
                     //handle empty cReminders list
@@ -220,7 +220,7 @@ namespace cDashboard
                     }
                 }
 
-
+                //Most global cDash settings
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
                 {
@@ -360,7 +360,7 @@ namespace cDashboard
                     this_cBattery.Show();
                     this_cBattery.BringToFront();
                 }
-                //Handling for cBattery
+                //Handling for cMote
                 else if (currentline[0] == "cMote")
                 {
                     //this would mean that this form already exists
@@ -383,6 +383,30 @@ namespace cDashboard
 
                     this_cMote.Show();
                     this_cMote.BringToFront();
+                }
+                //Handling for cRViewer
+                else if (currentline[0] == "cRViewer")
+                {
+                    //this would mean that this form already exists
+                    if (!(Controls.Find(currentline[1], true).Length > 0))
+                    {
+                        cRViewer cRViewer_new = new cRViewer();
+                        cRViewer_new.Name = currentline[1];
+                        cRViewer_new.TopLevel = false;
+                        cRViewer_new.Parent = this;
+                        Controls.Add(cRViewer_new);
+                    }
+
+                    //get form by name
+                    cRViewer this_cRViewer = (cRViewer)this.Controls.Find(currentline[1], true)[0];
+
+                    if (currentline[2] == "Location")
+                    {
+                        this_cRViewer.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
+
+                    //this_cRViewer.Show();
+                    //this_cRViewer.BringToFront();
                 }
                 //Handling for cWeather
                 else if (currentline[0] == "cWeather")
@@ -1360,6 +1384,33 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+        /// <summary>
+        /// adds a new cRViewer to the dash
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newCRViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //represents the a unique time stamp for use as name of form
+            long long_unique_timestamp = DateTime.Now.Ticks;
+
+            //add the cRViewer to settings
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
+            sw.WriteLine("cRViewer;" + long_unique_timestamp.ToString() + ";Location;10;25");
+            sw.Close();
+
+
+            cRViewer cRViewer_new = new cRViewer();
+            cRViewer_new.Name = long_unique_timestamp.ToString();
+            cRViewer_new.Location = new Point(10, 25);
+            cRViewer_new.TopLevel = false;
+            cRViewer_new.Parent = this;
+
+            Controls.Add(cRViewer_new);
+            cRViewer_new.Show();
+            cRViewer_new.BringToFront();
+        }
+
         /// <summary>
         /// add cReminder to the dash
         /// NOTE: this is not saved in settings as it is a setup form, not persistent
