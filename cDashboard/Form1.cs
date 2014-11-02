@@ -2256,8 +2256,14 @@ namespace cDashboard
 
                 foreach (string file in System.IO.Directory.GetFiles(SETTINGS_LOCATION))
                 {
+
                     //f is the name of the file with extension
                     string f = file.Substring(file.LastIndexOf("\\") + 1);
+
+                    //ignore files with short names
+                    if (f.Length < int_len)
+                        continue;
+
                     string f2 = f.Substring(0, int_len);
 
                     if (f2 == this_control.Name)
@@ -2286,9 +2292,10 @@ namespace cDashboard
             {
                 if (currentsetting[0].Substring(0, 1) == "#")   //fixed problem with comment persistance
                     continue;
-
+                
                 //this has to do with the control to be removed
-                if (currentsetting[1] == this_control.Name)
+                //make sure that there are enough options in currentsetting
+                if (currentsetting.Count > 1 && currentsetting[1] == this_control.Name)
                 {
                     list_settings.Remove(currentsetting);
                     goto top;
