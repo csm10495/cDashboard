@@ -219,6 +219,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menustrip;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(50, 50);
             this.Name = "cSticky";
             this.Text = "cSticky";
             this.Load += new System.EventHandler(this.cSticky_Load);
