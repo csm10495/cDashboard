@@ -404,9 +404,13 @@ namespace cDashboard
                     {
                         this_cRViewer.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
                     }
+                    else if (currentline[2] == "Size")
+                    {
+                        this_cRViewer.Size = new Size(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
+                    }
 
-                    //this_cRViewer.Show();
-                    //this_cRViewer.BringToFront();
+                    this_cRViewer.Show();
+                    this_cRViewer.BringToFront();
                 }
                 //Handling for cWeather
                 else if (currentline[0] == "cWeather")
@@ -428,6 +432,7 @@ namespace cDashboard
                     {
                         this_cWeather.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
                     }
+
 
                     if (currentline[2] == "WOEID")
                     {
@@ -1034,6 +1039,14 @@ namespace cDashboard
         }
 
         /// <summary>
+        /// accessor for dict_cReminders
+        /// </summary>
+        public SortedDictionary<long,string> getDictCReminders()
+        {
+            return dict_cReminders;
+        }
+
+        /// <summary>
         /// checks for any expired cReminders, and display, remove them
         /// </summary>
         public void updateDictCReminders()
@@ -1054,6 +1067,19 @@ namespace cDashboard
                     dict_cReminders.Add(ticks, msg);
                     i++;
                 }
+            }
+
+            updateCRViewers();
+        }
+
+        /// <summary>
+        /// triggers an update to all DGVs in cRViewers
+        /// </summary>
+        private void updateCRViewers()
+        {
+            foreach (cRViewer this_cRViewer in this.Controls.OfType<cRViewer>())
+            {
+                this_cRViewer.updateDGV();
             }
         }
 
@@ -1081,6 +1107,8 @@ namespace cDashboard
                     }
 
                     replaceSetting(cReminders.GetRange(0, 1), cReminders);
+
+                    updateCRViewers();
                 }
             }
         }

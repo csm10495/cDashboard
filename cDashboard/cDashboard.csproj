@@ -167,6 +167,9 @@
     <EmbeddedResource Include="cReminder.resx">
       <DependentUpon>cReminder.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="cRViewer.resx">
+      <DependentUpon>cRViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="cSticky.resx">
       <DependentUpon>cSticky.cs</DependentUpon>
     </EmbeddedResource>

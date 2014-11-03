@@ -29,28 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label_instructions = new System.Windows.Forms.Label();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.button_set = new System.Windows.Forms.Button();
+            this.button_cancel = new System.Windows.Forms.Button();
+            this.label_instructions = new System.Windows.Forms.Label();
             this.datetimepicker = new System.Windows.Forms.DateTimePicker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.xToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtb_message = new System.Windows.Forms.RichTextBox();
-            this.button_cancel = new System.Windows.Forms.Button();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label_instructions
-            // 
-            this.label_instructions.AutoSize = true;
-            this.label_instructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_instructions.ForeColor = System.Drawing.Color.White;
-            this.label_instructions.Location = new System.Drawing.Point(-2, 7);
-            this.label_instructions.Name = "label_instructions";
-            this.label_instructions.Size = new System.Drawing.Size(245, 13);
-            this.label_instructions.TabIndex = 4;
-            this.label_instructions.Text = "Set Date, Time, Message for cReminder...";
-            this.label_instructions.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_instructions_MouseDown);
             // 
             // button_set
             // 
@@ -65,6 +53,32 @@
             this.toolTip.SetToolTip(this.button_set, "Set this cReminder");
             this.button_set.UseVisualStyleBackColor = true;
             this.button_set.Click += new System.EventHandler(this.button_set_Click);
+            // 
+            // button_cancel
+            // 
+            this.button_cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_cancel.ForeColor = System.Drawing.Color.White;
+            this.button_cancel.Location = new System.Drawing.Point(0, 117);
+            this.button_cancel.Name = "button_cancel";
+            this.button_cancel.Size = new System.Drawing.Size(156, 23);
+            this.button_cancel.TabIndex = 6;
+            this.button_cancel.Text = "Cancel";
+            this.toolTip.SetToolTip(this.button_cancel, "Cancel setting this cReminder");
+            this.button_cancel.UseVisualStyleBackColor = true;
+            this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
+            // 
+            // label_instructions
+            // 
+            this.label_instructions.AutoSize = true;
+            this.label_instructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_instructions.ForeColor = System.Drawing.Color.White;
+            this.label_instructions.Location = new System.Drawing.Point(-2, 7);
+            this.label_instructions.Name = "label_instructions";
+            this.label_instructions.Size = new System.Drawing.Size(245, 13);
+            this.label_instructions.TabIndex = 4;
+            this.label_instructions.Text = "Set Date, Time, Message for cReminder...";
+            this.label_instructions.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_instructions_MouseDown);
             // 
             // datetimepicker
             // 
@@ -108,26 +122,12 @@
             this.rtb_message.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtb_message.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtb_message.Location = new System.Drawing.Point(0, 47);
-            this.rtb_message.Multiline = false;
             this.rtb_message.Name = "rtb_message";
+            this.rtb_message.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.rtb_message.Size = new System.Drawing.Size(314, 67);
             this.rtb_message.TabIndex = 5;
             this.rtb_message.Text = "";
             this.toolTip.SetToolTip(this.rtb_message, "Message text");
-            // 
-            // button_cancel
-            // 
-            this.button_cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_cancel.ForeColor = System.Drawing.Color.White;
-            this.button_cancel.Location = new System.Drawing.Point(0, 117);
-            this.button_cancel.Name = "button_cancel";
-            this.button_cancel.Size = new System.Drawing.Size(156, 23);
-            this.button_cancel.TabIndex = 6;
-            this.button_cancel.Text = "Cancel";
-            this.toolTip.SetToolTip(this.button_cancel, "Cancel setting this cReminder");
-            this.button_cancel.UseVisualStyleBackColor = true;
-            this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
             // 
             // cReminder
             // 
