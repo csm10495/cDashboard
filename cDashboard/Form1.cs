@@ -739,29 +739,29 @@ namespace cDashboard
         /// </summary>
         private void makeSureCFormsAreOnScreen()
         {
-            //goes through every cSticky
-            foreach (cSticky current_csticky in this.Controls.OfType<cSticky>())
+            //goes through every cForm
+            foreach (cForm current_cForm in this.Controls.OfType<cForm>())
             {
-                //make sure that cStickies are not lost to resizing the dash
-                if (current_csticky.Location.X > this.Location.X + this.Size.Width)
+                //make sure that cForms are not lost to resizing the dash
+                if (current_cForm.Location.X > this.Location.X + this.Size.Width)
                 {
-                    int form_widths = this.Width + current_csticky.Width;
-                    int total_width = current_csticky.Location.X + current_csticky.Width;
-                    current_csticky.Location = new Point(total_width - form_widths - 10, current_csticky.Location.Y);
+                    int form_widths = this.Width + current_cForm.Width;
+                    int total_width = current_cForm.Location.X + current_cForm.Width;
+                    current_cForm.Location = new Point(total_width - form_widths - 10, current_cForm.Location.Y);
                 }
-                if (current_csticky.Location.Y > this.Location.Y + this.Size.Height)
+                if (current_cForm.Location.Y > this.Location.Y + this.Size.Height)
                 {
-                    int form_height = this.Height + current_csticky.Height;
-                    int total_height = current_csticky.Location.Y + current_csticky.Height;
-                    current_csticky.Location = new Point(current_csticky.Location.X, total_height - form_height - 10);
+                    int form_height = this.Height + current_cForm.Height;
+                    int total_height = current_cForm.Location.Y + current_cForm.Height;
+                    current_cForm.Location = new Point(current_cForm.Location.X, total_height - form_height - 10);
                 }
-                if (current_csticky.Location.X < 0)
+                if (current_cForm.Location.X < 0)
                 {
-                    current_csticky.Location = new Point(0, current_csticky.Location.Y);
+                    current_cForm.Location = new Point(0, current_cForm.Location.Y);
                 }
-                if (current_csticky.Location.Y < 0)
+                if (current_cForm.Location.Y < 0)
                 {
-                    current_csticky.Location = new Point(current_csticky.Location.X, 0);
+                    current_cForm.Location = new Point(current_cForm.Location.X, 0);
                 }
             }
         }
