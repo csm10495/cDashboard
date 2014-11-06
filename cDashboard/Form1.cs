@@ -2320,14 +2320,6 @@ namespace cDashboard
 
             List<List<string>> list_settings = getSettingsList();
 
-            //special handling for cReminder
-            if (this_control.GetType() == typeof(cReminder))
-            {
-                Controls.Remove(this_control);
-                this_control.Dispose();
-                return;
-            }
-
             //special deletion of associated files (cPic, cSticky)
             if (this_control.GetType() == typeof(cSticky))
             {
