@@ -216,6 +216,15 @@ namespace cDashboard
                     m_hhook = SetWinEventHook(0x800C /*EVENT_OBJECT_NAMECHANGE*/, 0x800C /*EVENT_OBJECT_NAMECHANGE*/, IntPtr.Zero, winEventProc, processId, 0, 0 /*WINEVENT_OUTOFCONTEXT*/);
                 }));
             }
+            else if (spotify == null && m_hhook != IntPtr.Zero) //unhook
+            {
+                //must happen on proper thread
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    UnhookWinEvent(m_hhook);
+                    m_hhook = IntPtr.Zero;
+                }));
+            }
         }
 
         /// <summary>
