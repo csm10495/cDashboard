@@ -1041,7 +1041,7 @@ namespace cDashboard
         /// <summary>
         /// accessor for dict_cReminders
         /// </summary>
-        public SortedDictionary<long,string> getDictCReminders()
+        public SortedDictionary<long, string> getDictCReminders()
         {
             return dict_cReminders;
         }
@@ -1095,7 +1095,9 @@ namespace cDashboard
                     long key = dict_cReminders.First().Key;
                     string value = dict_cReminders.First().Value.ToString();
                     dict_cReminders.Remove(dict_cReminders.First().Key);
-                    MessageBox.Show(value);
+
+                    //show cNotification
+                    cNotification tmp = new cNotification(value);
 
                     //keep settings up-to-date
                     List<string> cReminders = new List<string>();
@@ -1412,6 +1414,60 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+
+        /// <summary>
+        /// show display time
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void displayTimeToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            int display_time = -1;
+
+            try
+            {
+                display_time = Convert.ToInt16(getSpecificSetting(new string[] { "cNotification", "DisplayTime" })[0]);
+            }
+            catch
+            {
+                replaceSetting(new string[] { "cNotification", "DisplayTime" }, new string[] { "cNotification", "DisplayTime", "5" });
+                toolstrip_displaytime.Text = "5";
+                return;
+            }
+
+            toolstrip_displaytime.Text = display_time.ToString();
+        }
+
+        /// <summary>
+        ///  update display time in settings after doing verification
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void displayTimeToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            int display_time = Convert.ToInt16(getSpecificSetting(new string[] { "cNotification", "DisplayTime" })[0]);
+            int new_display_time = -1;
+
+            try
+            {
+                new_display_time = Convert.ToInt16(toolstrip_displaytime.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 11");
+                return;
+            }
+
+            if (!(new_display_time >= 2 && new_display_time <= 10))
+            {
+                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 11");
+                return;
+            }
+
+            replaceSetting(new string[] { "cNotification", "DisplayTime" }, new string[] { "cNotification", "DisplayTime", new_display_time.ToString() });
+
+        }
+
         /// <summary>
         /// adds a new cRViewer to the dash
         /// </summary>
@@ -2363,7 +2419,7 @@ namespace cDashboard
             {
                 if (currentsetting[0].Substring(0, 1) == "#")   //fixed problem with comment persistance
                     continue;
-                
+
                 //this has to do with the control to be removed
                 //make sure that there are enough options in currentsetting
                 if (currentsetting.Count > 1 && currentsetting[1] == this_control.Name)

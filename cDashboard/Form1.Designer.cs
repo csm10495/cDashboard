@@ -63,6 +63,7 @@
             this.newCBatteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCMoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCReminderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCRViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,8 +93,10 @@
             this.cDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cNotificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
-            this.newCRViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -346,6 +349,13 @@
             this.newCReminderToolStripMenuItem.Text = "New cReminder...";
             this.newCReminderToolStripMenuItem.Click += new System.EventHandler(this.newCReminderToolStripMenuItem_Click);
             // 
+            // newCRViewerToolStripMenuItem
+            // 
+            this.newCRViewerToolStripMenuItem.Name = "newCRViewerToolStripMenuItem";
+            this.newCRViewerToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.newCRViewerToolStripMenuItem.Text = "New cRViewer...";
+            this.newCRViewerToolStripMenuItem.Click += new System.EventHandler(this.newCRViewerToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -381,9 +391,10 @@
             this.cDashToolStripMenuItem,
             this.cStickyToolStripMenuItem,
             this.cWeatherToolStripMenuItem,
-            this.cDashDataToolStripMenuItem});
+            this.cDashDataToolStripMenuItem,
+            this.cNotificationToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -581,17 +592,34 @@
             this.importToolStripMenuItem.Text = "Import";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
+            // cNotificationToolStripMenuItem
+            // 
+            this.cNotificationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.displayTimeToolStripMenuItem});
+            this.cNotificationToolStripMenuItem.Name = "cNotificationToolStripMenuItem";
+            this.cNotificationToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.cNotificationToolStripMenuItem.Text = "cNotification";
+            // 
+            // displayTimeToolStripMenuItem
+            // 
+            this.displayTimeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolstrip_displaytime});
+            this.displayTimeToolStripMenuItem.Name = "displayTimeToolStripMenuItem";
+            this.displayTimeToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.displayTimeToolStripMenuItem.Text = "Display Time in Seconds";
+            this.displayTimeToolStripMenuItem.DropDownClosed += new System.EventHandler(this.displayTimeToolStripMenuItem_DropDownClosed);
+            this.displayTimeToolStripMenuItem.DropDownOpened += new System.EventHandler(this.displayTimeToolStripMenuItem_DropDownOpened);
+            // 
             // fadetimer
             // 
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
-            // newCRViewerToolStripMenuItem
+            // toolstrip_displaytime
             // 
-            this.newCRViewerToolStripMenuItem.Name = "newCRViewerToolStripMenuItem";
-            this.newCRViewerToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.newCRViewerToolStripMenuItem.Text = "New cRViewer...";
-            this.newCRViewerToolStripMenuItem.Click += new System.EventHandler(this.newCRViewerToolStripMenuItem_Click);
+            this.toolstrip_displaytime.Name = "toolstrip_displaytime";
+            this.toolstrip_displaytime.Size = new System.Drawing.Size(152, 23);
+            this.toolstrip_displaytime.Text = "5";
             // 
             // cDashboard
             // 
@@ -689,6 +717,9 @@
         private System.Windows.Forms.ToolStripMenuItem newCMoteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCReminderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCRViewerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cNotificationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem displayTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolstrip_displaytime;
     }
 }
 

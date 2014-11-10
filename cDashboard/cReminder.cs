@@ -92,6 +92,8 @@ namespace cDashboard
             //cleanup rtb text
             rtb_message.Text = rtb_message.Text.Replace(";", ":");
             rtb_message.Text = rtb_message.Text.Replace(Environment.NewLine, "");
+            rtb_message.Text = rtb_message.Text.Replace("\n", "");
+            rtb_message.Text = rtb_message.Text.Replace("\r\n", "");
 
             //add this onto cReminders in settings
             cReminders.Add(date_time.Ticks.ToString());
