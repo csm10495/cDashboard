@@ -36,6 +36,7 @@
             this.panel_underline = new System.Windows.Forms.Panel();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.button_close = new System.Windows.Forms.Button();
+            this.timer_show = new System.Windows.Forms.Timer(this.components);
             this.timer_fade = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_logo)).BeginInit();
             this.SuspendLayout();
@@ -96,10 +97,15 @@
             this.button_close.UseVisualStyleBackColor = true;
             this.button_close.Click += new System.EventHandler(this.button_close_Click);
             // 
+            // timer_show
+            // 
+            this.timer_show.Interval = 1000;
+            this.timer_show.Tick += new System.EventHandler(this.timer_show_Tick);
+            // 
             // timer_fade
             // 
-            this.timer_fade.Interval = 1000;
-            this.timer_fade.Tick += new System.EventHandler(this.timer_fade_Tick);
+            this.timer_fade.Interval = 1;
+            this.timer_fade.Tick += new System.EventHandler(this.timer_fade_tick);
             // 
             // cNotification
             // 
@@ -113,6 +119,7 @@
             this.Controls.Add(this.picturebox_logo);
             this.Controls.Add(this.label_title);
             this.Name = "cNotification";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "cNotification";
             this.Load += new System.EventHandler(this.cNotification_Load);
@@ -130,6 +137,7 @@
         private System.Windows.Forms.Panel panel_underline;
         private System.Windows.Forms.ToolTip tooltip;
         private System.Windows.Forms.Button button_close;
+        private System.Windows.Forms.Timer timer_show;
         private System.Windows.Forms.Timer timer_fade;
     }
 }
