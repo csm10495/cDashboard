@@ -1097,7 +1097,7 @@ namespace cDashboard
                     dict_cReminders.Remove(dict_cReminders.First().Key);
 
                     //show cNotification
-                    cNotification tmp = new cNotification(value);
+                    cNotification tmp = new cNotification(value, "cReminder");
 
                     //keep settings up-to-date
                     List<string> cReminders = new List<string>();

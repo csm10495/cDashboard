@@ -107,7 +107,7 @@ namespace cDashboard
             //update the dict of cReminders in cDashboard
             ((cDashboard)(this.Parent)).updateDictCReminders();
            
-            MessageBox.Show("Set cReminder for: " + rtb_message.Text + " for " + date_time.ToString());
+            MessageBox.Show("Set cReminder for: " + rtb_message.Text + " for " + date_time.ToString(), "cReminder Set!");
             this.Close();
         }
 

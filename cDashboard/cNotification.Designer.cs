@@ -55,12 +55,11 @@
             // label_title
             // 
             this.label_title.AutoEllipsis = true;
-            this.label_title.AutoSize = true;
             this.label_title.BackColor = System.Drawing.Color.Transparent;
             this.label_title.Font = new System.Drawing.Font("Arial Black", 20F, System.Drawing.FontStyle.Bold);
-            this.label_title.Location = new System.Drawing.Point(190, -3);
+            this.label_title.Location = new System.Drawing.Point(156, -3);
             this.label_title.Name = "label_title";
-            this.label_title.Size = new System.Drawing.Size(209, 38);
+            this.label_title.Size = new System.Drawing.Size(260, 38);
             this.label_title.TabIndex = 1;
             this.label_title.Text = "cNotification";
             this.label_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -125,7 +124,6 @@
             this.Load += new System.EventHandler(this.cNotification_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_logo)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

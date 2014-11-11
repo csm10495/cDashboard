@@ -154,7 +154,7 @@ namespace cDashboard
             get
             {
                 CreateParams param = base.CreateParams;
-                param.ExStyle |= 0x0800000 /*WS_EX_TOPMOST*/; //topmost
+                param.ExStyle |= 0x00000008 /*WS_EX_TOPMOST*/; //topmost
                 param.ExStyle |= 0x08000000 /*WS_EX_NOACTIVATE*/; //prevent activation
                 return param;
             }
