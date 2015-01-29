@@ -19,7 +19,13 @@ namespace cDashboard
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new cDashboard());
+
+            //prevents form from gaining focus while being invisible for the first time
+            cDashboard cDash = new cDashboard();
+            cDash.Show();
+            cDash.Visible = false;
+           
+            Application.Run();
         }
     }
 }
