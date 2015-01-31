@@ -98,7 +98,31 @@ namespace cDashboard
         /// </summary>
         public cDashboard()
         {
+            pluginsAssoc = new Dictionary<ToolStripItem, IPlugin>();
             InitializeComponent();
+            SetupPlugins();
+        }
+        #endregion
+        #region plugins
+        private Dictionary<ToolStripItem, IPlugin> pluginsAssoc;
+        private void SetupPlugins()
+        {
+            foreach(var i in PluginContainer.plugins)
+            {
+                var new_toolstrip = pluginsToolStripMenuItem.DropDownItems.Add(i.Metadata.name);
+                pluginsAssoc[new_toolstrip] = i.Value;
+                new_toolstrip.Click += PluginToolStripHandler;
+            }
+        }
+        void PluginToolStripHandler(object sender, EventArgs e)
+        {
+            var nf=pluginsAssoc[(ToolStripItem)sender].GetForm();
+            //this is apparently essential for adding it as a parent.
+            nf.TopLevel = false;
+            nf.Parent = this;
+            nf.Show();
+            Controls.Add(nf);
+            Console.WriteLine("Created plugin window");
         }
         #endregion
 
