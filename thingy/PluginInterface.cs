@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using cDashboard;
-namespace thingy
+namespace CdashboardPluginTest
 {
     [Export(typeof(IPlugin))]
     [ExportMetadata("name","Funny")]

@@ -1,4 +1,4 @@
-﻿namespace thingy
+﻿namespace CdashboardPluginTest
 {
     partial class Funny
     {
