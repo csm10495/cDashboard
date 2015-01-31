@@ -873,9 +873,9 @@ namespace cDashboard
         /// </summary>
         private void closeMultiMontiorOverlays()
         {
-        //get all forms open forms and scan to make sure it is a monitor form
+            //get all forms open forms and scan to make sure it is a monitor form
             FormCollection fc = Application.OpenForms;
-            for (int x = fc.Count - 1; x >= 0 ; x-- )
+            for (int x = fc.Count - 1; x >= 0; x--)
             {
                 if (fc[x].Name == "Multi_Monitor_Selection_Overlay")
                 {
@@ -1110,19 +1110,24 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// timer tick
+        /// timer tick updates every second
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void uitimer_Tick(object sender, EventArgs e)
         {
-            updateTimeDate();
             updateCWeather();
-            checkForCReminders();
+
+            if (cD_tstate == timerstate.indash)
+            {
+                checkForCReminders();
+                updateTimeDate();
+            }
         }
 
         /// <summary>
-        /// timer tick specifically for fades
+        /// timer tick specifically for fades, 
+        /// when running, attempts to go 1/ms = 1000/s
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1130,6 +1135,9 @@ namespace cDashboard
         {
             //increment timer ticking
             fadetimertime++;
+
+            //update time/date during fade
+            updateTimeDate();
 
             //fadeout related code
             #region Fade Out
@@ -2405,10 +2413,10 @@ namespace cDashboard
                 System.IO.Directory.Delete(SETTINGS_LOCATION + this_control.Name, true);
             }
 
-        //This should be here instead of up there, just in case we need to know a setting to delete the control
-        top:
-            foreach (List<string> currentsetting in list_settings)
+            //This should be here instead of up there, just in case we need to know a setting to delete the control
+            for (int x = list_settings.Count - 1; x >= 0; x--)
             {
+                List<string> currentsetting = list_settings[x];
                 if (currentsetting[0].Substring(0, 1) == "#")   //fixed problem with comment persistance
                     continue;
 
@@ -2416,16 +2424,15 @@ namespace cDashboard
                 //make sure that there are enough options in currentsetting
                 if (currentsetting.Count > 1 && currentsetting[1] == this_control.Name)
                 {
-                    list_settings.Remove(currentsetting);
-                    goto top;
+                    list_settings.RemoveAt(x);
                 }
             }
+
             //remove control
             Controls.Remove(this_control);
             this_control.Dispose();
             //save fixed settings
             saveSettingsList(list_settings);
-
         }
 
         /// <summary>
