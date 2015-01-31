@@ -874,15 +874,13 @@ namespace cDashboard
         private void closeMultiMontiorOverlays()
         {
         //get all forms open forms and scan to make sure it is a monitor form
-        top: ;
             FormCollection fc = Application.OpenForms;
-            foreach (Form form_tmp in fc)
+            for (int x = fc.Count - 1; x >= 0 ; x-- )
             {
-                if (form_tmp.Name == "Multi_Monitor_Selection_Overlay")
+                if (fc[x].Name == "Multi_Monitor_Selection_Overlay")
                 {
                     //close monitor selection overlay
-                    form_tmp.Close();
-                    goto top;
+                    fc[x].Close();
                 }
             }
         }
@@ -917,10 +915,7 @@ namespace cDashboard
             {
                 //kill attempts to call a fade_in during a fade_in
                 if (this.Opacity != 0)
-                    goto done;
-
-                //theoretically should fix incorrectly shapped loads
-                moveToPrimaryMonitor();
+                    return;
 
                 fade_in();
 
@@ -928,7 +923,7 @@ namespace cDashboard
                 //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
                 e.Handled = true;
-                goto done;
+                return;
             }
 
             //if both hooked keys are down, and we are ready to fadeout, fadeout in the dash
@@ -940,11 +935,9 @@ namespace cDashboard
                 //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
                 e.Handled = true;
-                goto done;
             }
 
             e.Handled = false;
-        done: ;
         }
 
         /// <summary>
@@ -1136,8 +1129,6 @@ namespace cDashboard
         {
             //increment timer ticking
             fadetimertime++;
-
-            updateTimeDate(); //update time/date on ui
 
             //fadeout related code
             #region Fade Out
