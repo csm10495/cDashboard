@@ -935,6 +935,7 @@ namespace cDashboard
                 //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
                 e.Handled = true;
+                return;
             }
 
             e.Handled = false;
