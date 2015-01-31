@@ -95,8 +95,9 @@
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cNotificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
+            this.fadetimer = new System.Windows.Forms.Timer(this.components);
+            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -222,7 +223,8 @@
             this.newCRViewerToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.hideToolStripMenuItem,
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.pluginsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -394,7 +396,7 @@
             this.cDashDataToolStripMenuItem,
             this.cNotificationToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -610,16 +612,22 @@
             this.displayTimeToolStripMenuItem.DropDownClosed += new System.EventHandler(this.displayTimeToolStripMenuItem_DropDownClosed);
             this.displayTimeToolStripMenuItem.DropDownOpened += new System.EventHandler(this.displayTimeToolStripMenuItem_DropDownOpened);
             // 
-            // fadetimer
-            // 
-            this.fadetimer.Interval = 1;
-            this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
-            // 
             // toolstrip_displaytime
             // 
             this.toolstrip_displaytime.Name = "toolstrip_displaytime";
             this.toolstrip_displaytime.Size = new System.Drawing.Size(152, 23);
             this.toolstrip_displaytime.Text = "5";
+            // 
+            // fadetimer
+            // 
+            this.fadetimer.Interval = 1;
+            this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
+            // 
+            // pluginsToolStripMenuItem
+            // 
+            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
+            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.pluginsToolStripMenuItem.Text = "Plugins";
             // 
             // cDashboard
             // 
@@ -720,6 +728,7 @@
         private System.Windows.Forms.ToolStripMenuItem cNotificationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem displayTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolstrip_displaytime;
+        private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
     }
 }
 

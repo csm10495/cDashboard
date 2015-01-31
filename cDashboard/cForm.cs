@@ -12,9 +12,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
-
+using System.ComponentModel.Composition;
 namespace cDashboard
 {
+    [Export]
+    [ExportMetadata("Plugin",null)]
     public partial class cForm : Form
     {
         public cForm()
