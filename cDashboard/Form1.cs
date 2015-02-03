@@ -11,9 +11,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Utilities;
+using System.Net.Sockets;
 using System.Diagnostics;
 using System.IO;
+using Utilities;
 
 
 namespace cDashboard
@@ -103,6 +104,16 @@ namespace cDashboard
         #endregion
 
         #region Form Loading, Initial Setup
+
+        /// <summary>
+        /// exits cDashboard and removes the notifyicon
+        /// </summary>
+        private void exitApplication()
+        {
+            notifyIcon1.Visible = false;
+            Environment.Exit(0);
+        }
+
         /// <summary>
         /// This will be called on window creation to make Windows 
         /// think of the Dash window as a toolwindow
@@ -137,13 +148,25 @@ namespace cDashboard
                 {
                     int_cDash_processes_found = int_cDash_processes_found + 1;
                 }
-
-                if (int_cDash_processes_found > 1)
-                {
-                    MessageBox.Show("Another instance of cDashboard is already running.");
-                    Environment.Exit(0);
-                }
             }
+
+            //Another cDashboard is running, toggle it
+            if (int_cDash_processes_found > 1)
+            {
+                TcpClient client = new TcpClient("127.0.0.1", 54523);
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes("cdash-toggle");
+
+                NetworkStream stream = client.GetStream();
+
+                // Send the message
+                stream.Write(data, 0, data.Length);
+
+                stream.Close();
+                client.Close();
+
+                exitApplication();
+            }
+
         }
 
         /// <summary>
@@ -156,6 +179,8 @@ namespace cDashboard
         private void Form1_Load(object sender, EventArgs e)
         {
             check_for_duplicate_processes(); //check for duplicate cDashboard processes
+
+            this.notifyIcon1.Visible = true;
 
             variable_setup(); //setup variables1
             // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
@@ -177,7 +202,34 @@ namespace cDashboard
             //Read settings not pertaining to stickies
             otherSettings(settings_list);
 
+            //start listening server
+            new System.Threading.Thread(runServer).Start();
+
             CompletedForm_Load = true;
+        }
+
+        /// <summary>
+        /// runs a local TCP server listening for a command to toggle
+        /// the dash up and down
+        /// </summary>
+        private void runServer()
+        {
+            TcpListener tlistener = new TcpListener(System.Net.IPAddress.Loopback, 54523);
+            tlistener.Start();
+            while (true)
+            {
+                Socket s = tlistener.AcceptSocket();
+
+                byte[] data = new byte[100];
+                int size = s.Receive(data);
+
+                if (Encoding.ASCII.GetString(data, 0, data.Length).Contains("cdash-toggle"))
+                {
+                    fade_toggle();
+                }
+
+                s.Close();
+            }
         }
 
         /// <summary>
@@ -991,6 +1043,42 @@ namespace cDashboard
             cD_tstate = timerstate.fadeout;
 
             fadetimer.Start();
+        }
+
+        /// <summary>
+        /// fades in if not in
+        /// fades out if in
+        /// </summary>
+        private void fade_toggle()
+        {
+            if (cD_tstate == timerstate.fadein)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        fade_in();
+                    }));
+                }
+                else
+                {
+                    fade_in();
+                }
+            }
+            else if (cD_tstate == timerstate.indash)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        fade_out();
+                    }));
+                }
+                else
+                {
+                    fade_out();
+                }
+            }
         }
 
         /// <summary>
@@ -1925,7 +2013,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            exitApplication();
         }
 
         /// <summary>
@@ -2014,7 +2102,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void exitCDashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            exitApplication();
         }
 
         /// <summary>

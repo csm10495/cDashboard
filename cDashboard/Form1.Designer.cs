@@ -95,8 +95,8 @@
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cNotificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
+            this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -127,7 +127,6 @@
             this.notifyIcon1.ContextMenuStrip = this.notifyicon_menustrip;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "cDashboard Process is running...";
-            this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // notifyicon_menustrip
@@ -394,7 +393,7 @@
             this.cDashDataToolStripMenuItem,
             this.cNotificationToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -610,16 +609,16 @@
             this.displayTimeToolStripMenuItem.DropDownClosed += new System.EventHandler(this.displayTimeToolStripMenuItem_DropDownClosed);
             this.displayTimeToolStripMenuItem.DropDownOpened += new System.EventHandler(this.displayTimeToolStripMenuItem_DropDownOpened);
             // 
-            // fadetimer
-            // 
-            this.fadetimer.Interval = 1;
-            this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
-            // 
             // toolstrip_displaytime
             // 
             this.toolstrip_displaytime.Name = "toolstrip_displaytime";
             this.toolstrip_displaytime.Size = new System.Drawing.Size(152, 23);
             this.toolstrip_displaytime.Text = "5";
+            // 
+            // fadetimer
+            // 
+            this.fadetimer.Interval = 1;
+            this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
             // cDashboard
             // 
