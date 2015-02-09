@@ -49,6 +49,9 @@ namespace cDashboard
             //put the icon in a location off screen
             picture_icon.Location = new Point(picture_icon.Location.X + 200, picture_icon.Location.Y - 200);
 
+            //update this.text with version info
+            this.Text = "cAbout cDashboard v" + ProductVersion;
+
             //animate
             timer_animation.Start();
         }
