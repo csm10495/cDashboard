@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
 using System.IO;
@@ -215,22 +216,12 @@ namespace cDashboard
         /// </summary>
         private void runServer()
         {
-            List<string> list_port_setting = getSpecificSetting(new string[] { "cDash", "TCPListenPort" });
-            int port = -1;
+            //TCPListener with random (unused port)
+            TcpListener tlistener = new TcpListener(System.Net.IPAddress.Loopback, 0);
 
-            if (list_port_setting.Count == 0)
-            {
-                //need to check for open port... (Todo)
-                replaceSetting(new string[] { "cDash", "TCPListenPort" }, new string[] { "cDash", "TCPListenPort", "54523" });
-                port = 54523;
-            }
-            else
-            {
-                port = Convert.ToUInt16(list_port_setting[0]);
-            }
-
-            TcpListener tlistener = new TcpListener(System.Net.IPAddress.Loopback, port);
             tlistener.Start();
+            replaceSetting(new string[] { "cDash", "TCPListenPort" }, new string[] { "cDash", "TCPListenPort", ((IPEndPoint)tlistener.LocalEndpoint).Port.ToString() });
+
             while (true)
             {
                 Socket s = tlistener.AcceptSocket();
