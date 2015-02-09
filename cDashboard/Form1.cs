@@ -153,7 +153,8 @@ namespace cDashboard
             //Another cDashboard is running, toggle it
             if (int_cDash_processes_found > 1)
             {
-                TcpClient client = new TcpClient("127.0.0.1", 54523);
+                List<string> list_port_setting = getSpecificSetting(new string[] { "cDash", "TCPListenPort" });
+                TcpClient client = new TcpClient("127.0.0.1", Convert.ToUInt16(list_port_setting[0]));
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes("cdash-toggle");
 
                 NetworkStream stream = client.GetStream();
@@ -214,7 +215,21 @@ namespace cDashboard
         /// </summary>
         private void runServer()
         {
-            TcpListener tlistener = new TcpListener(System.Net.IPAddress.Loopback, 54523);
+            List<string> list_port_setting = getSpecificSetting(new string[] { "cDash", "TCPListenPort" });
+            int port = -1;
+
+            if (list_port_setting.Count == 0)
+            {
+                //need to check for open port... (Todo)
+                replaceSetting(new string[] { "cDash", "TCPListenPort" }, new string[] { "cDash", "TCPListenPort", "54523" });
+                port = 54523;
+            }
+            else
+            {
+                port = Convert.ToUInt16(list_port_setting[0]);
+            }
+
+            TcpListener tlistener = new TcpListener(System.Net.IPAddress.Loopback, port);
             tlistener.Start();
             while (true)
             {
@@ -732,6 +747,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;cWeather;Unit;F");
                 sw.WriteLine("cDash;BackColor;123;123;123");
                 sw.WriteLine("cDash;BoardlessMode;False");
+                sw.WriteLine("cDash;TCPListenPort;54523");
 
                 sw.Close();
 
