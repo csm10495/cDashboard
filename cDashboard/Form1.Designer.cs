@@ -46,7 +46,7 @@
             this.button_time = new System.Windows.Forms.Button();
             this.label_build = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new cToolStripMenuItem();
             this.newStickyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +67,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new cToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,7 +89,7 @@
             this.cWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCWeatherUnitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.celciusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -393,7 +393,7 @@
             this.cDashDataToolStripMenuItem,
             this.cNotificationToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -549,7 +549,7 @@
             // 
             this.setCWeatherUnitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fToolStripMenuItem,
-            this.cToolStripMenuItem});
+            this.celciusToolStripMenuItem});
             this.setCWeatherUnitToolStripMenuItem.Name = "setCWeatherUnitToolStripMenuItem";
             this.setCWeatherUnitToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.setCWeatherUnitToolStripMenuItem.Text = "Temperature Unit...";
@@ -557,16 +557,16 @@
             // fToolStripMenuItem
             // 
             this.fToolStripMenuItem.Name = "fToolStripMenuItem";
-            this.fToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
+            this.fToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.fToolStripMenuItem.Text = "°F";
             this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click_1);
             // 
-            // cToolStripMenuItem
+            // celciusToolStripMenuItem
             // 
-            this.cToolStripMenuItem.Name = "cToolStripMenuItem";
-            this.cToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
-            this.cToolStripMenuItem.Text = "°C";
-            this.cToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click_1);
+            this.celciusToolStripMenuItem.Name = "celciusToolStripMenuItem";
+            this.celciusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.celciusToolStripMenuItem.Text = "°C";
+            this.celciusToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click_1);
             // 
             // cDashDataToolStripMenuItem
             // 
@@ -709,7 +709,7 @@
         private System.Windows.Forms.ToolStripMenuItem cWeatherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setCWeatherUnitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem celciusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boardlessModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCBatteryToolStripMenuItem;

@@ -95,6 +95,7 @@ namespace cDashboard
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Form Constructor
         /// </summary>
@@ -102,6 +103,7 @@ namespace cDashboard
         {
             InitializeComponent();
         }
+
         #endregion
 
         #region Form Loading, Initial Setup
@@ -300,11 +302,11 @@ namespace cDashboard
                             if (currentline[3] == "F")
                             {
                                 fToolStripMenuItem.Checked = true;
-                                cToolStripMenuItem.Checked = false;
+                                celciusToolStripMenuItem.Checked = false;
                             }
                             else
                             {
-                                cToolStripMenuItem.Checked = true;
+                                celciusToolStripMenuItem.Checked = true;
                                 fToolStripMenuItem.Checked = false;
                             }
                         }
@@ -1763,7 +1765,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void fToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            cToolStripMenuItem.Checked = false;
+            celciusToolStripMenuItem.Checked = false;
             fToolStripMenuItem.Checked = true;
 
             replaceSetting(new string[] { "cDash", "cWeather", "Unit" }, new string[] { "cDash", "cWeather", "Unit", "F" });
@@ -1780,7 +1782,7 @@ namespace cDashboard
         private void cToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             fToolStripMenuItem.Checked = false;
-            cToolStripMenuItem.Checked = true;
+            celciusToolStripMenuItem.Checked = true;
 
             replaceSetting(new string[] { "cDash", "cWeather", "Unit" }, new string[] { "cDash", "cWeather", "Unit", "C" });
 
@@ -2456,9 +2458,23 @@ namespace cDashboard
                 combobox_wallpaper.SelectedIndex = 4;
             }
         }
+
+        /// <summary>
+        /// Class with antialiasing to get rid of fuschia artifacts on File, Edit
+        /// </summary>
+        public class cToolStripMenuItem : ToolStripMenuItem
+        {
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                base.OnPaint(e);
+            }
+        }
+
         #endregion
 
         #region Extra Events
+
         /// <summary>
         /// called if a control is removed
         /// ex: if the x button is clicked on a child from, handle deleting the cForm
@@ -2551,6 +2567,7 @@ namespace cDashboard
         {
             menuStrip1.Focus();
         }
+
         #endregion
     }
 }
