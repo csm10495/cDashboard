@@ -46,7 +46,7 @@
             this.button_time = new System.Windows.Forms.Button();
             this.label_build = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new cToolStripMenuItem();
+            this.fileToolStripMenuItem = new cDashboard.cToolStripMenuItem();
             this.newStickyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +67,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new cToolStripMenuItem();
+            this.editToolStripMenuItem = new cDashboard.cToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,6 +97,7 @@
             this.displayTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -357,6 +358,8 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkForUpdatesToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.aboutToolStripMenuItem.Text = "About";
@@ -393,7 +396,7 @@
             this.cDashDataToolStripMenuItem,
             this.cNotificationToolStripMenuItem});
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             // 
             // cDashToolStripMenuItem
@@ -557,14 +560,14 @@
             // fToolStripMenuItem
             // 
             this.fToolStripMenuItem.Name = "fToolStripMenuItem";
-            this.fToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
             this.fToolStripMenuItem.Text = "°F";
             this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click_1);
             // 
             // celciusToolStripMenuItem
             // 
             this.celciusToolStripMenuItem.Name = "celciusToolStripMenuItem";
-            this.celciusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.celciusToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
             this.celciusToolStripMenuItem.Text = "°C";
             this.celciusToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click_1);
             // 
@@ -620,6 +623,13 @@
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -659,7 +669,6 @@
         private System.Windows.Forms.Timer uitimer;
         private System.Windows.Forms.Label label_build;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newStickyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -673,7 +682,6 @@
         private System.Windows.Forms.ToolStripMenuItem customColorToolStripMenuItem;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.FontDialog fontDialog1;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip notifyicon_menustrip;
@@ -719,6 +727,9 @@
         private System.Windows.Forms.ToolStripMenuItem cNotificationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem displayTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolstrip_displaytime;
+        private cDashboard.cToolStripMenuItem fileToolStripMenuItem;
+        private cDashboard.cToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }
 

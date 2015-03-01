@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.Web.Script.Serialization;
 using System.Diagnostics;
 using System.IO;
 using Utilities;
@@ -741,6 +743,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;BackColor;123;123;123");
                 sw.WriteLine("cDash;BoardlessMode;False");
                 sw.WriteLine("cDash;TCPListenPort;54523");
+                sw.WriteLine("cDash;GitHubAPIReleaseURL;https://api.github.com/repos/csm10495/cDashboard/releases");
 
                 sw.Close();
 
@@ -1511,6 +1514,82 @@ namespace cDashboard
         #endregion
 
         #region Menustrip Items
+
+        /// <summary>
+        /// Check for updates via GitHub API
+        /// The user is allowed to change the release url manually in the settings file
+        /// if they want to follow a different repo, etc...
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> list_api_url = getSpecificSetting(new string[] { "cDash", "GitHubAPIReleaseURL" });
+
+            if (list_api_url.Count == 0)
+            {
+                replaceSetting(new string[] { "cDash", "GitHubAPIReleaseURL" }, new string[] { "cDash", "GitHubAPIReleaseURL", "https://api.github.com/repos/csm10495/cDashboard/releases" });
+                list_api_url.Add("https://api.github.com/repos/csm10495/cDashboard/releases");
+            }
+
+            List<Dictionary<string, dynamic>> dict = getDictFromJsonUrl(list_api_url[0]);
+
+            if (dict == null)
+            {
+                MessageBox.Show("Unable to check updates, you may be offline.");
+            }
+            else
+            {
+                string release_version = ((string)dict[0]["tag_name"]).Substring(1);
+
+                //add extra .0 onto the end of the version number to lengthen
+                while (release_version.Count(f => f == '.') < 3)
+                {
+                    release_version += ".0";
+                }
+
+                if (release_version != ProductVersion)
+                {
+                    if (MessageBox.Show("Update Available! Would you like to learn more?", "Update Available!",
+                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                       System.Diagnostics.Process.Start("https://github.com/csm10495/cDashboard/releases/latest");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("You have the latest version of cDashboard!", "cDashboard " + ProductVersion);
+                }
+            }
+        }
+
+        /// <summary>
+        /// takes in a url and returns an object graph from the downloaded json
+        /// </summary>
+        /// <param name="url">url of json file</param>
+        /// <returns></returns>
+        private List<Dictionary<string, dynamic>> getDictFromJsonUrl(string url)
+        {
+            //predeclare before try/catch
+            List<Dictionary<string, dynamic>> dict;
+            WebClient client = new WebClient();
+
+            //try/catch is used to detect connectivity
+            //any catch should be the result of a lack of internet access
+            try
+            {
+                //Tell it that this is an IE browser
+                client.Headers["User-Agent"] = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko";
+                string string_url_text = client.DownloadString(url);
+                dict = new JavaScriptSerializer().Deserialize<List<Dictionary<string, dynamic>>>(string_url_text);
+            }
+            catch
+            {
+                return null;
+            }
+
+            return dict;
+        }
 
         /// <summary>
         /// show display time
@@ -2569,5 +2648,6 @@ namespace cDashboard
         }
 
         #endregion
+
     }
 }
