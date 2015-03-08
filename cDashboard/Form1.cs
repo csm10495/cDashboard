@@ -1530,6 +1530,7 @@ namespace cDashboard
 
             List<Dictionary<string, dynamic>> dict = getDictFromJsonUrl(list_api_url[0]);
 
+            fade_toggle();
             if (dict == null)
             {
                 MessageBox.Show("Unable to check updates, you may be offline.");
@@ -1546,7 +1547,6 @@ namespace cDashboard
 
                 if (release_version != ProductVersion)
                 {
-                    fade_toggle();
                     if (MessageBox.Show("Update Available! Would you like to learn more?", "Update Available!",
                         MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
@@ -1555,7 +1555,6 @@ namespace cDashboard
                 }
                 else
                 {
-                    fade_toggle();
                     MessageBox.Show("You have the latest version of cDashboard!", "cDashboard " + ProductVersion);
                 }
             }
