@@ -1516,6 +1516,23 @@ namespace cDashboard
         #region Menustrip Items
 
         /// <summary>
+        /// adds ".0"'s onto the string to match format
+        /// 1.1.4->1.1.4.0
+        /// </summary>
+        /// <param name="release_version"></param>
+        /// <returns></returns>
+        private string formatReleaseString(string release_version)
+        {
+            //add extra .0 onto the end of the version number to lengthen
+            while (release_version.Count(f => f == '.') < 3)
+            {
+                release_version += ".0";
+            }
+
+            return release_version;
+        }
+
+        /// <summary>
         /// update check method, called via a new thread
         /// </summary>
         private void updateCheck()
@@ -1540,15 +1557,30 @@ namespace cDashboard
                 string release_version = ((string)dict[0]["tag_name"]).Substring(1);
 
                 //add extra .0 onto the end of the version number to lengthen
-                while (release_version.Count(f => f == '.') < 3)
-                {
-                    release_version += ".0";
-                }
+                release_version = formatReleaseString(release_version);
 
                 if (release_version != ProductVersion)
                 {
-                    if (MessageBox.Show("Update Available! Would you like to learn more?", "Update Available!",
-                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    string changelog = Environment.NewLine;
+
+                    //populate changelog
+                    foreach (var i in dict)
+                    {
+                        //don't go further back in time than necessary
+                        string frs = formatReleaseString(i["tag_name"]);
+                        if (frs.Substring(1) == ProductVersion)       //.Substring to get rid of the 'v'
+                            break;
+
+                        changelog = changelog + formatReleaseString(i["tag_name"]) + Environment.NewLine + i["body"] + Environment.NewLine + Environment.NewLine;
+                    }
+
+                    string update_string = "This update will take cDashboard from " + ProductVersion + " -> " + release_version + Environment.NewLine + "Changelog:" + Environment.NewLine + changelog + Environment.NewLine + "Would you like to update?";
+
+                    cMessageBox cm = new cMessageBox(update_string, "Update Available!");
+                    DialogResult result = cm.cShowDialog();
+                    cm.Close();
+                    cm.Dispose(); //must be done because it is shown as a dialog
+                    if (result == DialogResult.Yes)
                     {
                         System.Diagnostics.Process.Start("https://github.com/csm10495/cDashboard/releases/latest");
                     }
