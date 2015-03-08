@@ -1515,14 +1515,7 @@ namespace cDashboard
 
         #region Menustrip Items
 
-        /// <summary>
-        /// Check for updates via GitHub API
-        /// The user is allowed to change the release url manually in the settings file
-        /// if they want to follow a different repo, etc...
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void updateCheck()
         {
             List<string> list_api_url = getSpecificSetting(new string[] { "cDash", "GitHubAPIReleaseURL" });
 
@@ -1550,17 +1543,31 @@ namespace cDashboard
 
                 if (release_version != ProductVersion)
                 {
+                    fade_toggle();
                     if (MessageBox.Show("Update Available! Would you like to learn more?", "Update Available!",
                         MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                       System.Diagnostics.Process.Start("https://github.com/csm10495/cDashboard/releases/latest");
+                        System.Diagnostics.Process.Start("https://github.com/csm10495/cDashboard/releases/latest");
                     }
                 }
                 else
                 {
+                    fade_toggle();
                     MessageBox.Show("You have the latest version of cDashboard!", "cDashboard " + ProductVersion);
                 }
             }
+        }
+
+        /// <summary>
+        /// Check for updates via GitHub API
+        /// The user is allowed to change the release url manually in the settings file
+        /// if they want to follow a different repo, etc...
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new System.Threading.Thread(updateCheck).Start();
         }
 
         /// <summary>
