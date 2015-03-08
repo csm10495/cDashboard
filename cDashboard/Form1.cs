@@ -1515,6 +1515,9 @@ namespace cDashboard
 
         #region Menustrip Items
 
+        /// <summary>
+        /// update check method, called via a new thread
+        /// </summary>
         private void updateCheck()
         {
             List<string> list_api_url = getSpecificSetting(new string[] { "cDash", "GitHubAPIReleaseURL" });
