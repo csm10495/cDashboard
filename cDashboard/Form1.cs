@@ -1582,7 +1582,30 @@ namespace cDashboard
                     cm.Dispose(); //must be done because it is shown as a dialog
                     if (result == DialogResult.Yes)
                     {
-                        System.Diagnostics.Process.Start("https://github.com/csm10495/cDashboard/releases/latest");
+                        try
+                        {
+                            using (WebClient wc = new WebClient())
+                            {
+                                wc.DownloadFile(dict[0]["assets"][0]["browser_download_url"], "cDashboard_new.exe");
+                                MessageBox.Show("Completed download, ready to update.", "cDashboard Update Ready!");
+                                StreamWriter sw = new StreamWriter("cUpdate.bat", false);
+                                string script = "@echo off" + Environment.NewLine + "echo cDashboard update in progress..." + Environment.NewLine + "timeout /t 3" + Environment.NewLine;
+                                script += "del " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                                script += "move /Y cDashboard_new.exe " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                                script += "del cDashboard_new.exe" + Environment.NewLine;
+                                script += "start " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                                script += "start /b \"\" cmd /c del \"%~f0\"&exit /b";
+                                sw.Write(script);
+                                sw.Close();
+                                System.Diagnostics.Process.Start("cUpdate.bat");
+
+                                exitApplication();
+                            }
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Unable to download update. You may be offline, please try again later.", "cDashboard");
+                        }
                     }
                 }
                 else
