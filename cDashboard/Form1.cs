@@ -293,7 +293,7 @@ namespace cDashboard
                         {
                             automaticallyCheckForUpdatesToolStripMenuItem.Checked = true;
 
-                            new System.Threading.Thread(updateCheck).Start();
+                            new System.Threading.Thread(() => updateCheck(true)).Start();
                         }
                     }
 
@@ -1564,9 +1564,10 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// update check method, called via a new thread
+        /// attempts to update via thread
         /// </summary>
-        private void updateCheck()
+        /// <param name="autocheck">true if this is an automatic (not user done) check</param>
+        private void updateCheck(bool autocheck)
         {
             List<string> list_api_url = getSpecificSetting(new string[] { "cDash", "GitHubAPIReleaseURL" });
 
@@ -1583,7 +1584,10 @@ namespace cDashboard
 
             if (dict == null)
             {
-                MessageBox.Show("Unable to check updates, you may be offline.");
+                if (!autocheck)
+                {
+                    MessageBox.Show("Unable to check updates, you may be offline.");
+                }
             }
             else
             {
@@ -1638,13 +1642,19 @@ namespace cDashboard
                         }
                         catch
                         {
-                            MessageBox.Show("Unable to download update. You may be offline, please try again later.", "cDashboard");
+                            if (!autocheck)
+                            {
+                                MessageBox.Show("Unable to download update. You may be offline, please try again later.", "cDashboard");
+                            }
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("You have the latest version of cDashboard!", "cDashboard " + ProductVersion);
+                    if (!autocheck)
+                    {
+                        MessageBox.Show("You have the latest version of cDashboard!", "cDashboard " + ProductVersion);
+                    }
                 }
             }
         }
@@ -1658,7 +1668,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new System.Threading.Thread(updateCheck).Start();
+            new System.Threading.Thread(() => updateCheck(false)).Start();
         }
 
         /// <summary>
