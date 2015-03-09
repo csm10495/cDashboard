@@ -114,6 +114,7 @@ namespace cDashboard
         }
 
         #region Buttons
+
         /// <summary>
         /// send a global play/pause command via the Windows API
         /// </summary>
@@ -183,6 +184,7 @@ namespace cDashboard
         {
             this.Close();
         }
+
         #endregion
 
         #region Dragging
@@ -193,11 +195,12 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cMote_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
         #endregion
 
         #region Spotify Integration
+
         /// <summary>
         /// hooks the spotify process
         /// </summary>
@@ -265,8 +268,9 @@ namespace cDashboard
         /// <returns></returns>
         private Process getSpotifyProcess()
         {
-            if (Process.GetProcessesByName("spotify").Length > 0)
-                return Process.GetProcessesByName("spotify")[0];
+            Process [] procs = Process.GetProcessesByName("spotify");
+            if (procs.Length > 0)
+                return procs[0];
             else
                 return null;
         }
@@ -500,6 +504,7 @@ namespace cDashboard
             sw.Close();
 
         }
+
         #endregion
     }
 }

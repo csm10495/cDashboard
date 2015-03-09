@@ -270,7 +270,7 @@ namespace cDashboard
         /// calls the user32.dll to move the form
         /// </summary>
         /// <param name="e"></param>
-        protected void dragForm(MouseEventArgs e)
+        protected void dragForm(ref MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {

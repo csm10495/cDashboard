@@ -24,6 +24,7 @@ namespace cDashboard
 {
     public partial class cDashboard : cForm
     {
+
         #region Global Variables
 
         /// <summary>
@@ -203,10 +204,10 @@ namespace cDashboard
             List<List<string>> settings_list = getSettingsList();
 
             //Read settings and create stickies
-            createStickiesFromFiles(settings_list);
+            createStickiesFromFiles(ref settings_list);
 
             //Read settings not pertaining to stickies
-            otherSettings(settings_list);
+            otherSettings(ref settings_list);
 
             //start listening server
             new System.Threading.Thread(runServer).Start();
@@ -246,7 +247,7 @@ namespace cDashboard
         /// Will read settings not directly related to stickies
         /// </summary>
         /// <param name="settings_list"></param>
-        private void otherSettings(List<List<string>> settings_list)
+        private void otherSettings(ref List<List<string>> settings_list)
         {
             string FSFN = ""; //Favorite Sticky Font Name
             float FSFS = -1; //Favorite Sticky Font Size
@@ -617,7 +618,7 @@ namespace cDashboard
         /// <summary>
         /// Create the stickies from the settings file
         /// </summary>
-        private void createStickiesFromFiles(List<List<string>> settings_list)
+        private void createStickiesFromFiles(ref List<List<string>> settings_list)
         {
 
             foreach (List<string> current_item in settings_list)
@@ -777,6 +778,7 @@ namespace cDashboard
             }
 
         }
+
         #endregion
 
         #region Monitor Settings
@@ -1341,9 +1343,11 @@ namespace cDashboard
                 catch (Exception) { }
             }
         }
+
         #endregion
 
         #region Colored Sticky Creation
+
         /// <summary>
         /// add red sticky
         /// </summary>
@@ -1459,6 +1463,7 @@ namespace cDashboard
 
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(SETTINGS_LOCATION + long_unique_timestamp.ToString() + ".rtf");
         }
+
         #endregion
 
         #region Calls to fade_out()
@@ -1523,6 +1528,7 @@ namespace cDashboard
         {
             fade_out();
         }
+
         #endregion
 
         #region Menustrip Items
@@ -1552,7 +1558,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="release_version"></param>
         /// <returns></returns>
-        private string formatReleaseString(string release_version)
+        private string formatReleaseString(ref string release_version)
         {
             //add extra .0 onto the end of the version number to lengthen
             while (release_version.Count(f => f == '.') < 3)
@@ -1594,7 +1600,7 @@ namespace cDashboard
                 string release_version = ((string)dict[0]["tag_name"]).Substring(1);
 
                 //add extra .0 onto the end of the version number to lengthen
-                release_version = formatReleaseString(release_version);
+                release_version = formatReleaseString(ref release_version);
 
                 if (release_version != ProductVersion)
                 {

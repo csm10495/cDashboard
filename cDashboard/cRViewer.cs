@@ -24,6 +24,7 @@ namespace cDashboard
         }
 
         #region Events and Overrides
+
         /// <summary>
         /// form load event
         /// </summary>
@@ -51,7 +52,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menustrip_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -61,8 +62,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_title_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
+
         #endregion
 
         /// <summary>

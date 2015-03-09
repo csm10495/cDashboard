@@ -169,12 +169,11 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menustrip_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
         #endregion
 
         #region ContextMenu
-
 
         /// <summary>
         /// undo recent text changes

@@ -101,6 +101,7 @@ namespace cDashboard
         }
 
         #region Dragging
+
         /// <summary>
         /// mousedown for moving form
         /// </summary>
@@ -108,7 +109,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cBattery_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void panel_battery_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void pictureBox_battery_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_battery_percentage_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -148,8 +149,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_battery_remaining_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
+
         #endregion
 
     }

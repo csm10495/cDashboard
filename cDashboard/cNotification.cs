@@ -37,6 +37,7 @@ namespace cDashboard
         bool loadedin = false;
 
         #region Constructor and Form Loading
+
         /// <summary>
         /// standard constructor
         /// </summary>
@@ -78,9 +79,11 @@ namespace cDashboard
         {
             CompletedForm_Load = true;
         }
+
         #endregion
 
         #region Timer Ticks
+
         /// <summary>
         /// wait to close
         /// </summary>
@@ -145,6 +148,7 @@ namespace cDashboard
             #endregion
 
         }
+
         #endregion
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cStopwatch_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_time_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -73,8 +73,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void richtextbox_lap_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
+
         #endregion
 
         /// <summary>

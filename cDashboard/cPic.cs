@@ -42,7 +42,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cPic_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
