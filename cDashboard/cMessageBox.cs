@@ -40,6 +40,7 @@ namespace cDashboard
             InitializeComponent();
             this.Text = title;
             label_msg.Text = msg;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
 
         /// <summary>
