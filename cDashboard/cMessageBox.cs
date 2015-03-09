@@ -49,6 +49,7 @@ namespace cDashboard
         public DialogResult cShowDialog()
         {
             this.ShowDialog();
+
             if (retval == 1)
             {
                 return DialogResult.Yes;

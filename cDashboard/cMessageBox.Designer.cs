@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cMessageBox));
             this.button_yes = new System.Windows.Forms.Button();
             this.button_no = new System.Windows.Forms.Button();
             this.panel = new System.Windows.Forms.Panel();
@@ -88,10 +89,12 @@
             this.Controls.Add(this.button_no);
             this.Controls.Add(this.button_yes);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "cMessageBox";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "cMessageBox";
             this.TopMost = true;
             this.panel.ResumeLayout(false);

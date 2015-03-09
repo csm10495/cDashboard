@@ -286,6 +286,17 @@ namespace cDashboard
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
                 {
+                    //updates ui to signify auto checking
+                    if (currentline[1] == "AutoUpdateCheck")
+                    {
+                        if (currentline[2] == "True")
+                        {
+                            automaticallyCheckForUpdatesToolStripMenuItem.Checked = true;
+
+                            new System.Threading.Thread(updateCheck).Start();
+                        }
+                    }
+
                     //handle BoardlessMode setting
                     if (currentline[1] == "BoardlessMode")
                     {
@@ -744,6 +755,7 @@ namespace cDashboard
                 sw.WriteLine("cDash;BoardlessMode;False");
                 sw.WriteLine("cDash;TCPListenPort;54523");
                 sw.WriteLine("cDash;GitHubAPIReleaseURL;https://api.github.com/repos/csm10495/cDashboard/releases");
+                sw.WriteLine("cDash;AutoUpdateCheck;True");
 
                 sw.Close();
 
@@ -1516,6 +1528,25 @@ namespace cDashboard
         #region Menustrip Items
 
         /// <summary>
+        /// toggles the automatically check for updates setting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
+
+            if (automaticallyCheckForUpdatesToolStripMenuItem.Checked)
+            {
+                replaceSetting(new string[] { "cDash", "AutoUpdateCheck" }, new string[] { "cDash", "AutoUpdateCheck", "True" });
+            }
+            else
+            {
+                replaceSetting(new string[] { "cDash", "AutoUpdateCheck" }, new string[] { "cDash", "AutoUpdateCheck", "False" });
+            }
+        }
+
+        /// <summary>
         /// adds ".0"'s onto the string to match format
         /// 1.1.4->1.1.4.0
         /// </summary>
@@ -1547,7 +1578,9 @@ namespace cDashboard
 
             List<Dictionary<string, dynamic>> dict = getDictFromJsonUrl(list_api_url[0]);
 
-            fade_toggle();
+            //only fade if in dash
+            if (cD_tstate == timerstate.indash) { fade_toggle(); }
+
             if (dict == null)
             {
                 MessageBox.Show("Unable to check updates, you may be offline.");
@@ -1576,7 +1609,7 @@ namespace cDashboard
 
                     string update_string = "This update will take cDashboard from " + ProductVersion + " -> " + release_version + Environment.NewLine + "Changelog:" + Environment.NewLine + changelog + Environment.NewLine + "Would you like to update?";
 
-                    cMessageBox cm = new cMessageBox(update_string, "Update Available!");
+                    cMessageBox cm = new cMessageBox(update_string, "cDashboard Update Available!");
                     DialogResult result = cm.cShowDialog();
                     cm.Close();
                     cm.Dispose(); //must be done because it is shown as a dialog
@@ -1587,20 +1620,21 @@ namespace cDashboard
                             using (WebClient wc = new WebClient())
                             {
                                 wc.DownloadFile(dict[0]["assets"][0]["browser_download_url"], "cDashboard_new.exe");
-                                MessageBox.Show("Completed download, ready to update.", "cDashboard Update Ready!");
-                                StreamWriter sw = new StreamWriter("cUpdate.bat", false);
-                                string script = "@echo off" + Environment.NewLine + "echo cDashboard update in progress..." + Environment.NewLine + "timeout /t 3" + Environment.NewLine;
-                                script += "del " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
-                                script += "move /Y cDashboard_new.exe " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
-                                script += "del cDashboard_new.exe" + Environment.NewLine;
-                                script += "start " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
-                                script += "start /b \"\" cmd /c del \"%~f0\"&exit /b";
-                                sw.Write(script);
-                                sw.Close();
-                                System.Diagnostics.Process.Start("cUpdate.bat");
-
-                                exitApplication();
                             }
+
+                            MessageBox.Show("Completed download, ready to update.", "cDashboard Update Ready!");
+                            StreamWriter sw = new StreamWriter("cUpdate.bat", false);
+                            string script = "@echo off" + Environment.NewLine + "echo cDashboard update in progress..." + Environment.NewLine + "timeout /t 3" + Environment.NewLine;
+                            script += "del " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                            script += "move /Y cDashboard_new.exe " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                            script += "del cDashboard_new.exe" + Environment.NewLine;
+                            script += "start " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                            script += "start /b \"\" cmd /c del \"%~f0\"&exit /b";
+                            sw.Write(script);
+                            sw.Close();
+                            System.Diagnostics.Process.Start("cUpdate.bat");
+
+                            exitApplication();
                         }
                         catch
                         {
