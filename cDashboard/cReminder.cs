@@ -1,7 +1,7 @@
 ﻿//This file is part of cDashboard
 //cDashboard - An information-based overlay for Microsoft Windows
 //cReminder - A reminder setup prompt for cDashboard
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +35,7 @@ namespace cDashboard
         }
 
         #region Drag Form
+
         /// <summary>
         /// label mouse down
         /// </summary>
@@ -42,7 +43,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_instructions_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cReminder_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -62,8 +63,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menuStrip1_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
+
         #endregion
 
         /// <summary>

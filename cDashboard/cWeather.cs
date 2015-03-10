@@ -1,7 +1,7 @@
 ﻿//This file is part of cDashboard
 //cDashboard - An information-based overlay for Microsoft Windows
 //cWeather - A weather forcast widget for cDashboard 
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +19,7 @@ namespace cDashboard
     public partial class cWeather : cForm
     {
         #region Global Variables
+
         /// <summary>
         /// APPID used by the Yahoo API
         /// </summary>
@@ -39,9 +40,11 @@ namespace cDashboard
         /// flag will be tripped to say if the user is offline
         /// </summary>
         private bool OfflineFlag = false;
+
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -63,9 +66,11 @@ namespace cDashboard
                 hideAllPanelsExcept(ref panel_zip_input);
             }
         }
+
         #endregion
 
         #region Retrival of Weather Information
+
         /// <summary>
         /// updates label_zip with loc
         /// makes sure the sizing of the label is good
@@ -375,9 +380,11 @@ namespace cDashboard
             return dict;
 
         }
+
         #endregion
 
         #region MenuStrip Related
+
         /// <summary>
         /// used to change location for weather data
         /// </summary>
@@ -407,7 +414,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menuStrip_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -419,6 +426,7 @@ namespace cDashboard
         {
             this.Close();
         }
+
         #endregion
 
         /// <summary>
@@ -460,7 +468,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void panel_weather_ui_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿//This file is part of cDashboard
 //cDashboard - An information-based overlay for Microsoft Windows
 //This is the main controller form (the Dash)
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,12 +9,21 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
+using System.Net;
+using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.Web.Script.Serialization;
+using System.Diagnostics;
+using System.IO;
+using Utilities;
+
+
 
 namespace cDashboard
 {
     public partial class cDashboard : cForm
     {
-        
+
         #region Global Variables
 
         /// <summary>
@@ -129,6 +138,7 @@ namespace cDashboard
             }
         }
 
+
         private void PluginToolStripHandler(object sender, EventArgs e)
         {
             var nf = pluginsAssoc[(ToolStripItem)sender].GetForm();
@@ -161,6 +171,15 @@ namespace cDashboard
         #endregion plugins
 
         #region Form Loading, Initial Setup
+
+        /// <summary>
+        /// exits cDashboard and removes the notifyicon
+        /// </summary>
+        private void exitApplication()
+        {
+            notifyIcon1.Visible = false;
+            Environment.Exit(0);
+        }
 
         /// <summary>
         /// This will be called on window creation to make Windows
@@ -196,13 +215,26 @@ namespace cDashboard
                 {
                     int_cDash_processes_found = int_cDash_processes_found + 1;
                 }
-
-                if (int_cDash_processes_found > 1)
-                {
-                    MessageBox.Show("Another instance of cDashboard is already running.");
-                    Environment.Exit(0);
-                }
             }
+
+            //Another cDashboard is running, toggle it
+            if (int_cDash_processes_found > 1)
+            {
+                List<string> list_port_setting = getSpecificSetting(new string[] { "cDash", "TCPListenPort" });
+                TcpClient client = new TcpClient("127.0.0.1", Convert.ToUInt16(list_port_setting[0]));
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes("cdash-toggle");
+
+                NetworkStream stream = client.GetStream();
+
+                // Send the message
+                stream.Write(data, 0, data.Length);
+
+                stream.Close();
+                client.Close();
+
+                exitApplication();
+            }
+
         }
 
         /// <summary>
@@ -215,6 +247,8 @@ namespace cDashboard
         private void Form1_Load(object sender, EventArgs e)
         {
             check_for_duplicate_processes(); //check for duplicate cDashboard processes
+
+            this.notifyIcon1.Visible = true;
 
             variable_setup(); //setup variables1
             // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
@@ -231,19 +265,50 @@ namespace cDashboard
             List<List<string>> settings_list = getSettingsList();
 
             //Read settings and create stickies
-            createStickiesFromFiles(settings_list);
+            createStickiesFromFiles(ref settings_list);
 
             //Read settings not pertaining to stickies
-            otherSettings(settings_list);
+            otherSettings(ref settings_list);
+
+            //start listening server
+            new System.Threading.Thread(runServer).Start();
 
             CompletedForm_Load = true;
+        }
+
+        /// <summary>
+        /// runs a local TCP server listening for a command to toggle
+        /// the dash up and down
+        /// </summary>
+        private void runServer()
+        {
+            //TCPListener with random (unused port)
+            TcpListener tlistener = new TcpListener(System.Net.IPAddress.Loopback, 0);
+
+            tlistener.Start();
+            replaceSetting(new string[] { "cDash", "TCPListenPort" }, new string[] { "cDash", "TCPListenPort", ((IPEndPoint)tlistener.LocalEndpoint).Port.ToString() });
+
+            while (true)
+            {
+                Socket s = tlistener.AcceptSocket();
+
+                byte[] data = new byte[100];
+                int size = s.Receive(data);
+                
+                if (System.Text.Encoding.ASCII.GetString(data, 0, data.Length).Contains("cdash-toggle"))
+                {
+                    fade_toggle();
+                }
+
+                s.Close();
+            }
         }
 
         /// <summary>
         /// Will read settings not directly related to stickies
         /// </summary>
         /// <param name="settings_list"></param>
-        private void otherSettings(List<List<string>> settings_list)
+        private void otherSettings(ref List<List<string>> settings_list)
         {
             string FSFN = ""; //Favorite Sticky Font Name
             float FSFS = -1; //Favorite Sticky Font Size
@@ -283,6 +348,17 @@ namespace cDashboard
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
                 {
+                    //updates ui to signify auto checking
+                    if (currentline[1] == "AutoUpdateCheck")
+                    {
+                        if (currentline[2] == "True")
+                        {
+                            automaticallyCheckForUpdatesToolStripMenuItem.Checked = true;
+
+                            new System.Threading.Thread(() => updateCheck(true)).Start();
+                        }
+                    }
+
                     //handle BoardlessMode setting
                     if (currentline[1] == "BoardlessMode")
                     {
@@ -301,11 +377,11 @@ namespace cDashboard
                             if (currentline[3] == "F")
                             {
                                 fToolStripMenuItem.Checked = true;
-                                cToolStripMenuItem.Checked = false;
+                                celciusToolStripMenuItem.Checked = false;
                             }
                             else
                             {
-                                cToolStripMenuItem.Checked = true;
+                                celciusToolStripMenuItem.Checked = true;
                                 fToolStripMenuItem.Checked = false;
                             }
                         }
@@ -602,7 +678,7 @@ namespace cDashboard
         /// <summary>
         /// Create the stickies from the settings file
         /// </summary>
-        private void createStickiesFromFiles(List<List<string>> settings_list)
+        private void createStickiesFromFiles(ref List<List<string>> settings_list)
         {
             foreach (List<string> current_item in settings_list)
             {
@@ -739,6 +815,9 @@ namespace cDashboard
                 sw.WriteLine("cDash;cWeather;Unit;F");
                 sw.WriteLine("cDash;BackColor;123;123;123");
                 sw.WriteLine("cDash;BoardlessMode;False");
+                sw.WriteLine("cDash;TCPListenPort;54523");
+                sw.WriteLine("cDash;GitHubAPIReleaseURL;https://api.github.com/repos/csm10495/cDashboard/releases");
+                sw.WriteLine("cDash;AutoUpdateCheck;True");
 
                 sw.Close();
 
@@ -760,7 +839,8 @@ namespace cDashboard
             }
         }
 
-        #endregion Form Loading, Initial Setup
+        #endregion
+
 
         #region Monitor Settings
 
@@ -932,16 +1012,16 @@ namespace cDashboard
         /// </summary>
         private void closeMultiMontiorOverlays()
         {
-        //get all forms open forms and scan to make sure it is a monitor form
-        top:;
+
+            //get all forms open forms and scan to make sure it is a monitor form
+
             FormCollection fc = Application.OpenForms;
-            foreach (Form form_tmp in fc)
+            for (int x = fc.Count - 1; x >= 0; x--)
             {
-                if (form_tmp.Name == "Multi_Monitor_Selection_Overlay")
+                if (fc[x].Name == "Multi_Monitor_Selection_Overlay")
                 {
                     //close monitor selection overlay
-                    form_tmp.Close();
-                    goto top;
+                    fc[x].Close();
                 }
             }
         }
@@ -976,10 +1056,7 @@ namespace cDashboard
             {
                 //kill attempts to call a fade_in during a fade_in
                 if (this.Opacity != 0)
-                    goto done;
-
-                //theoretically should fix incorrectly shapped loads
-                moveToPrimaryMonitor();
+                    return;
 
                 fade_in();
 
@@ -987,7 +1064,7 @@ namespace cDashboard
                 //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
                 e.Handled = true;
-                goto done;
+                return;
             }
 
             //if both hooked keys are down, and we are ready to fadeout, fadeout in the dash
@@ -999,11 +1076,10 @@ namespace cDashboard
                 //don't reset LCtrl (for convinence)
                 TildeIsDown = false;
                 e.Handled = true;
-                goto done;
+                return;
             }
 
             e.Handled = false;
-        done:;
         }
 
         /// <summary>
@@ -1056,6 +1132,42 @@ namespace cDashboard
             cD_tstate = timerstate.fadeout;
 
             fadetimer.Start();
+        }
+
+        /// <summary>
+        /// fades in if not in
+        /// fades out if in
+        /// </summary>
+        private void fade_toggle()
+        {
+            if (cD_tstate == timerstate.fadein)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        fade_in();
+                    }));
+                }
+                else
+                {
+                    fade_in();
+                }
+            }
+            else if (cD_tstate == timerstate.indash)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        fade_out();
+                    }));
+                }
+                else
+                {
+                    fade_out();
+                }
+            }
         }
 
         /// <summary>
@@ -1175,19 +1287,24 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// timer tick
+        /// timer tick updates every second
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void uitimer_Tick(object sender, EventArgs e)
         {
-            updateTimeDate();
             updateCWeather();
-            checkForCReminders();
+
+            if (cD_tstate == timerstate.indash)
+            {
+                checkForCReminders();
+                updateTimeDate();
+            }
         }
 
         /// <summary>
-        /// timer tick specifically for fades
+        /// timer tick specifically for fades, 
+        /// when running, attempts to go 1/ms = 1000/s
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1196,7 +1313,8 @@ namespace cDashboard
             //increment timer ticking
             fadetimertime++;
 
-            updateTimeDate(); //update time/date on ui
+            //update time/date during fade
+            updateTimeDate();
 
             //fadeout related code
 
@@ -1294,7 +1412,8 @@ namespace cDashboard
             }
         }
 
-        #endregion Key Hooks and Fades
+        #endregion
+
 
         #region Colored Sticky Creation
 
@@ -1413,7 +1532,8 @@ namespace cDashboard
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(SETTINGS_LOCATION + long_unique_timestamp.ToString() + ".rtf");
         }
 
-        #endregion Colored Sticky Creation
+        #endregion
+
 
         #region Calls to fade_out()
 
@@ -1477,10 +1597,182 @@ namespace cDashboard
         {
             fade_out();
         }
+        #endregion
 
-        #endregion Calls to fade_out()
 
         #region Menustrip Items
+
+        /// <summary>
+        /// toggles the automatically check for updates setting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
+
+            if (automaticallyCheckForUpdatesToolStripMenuItem.Checked)
+            {
+                replaceSetting(new string[] { "cDash", "AutoUpdateCheck" }, new string[] { "cDash", "AutoUpdateCheck", "True" });
+            }
+            else
+            {
+                replaceSetting(new string[] { "cDash", "AutoUpdateCheck" }, new string[] { "cDash", "AutoUpdateCheck", "False" });
+            }
+        }
+
+        /// <summary>
+        /// adds ".0"'s onto the string to match format
+        /// 1.1.4->1.1.4.0
+        /// </summary>
+        /// <param name="release_version"></param>
+        /// <returns></returns>
+        private string formatReleaseString(ref string release_version)
+        {
+            //add extra .0 onto the end of the version number to lengthen
+            while (release_version.Count(f => f == '.') < 3)
+            {
+                release_version += ".0";
+            }
+
+            return release_version;
+        }
+
+        /// <summary>
+        /// attempts to update via thread
+        /// </summary>
+        /// <param name="autocheck">true if this is an automatic (not user done) check</param>
+        private void updateCheck(bool autocheck)
+        {
+            List<string> list_api_url = getSpecificSetting(new string[] { "cDash", "GitHubAPIReleaseURL" });
+
+            if (list_api_url.Count == 0)
+            {
+                replaceSetting(new string[] { "cDash", "GitHubAPIReleaseURL" }, new string[] { "cDash", "GitHubAPIReleaseURL", "https://api.github.com/repos/csm10495/cDashboard/releases" });
+                list_api_url.Add("https://api.github.com/repos/csm10495/cDashboard/releases");
+            }
+
+            List<Dictionary<string, dynamic>> dict = getDictFromJsonUrl(list_api_url[0]);
+
+            //only fade if in dash
+            if (cD_tstate == timerstate.indash) { fade_toggle(); }
+
+            if (dict == null)
+            {
+                if (!autocheck)
+                {
+                    MessageBox.Show("Unable to check updates, you may be offline.");
+                }
+            }
+            else
+            {
+                string release_version = ((string)dict[0]["tag_name"]).Substring(1);
+
+                //add extra .0 onto the end of the version number to lengthen
+                release_version = formatReleaseString(ref release_version);
+
+                if (release_version != ProductVersion)
+                {
+                    string changelog = Environment.NewLine;
+
+                    //populate changelog
+                    foreach (var i in dict)
+                    {
+                        //don't go further back in time than necessary
+                        string frs = formatReleaseString(i["tag_name"]);
+                        if (frs.Substring(1) == ProductVersion)       //.Substring to get rid of the 'v'
+                            break;
+
+                        changelog = changelog + formatReleaseString(i["tag_name"]) + Environment.NewLine + i["body"] + Environment.NewLine + Environment.NewLine;
+                    }
+
+                    string update_string = "This update will take cDashboard from " + ProductVersion + " -> " + release_version + Environment.NewLine + "Changelog:" + Environment.NewLine + changelog + Environment.NewLine + "Would you like to update?";
+
+                    cMessageBox cm = new cMessageBox(update_string, "cDashboard Update Available!");
+                    DialogResult result = cm.cShowDialog();
+                    cm.Close();
+                    cm.Dispose(); //must be done because it is shown as a dialog
+                    if (result == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            using (WebClient wc = new WebClient())
+                            {
+                                wc.DownloadFile(dict[0]["assets"][0]["browser_download_url"], "cDashboard_new.exe");
+                            }
+
+                            MessageBox.Show("Completed download, ready to update.", "cDashboard Update Ready!");
+                            StreamWriter sw = new StreamWriter("cUpdate.bat", false);
+                            string script = "@echo off" + Environment.NewLine + "echo cDashboard update in progress..." + Environment.NewLine + "timeout /t 3" + Environment.NewLine;
+                            script += "del " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                            script += "move /Y cDashboard_new.exe " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                            script += "del cDashboard_new.exe" + Environment.NewLine;
+                            script += "start " + System.Reflection.Assembly.GetEntryAssembly().Location + Environment.NewLine;
+                            script += "start /b \"\" cmd /c del \"%~f0\"&exit /b";
+                            sw.Write(script);
+                            sw.Close();
+                            System.Diagnostics.Process.Start("cUpdate.bat");
+
+                            exitApplication();
+                        }
+                        catch
+                        {
+                            if (!autocheck)
+                            {
+                                MessageBox.Show("Unable to download update. You may be offline, please try again later.", "cDashboard");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (!autocheck)
+                    {
+                        MessageBox.Show("You have the latest version of cDashboard!", "cDashboard " + ProductVersion);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check for updates via GitHub API
+        /// The user is allowed to change the release url manually in the settings file
+        /// if they want to follow a different repo, etc...
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new System.Threading.Thread(() => updateCheck(false)).Start();
+        }
+
+        /// <summary>
+        /// takes in a url and returns an object graph from the downloaded json
+        /// </summary>
+        /// <param name="url">url of json file</param>
+        /// <returns></returns>
+        private List<Dictionary<string, dynamic>> getDictFromJsonUrl(string url)
+        {
+            //predeclare before try/catch
+            List<Dictionary<string, dynamic>> dict;
+            WebClient client = new WebClient();
+
+            //try/catch is used to detect connectivity
+            //any catch should be the result of a lack of internet access
+            try
+            {
+                //Tell it that this is an IE browser
+                client.Headers["User-Agent"] = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko";
+                string string_url_text = client.DownloadString(url);
+                dict = new JavaScriptSerializer().Deserialize<List<Dictionary<string, dynamic>>>(string_url_text);
+            }
+            catch
+            {
+                return null;
+            }
+
+            return dict;
+        }
 
         /// <summary>
         /// show display time
@@ -1732,7 +2024,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void fToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            cToolStripMenuItem.Checked = false;
+            celciusToolStripMenuItem.Checked = false;
             fToolStripMenuItem.Checked = true;
 
             replaceSetting(new string[] { "cDash", "cWeather", "Unit" }, new string[] { "cDash", "cWeather", "Unit", "F" });
@@ -1749,7 +2041,7 @@ namespace cDashboard
         private void cToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             fToolStripMenuItem.Checked = false;
-            cToolStripMenuItem.Checked = true;
+            celciusToolStripMenuItem.Checked = true;
 
             replaceSetting(new string[] { "cDash", "cWeather", "Unit" }, new string[] { "cDash", "cWeather", "Unit", "C" });
 
@@ -1988,7 +2280,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            exitApplication();
         }
 
         /// <summary>
@@ -2075,7 +2367,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void exitCDashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            exitApplication();
         }
 
         /// <summary>
@@ -2420,7 +2712,20 @@ namespace cDashboard
             }
         }
 
-        #endregion Menustrip Items
+        /// <summary>
+        /// Class with antialiasing to get rid of fuschia artifacts on File, Edit
+        /// </summary>
+        public class cToolStripMenuItem : ToolStripMenuItem
+        {
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                base.OnPaint(e);
+            }
+        }
+
+        #endregion
+
 
         #region Extra Events
 
@@ -2472,10 +2777,10 @@ namespace cDashboard
                 System.IO.Directory.Delete(SETTINGS_LOCATION + this_control.Name, true);
             }
 
-        //This should be here instead of up there, just in case we need to know a setting to delete the control
-        top:
-            foreach (List<string> currentsetting in list_settings)
+            //This should be here instead of up there, just in case we need to know a setting to delete the control
+            for (int x = list_settings.Count - 1; x >= 0; x--)
             {
+                List<string> currentsetting = list_settings[x];
                 if (currentsetting[0].Substring(0, 1) == "#")   //fixed problem with comment persistance
                     continue;
 
@@ -2483,10 +2788,10 @@ namespace cDashboard
                 //make sure that there are enough options in currentsetting
                 if (currentsetting.Count > 1 && currentsetting[1] == this_control.Name)
                 {
-                    list_settings.Remove(currentsetting);
-                    goto top;
+                    list_settings.RemoveAt(x);
                 }
             }
+
             //remove control
             Controls.Remove(this_control);
             this_control.Dispose();
@@ -2525,5 +2830,6 @@ namespace cDashboard
                 i.SavePlugin(SETTINGS_LOCATION);
             }
         }
+
     }
 }

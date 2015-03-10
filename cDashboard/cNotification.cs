@@ -1,6 +1,7 @@
 ﻿//This file is part of cDashboard
+//cDashboard - An information-based overlay for Microsoft Windows
 //cNotification - A notification viewer for cDashboard
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,6 +37,7 @@ namespace cDashboard
         bool loadedin = false;
 
         #region Constructor and Form Loading
+
         /// <summary>
         /// standard constructor
         /// </summary>
@@ -77,9 +79,11 @@ namespace cDashboard
         {
             CompletedForm_Load = true;
         }
+
         #endregion
 
         #region Timer Ticks
+
         /// <summary>
         /// wait to close
         /// </summary>
@@ -144,6 +148,7 @@ namespace cDashboard
             #endregion
 
         }
+
         #endregion
 
         /// <summary>

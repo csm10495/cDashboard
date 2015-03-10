@@ -46,7 +46,7 @@
             this.button_time = new System.Windows.Forms.Button();
             this.label_build = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new cDashboard.cToolStripMenuItem();
             this.newStickyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,10 +65,12 @@
             this.newCReminderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCRViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new cDashboard.cToolStripMenuItem();
+
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,7 +92,7 @@
             this.cWeatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setCWeatherUnitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.celciusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +101,7 @@
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.PluginSaveTimer = new System.Windows.Forms.Timer(this.components);
+            this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -129,7 +132,6 @@
             this.notifyIcon1.ContextMenuStrip = this.notifyicon_menustrip;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "cDashboard Process is running...";
-            this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // notifyicon_menustrip
@@ -361,10 +363,20 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkForUpdatesToolStripMenuItem,
+            this.automaticallyCheckForUpdatesToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
             // hideToolStripMenuItem
             // 
@@ -559,7 +571,7 @@
             // 
             this.setCWeatherUnitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fToolStripMenuItem,
-            this.cToolStripMenuItem});
+            this.celciusToolStripMenuItem});
             this.setCWeatherUnitToolStripMenuItem.Name = "setCWeatherUnitToolStripMenuItem";
             this.setCWeatherUnitToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.setCWeatherUnitToolStripMenuItem.Text = "Temperature Unit...";
@@ -571,12 +583,12 @@
             this.fToolStripMenuItem.Text = "°F";
             this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click_1);
             // 
-            // cToolStripMenuItem
+            // celciusToolStripMenuItem
             // 
-            this.cToolStripMenuItem.Name = "cToolStripMenuItem";
-            this.cToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
-            this.cToolStripMenuItem.Text = "°C";
-            this.cToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click_1);
+            this.celciusToolStripMenuItem.Name = "celciusToolStripMenuItem";
+            this.celciusToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
+            this.celciusToolStripMenuItem.Text = "°C";
+            this.celciusToolStripMenuItem.Click += new System.EventHandler(this.cToolStripMenuItem_Click_1);
             // 
             // cDashDataToolStripMenuItem
             // 
@@ -635,6 +647,12 @@
             this.PluginSaveTimer.Enabled = true;
             this.PluginSaveTimer.Interval = 1000;
             this.PluginSaveTimer.Tick += new System.EventHandler(this.PluginSaveTimer_Tick);
+           // automaticallyCheckForUpdatesToolStripMenuItem
+            // 
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Name = "automaticallyCheckForUpdatesToolStripMenuItem";
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Text = "Automatically Check for Updates ";
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.automaticallyCheckForUpdatesToolStripMenuItem_Click);
             // 
             // cDashboard
             // 
@@ -675,7 +693,6 @@
         private System.Windows.Forms.Timer uitimer;
         private System.Windows.Forms.Label label_build;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newStickyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -689,7 +706,6 @@
         private System.Windows.Forms.ToolStripMenuItem customColorToolStripMenuItem;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.FontDialog fontDialog1;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip notifyicon_menustrip;
@@ -725,7 +741,7 @@
         private System.Windows.Forms.ToolStripMenuItem cWeatherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setCWeatherUnitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem celciusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setDateTimeColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boardlessModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCBatteryToolStripMenuItem;
@@ -735,8 +751,13 @@
         private System.Windows.Forms.ToolStripMenuItem cNotificationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem displayTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolstrip_displaytime;
+
         private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
         private System.Windows.Forms.Timer PluginSaveTimer;
+        private cDashboard.cToolStripMenuItem fileToolStripMenuItem;
+        private cDashboard.cToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
     }
 }
 

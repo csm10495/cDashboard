@@ -1,7 +1,7 @@
 ﻿//This file is part of cDashboard
 //cDashboard - An information-based overlay for Microsoft Windows
 //cRViewer - A viewer and editor for all cReminders
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +24,7 @@ namespace cDashboard
         }
 
         #region Events and Overrides
+
         /// <summary>
         /// form load event
         /// </summary>
@@ -51,7 +52,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void menustrip_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -61,8 +62,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_title_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
+
         #endregion
 
         /// <summary>

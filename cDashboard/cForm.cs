@@ -1,6 +1,7 @@
 ﻿//This file is part of cDashboard
+//cDashboard - An information-based overlay for Microsoft Windows
 //cForm - An interface for widgets for cDashboard
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -271,7 +272,7 @@ namespace cDashboard
         /// calls the user32.dll to move the form
         /// </summary>
         /// <param name="e"></param>
-        protected void dragForm(MouseEventArgs e)
+        protected void dragForm(ref MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {

@@ -1,6 +1,7 @@
 ﻿//This file is part of cDashboard
+//cDashboard - An information-based overlay for Microsoft Windows
 //cAbout - An about box for cDashboard
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,6 +48,9 @@ namespace cDashboard
         {
             //put the icon in a location off screen
             picture_icon.Location = new Point(picture_icon.Location.X + 200, picture_icon.Location.Y - 200);
+
+            //update this.text with version info
+            this.Text = "cAbout cDashboard v" + ProductVersion;
 
             //animate
             timer_animation.Start();

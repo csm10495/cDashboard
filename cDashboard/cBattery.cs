@@ -1,6 +1,7 @@
 ﻿//This file is part of cDashboard
+//cDashboard - An information-based overlay for Microsoft Windows
 //cBattery - A battery status viewer for cDashboard
-//(C) Charles Machalow 2014 under the MIT License
+//(C) Charles Machalow under the MIT License
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -100,6 +101,7 @@ namespace cDashboard
         }
 
         #region Dragging
+
         /// <summary>
         /// mousedown for moving form
         /// </summary>
@@ -107,7 +109,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cBattery_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -117,7 +119,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void panel_battery_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -127,7 +129,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void pictureBox_battery_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -137,7 +139,7 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_battery_percentage_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
 
         /// <summary>
@@ -147,8 +149,9 @@ namespace cDashboard
         /// <param name="e"></param>
         private void label_battery_remaining_MouseDown(object sender, MouseEventArgs e)
         {
-            dragForm(e);
+            dragForm(ref e);
         }
+
         #endregion
 
     }
