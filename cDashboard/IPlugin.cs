@@ -7,7 +7,10 @@ using System.ComponentModel.Composition;
 namespace cDashboard
 {
     public interface IPlugin
-    {
+    {/// <summary>
+     /// Reports on whether something has happened which would require the plugin's settings to be saved.
+     /// </summary>
+        bool NeedsSaving { get; }
         /// <summary>
         /// Obtain an instance of the Form.
         /// </summary>
