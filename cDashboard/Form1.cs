@@ -2844,7 +2844,8 @@ namespace cDashboard
         {
             foreach(var i in pluginTypes.Values)
             {
-                i.SavePlugin(SETTINGS_LOCATION);
+                if(i.NeedsSaving)
+                    i.SavePlugin(SETTINGS_LOCATION);
             }
         }
 
