@@ -13,9 +13,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Web.Script.Serialization;
-using System.Diagnostics;
 using System.IO;
-using Utilities;
+
 
 
 
@@ -107,7 +106,6 @@ namespace cDashboard
             pluginsAssoc = new Dictionary<ToolStripItem, IPlugin>();
             pluginNames = new Dictionary<string, IPlugin>();
             pluginTypes = new Dictionary<Type, IPlugin>();
-            plugins = new System.Threading.SemaphoreSlim(1);
             InitializeComponent();
             SetupPlugins();
         }
@@ -116,17 +114,25 @@ namespace cDashboard
 
         #region plugins
 
-        //This is used to identify which plugin should be called when a menu button is pressed.
+        /// <summary>
+        /// This is used to identify which plugin should be called when a menu button is pressed.
+        /// </summary>
         private Dictionary<ToolStripItem, IPlugin> pluginsAssoc;
 
-        //This is used to identify for persistance what sorts of things should be loaded by name.
+        /// <summary>
+        ///This is used to identify for persistance what sorts of things should be loaded by name. 
+        /// </summary>
         private Dictionary<string, IPlugin> pluginNames;
-
+        /// <summary>
+        /// Stores the information in a format meant to associate with the bindings of types provided to plugin.
+        /// </summary>
         private Dictionary<Type, IPlugin> pluginTypes;
-        System.Threading.SemaphoreSlim plugins;
-        //Setup the plugins for use in the form.
+        /// <summary>
+        /// Populate the Plugin list and bind the menu items to the correct output and restoring plugin settings.
+        /// </summary>
         private void SetupPlugins()
         {
+            if(PluginContainer.plugins!=null)
             foreach (var i in PluginContainer.plugins)
             {
                 var new_toolstrip = pluginsToolStripMenuItem.DropDownItems.Add(i.Metadata.name);
@@ -138,7 +144,11 @@ namespace cDashboard
             }
         }
 
-
+        /// <summary>
+        /// Handle actions for the plugin's entries in the menu.
+        /// </summary>
+        /// <param name="sender">The specific plugin toolbar entry.</param>
+        /// <param name="e">The event arguments.</param>
         private void PluginToolStripHandler(object sender, EventArgs e)
         {
             var nf = pluginsAssoc[(ToolStripItem)sender].GetForm();
@@ -153,13 +163,20 @@ namespace cDashboard
             
             Console.WriteLine("Created plugin window");
         }
-
+        /// <summary>
+        /// Disposes of a plugin's form if it is closed.
+        /// </summary>
+        /// <param name="sender">Probably the plugin's form.</param>
+        /// <param name="e">The event arguments.</param>
         private void PluginFormClosedDispose(object sender, FormClosedEventArgs e)
         {
             Controls.Remove((Control)sender);
             ((Form)sender).Dispose();
         }
-
+        /// <summary>
+        /// Add a form to this window correctly.
+        /// </summary>
+        /// <param name="nf">The form to be added.</param>
         public void AddForm(Form nf)
         {
             nf.TopLevel = false;

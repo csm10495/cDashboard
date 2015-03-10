@@ -6,20 +6,27 @@ using System.ComponentModel.Composition;
 //(C) Alexander White under the MIT License
 namespace cDashboard
 {
-    public enum ProgramActionSaveable
-    {
-        OnFormMove,
-        OnFormClose,
-        OnFormFocused
-    }
     public interface IPlugin
     {
+        /// <summary>
+        /// Obtain an instance of the Form.
+        /// </summary>
+        /// <returns>A new instance of the Form provided by a plugin.</returns>
         System.Windows.Forms.Form GetForm();
-        //Save the relevant information for saving the plugin to disk.
+        /// <summary>
+        /// Save the relevant information for saving the plugin to disk.
+        /// </summary>
         void SavePlugin(string settingsLocation);
-        //Load the plugin's persistance data from disk.
+        /// <summary>
+        /// Loads the plugin's persistence data from disk.
+        /// </summary>
+        /// <param name="settingsLocation">The location of the settings files</param>
+        /// <param name="d">The instance of cDashboard</param>
         void LoadPlugin(string settingsLocation, cDashboard d);
-        //Informs the program that the form ought to be disposed of when it is closed.
+        /// <summary>
+        ///Informs the program that the form ought to be disposed of when it is closed. 
+        /// </summary>
+
         bool DisposeOnClose { get; }
         Type getFormType();
     }

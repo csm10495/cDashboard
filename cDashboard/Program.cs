@@ -13,14 +13,20 @@ namespace cDashboard
 {
     static class PluginContainer
     {
+        /// <summary>
+        /// Ultimately the accessible list of Plugins for the program.
+        /// </summary>
         public static IEnumerable<Lazy<IPlugin, IPluginData>> plugins;
     }
       class Program
     {
 
         CompositionContainer _container;
+        /// <summary>
+        /// The Plugins loaded by MEF.
+        /// </summary>
         [ImportMany]
-        IEnumerable<Lazy<IPlugin,IPluginData>> things;
+        IEnumerable<Lazy<IPlugin,IPluginData>> plugins;
         private Program()
         {
             var catalog = new AggregateCatalog();
@@ -39,13 +45,13 @@ namespace cDashboard
             catch (CompositionException e) {
                 Console.WriteLine(e.ToString());
             }
-            if (things != null)
+            if (plugins != null)
             {
-                foreach (var q in things)
+                foreach (var q in plugins)
                 {
                     Console.WriteLine(q.Metadata.name);
                 }
-                PluginContainer.plugins= things;
+                PluginContainer.plugins= plugins;
             }
             else
                 Console.WriteLine("No plugins loaded");
