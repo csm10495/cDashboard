@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Forms;
-
+//(C) Alexander White under the MIT License
 namespace CdashboardPluginTest
 {
     //This tag tells the ComponentModel.Composition components to export this publically for use in cDashboard, specifying the type that this is to be shown as.
@@ -81,8 +81,9 @@ namespace CdashboardPluginTest
                 dash.AddForm(GetForm(l));
         }
 
+        //There's no reason to not dispose of the window.
         public bool DisposeOnClose { get { return true; } }
-
+        //Returns the type of the form provided(for easy matching).
         public Type getFormType()
         {
             return typeof(Funny);

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+//(C) Alexander White under the MIT License
 namespace CdashboardPluginTest
 {
     public partial class Funny : Form
