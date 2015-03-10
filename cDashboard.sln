@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cDashboard", "cDashboard\cDashboard.csproj", "{842D8152-3A6A-4141-90A7-DF21145A0F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "thingy", "thingy\thingy.csproj", "{4870B6AE-34BB-4870-A081-BD40F120B489}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cDashboardPluginTest", "thingy\cDashboardPluginTest.csproj", "{4870B6AE-34BB-4870-A081-BD40F120B489}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

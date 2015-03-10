@@ -4,22 +4,17 @@
 //(C) Charles Machalow 2014 under the MIT License
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
-using System.Diagnostics;
-using System.IO;
-
 
 namespace cDashboard
 {
     public partial class cDashboard : cForm
     {
+        
         #region Global Variables
 
         /// <summary>
@@ -27,108 +22,148 @@ namespace cDashboard
         /// long -> ticks
         /// string -> message
         /// </summary>
-        SortedDictionary<long, string> dict_cReminders = new SortedDictionary<long, string>();
+        private SortedDictionary<long, string> dict_cReminders = new SortedDictionary<long, string>();
 
         /// <summary>
         /// this is the tick counter for the fade timer
         /// </summary>
-        int fadetimertime = 0;
+        private int fadetimertime = 0;
 
         /// <summary>
         /// the amount of time in milliseconds needed for fade_in, fade_out
         /// </summary>
-        int int_fade_milliseconds = 500;
+        private int int_fade_milliseconds = 500;
 
         /// <summary>
         /// the state of the timer can be fading in, out, indash.
         /// </summary>
-        enum timerstate { fadein = 0, fadeout = 1, indash = 2 };
+        private enum timerstate
+        { fadein = 0, fadeout = 1, indash = 2 };
 
         /// <summary>
         /// The current state of the main timer it can be fadein, fadeout, or indash
         /// </summary>
-        timerstate cD_tstate = (int)timerstate.fadein;//the first state of the timer is fadein
+        private timerstate cD_tstate = (int)timerstate.fadein;//the first state of the timer is fadein
 
         /// <summary>
         /// the keyboard hook used to catch key presses for certain keys
         /// </summary>
-        globalKeyboardHook KeyHook = new globalKeyboardHook(); //KeyHook is the global key hook
+        private globalKeyboardHook KeyHook = new globalKeyboardHook(); //KeyHook is the global key hook
 
         /// <summary>
         /// Signifies if the LCtrl key is down
         /// </summary>
-        bool LCtrlIsDown = false;
+        private bool LCtrlIsDown = false;
 
         /// <summary>
         /// signifies if a wallpaper image is being used
         /// </summary>
-        bool UseWallpaperImage = false;
+        private bool UseWallpaperImage = false;
 
         /// <summary>
         /// Signifies if the tilde key is down
         /// </summary>
-        bool TildeIsDown = false;
+        private bool TildeIsDown = false;
 
         /// <summary>
         /// opacity level of the dashboard
         /// </summary>
-        int OpacityLevel = -1;
+        private int OpacityLevel = -1;
 
         /// <summary>
         /// favorite color for new stickies
         /// </summary>
-        Color FavoriteStickyColor;
+        private Color FavoriteStickyColor;
 
         /// <summary>
         /// favorite font for new stickies
         /// </summary>
-        Font FavoriteStickyFont;
+        private Font FavoriteStickyFont;
 
         /// <summary>
         /// represents the number of seconds in this cycle
         /// used for knowing when to update cWeather(s)
         /// </summary>
-        int TimerCounter = 0;
+        private int TimerCounter = 0;
 
-        #endregion
+        #endregion Global Variables
 
         #region Constructor
+
         /// <summary>
         /// Form Constructor
         /// </summary>
         public cDashboard()
         {
             pluginsAssoc = new Dictionary<ToolStripItem, IPlugin>();
+            pluginNames = new Dictionary<string, IPlugin>();
+            pluginTypes = new Dictionary<Type, IPlugin>();
+            plugins = new System.Threading.SemaphoreSlim(1);
             InitializeComponent();
             SetupPlugins();
         }
-        #endregion
+
+        #endregion Constructor
+
         #region plugins
+
+        //This is used to identify which plugin should be called when a menu button is pressed.
         private Dictionary<ToolStripItem, IPlugin> pluginsAssoc;
+
+        //This is used to identify for persistance what sorts of things should be loaded by name.
+        private Dictionary<string, IPlugin> pluginNames;
+
+        private Dictionary<Type, IPlugin> pluginTypes;
+        System.Threading.SemaphoreSlim plugins;
+        //Setup the plugins for use in the form.
         private void SetupPlugins()
         {
-            foreach(var i in PluginContainer.plugins)
+            foreach (var i in PluginContainer.plugins)
             {
                 var new_toolstrip = pluginsToolStripMenuItem.DropDownItems.Add(i.Metadata.name);
                 pluginsAssoc[new_toolstrip] = i.Value;
                 new_toolstrip.Click += PluginToolStripHandler;
+                pluginNames[i.Metadata.name] = i.Value;
+                pluginNames[i.Metadata.name].LoadPlugin(SETTINGS_LOCATION, this);
+                pluginTypes[i.Value.getFormType()] = i.Value;
             }
         }
-        void PluginToolStripHandler(object sender, EventArgs e)
+
+        private void PluginToolStripHandler(object sender, EventArgs e)
         {
-            var nf=pluginsAssoc[(ToolStripItem)sender].GetForm();
+            var nf = pluginsAssoc[(ToolStripItem)sender].GetForm();
+            var plugin = pluginsAssoc[(ToolStripItem)sender];
+            if (plugin.DisposeOnClose)
+            {
+                nf.FormClosed += PluginFormClosedDispose;
+            }
             //this is apparently essential for adding it as a parent.
+            AddForm(nf);
+            //Write configuration to the file.
+            
+            Console.WriteLine("Created plugin window");
+        }
+
+        private void PluginFormClosedDispose(object sender, FormClosedEventArgs e)
+        {
+            Controls.Remove((Control)sender);
+            ((Form)sender).Dispose();
+        }
+
+        public void AddForm(Form nf)
+        {
             nf.TopLevel = false;
             nf.Parent = this;
             nf.Show();
             Controls.Add(nf);
-            Console.WriteLine("Created plugin window");
         }
-        #endregion
+
+        #endregion plugins
 
         #region Form Loading, Initial Setup
+
         /// <summary>
-        /// This will be called on window creation to make Windows 
+        /// This will be called on window creation to make Windows
         /// think of the Dash window as a toolwindow
         /// window to avoid being in the alt-tab menu
         /// </summary>
@@ -171,7 +206,7 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// The form loading method. 
+        /// The form loading method.
         /// calls variable_setup() -> proper key hooking
         /// calls buildAndSettingsFileCreation() -> Checks and displays the build number
         /// </summary>
@@ -191,7 +226,7 @@ namespace cDashboard
             //File Building
             buildAndSettingsFileCreation();
 
-            //this will be the list of lines from the settings file 
+            //this will be the list of lines from the settings file
             //THE settings_list WILL NOT INCLUDE BLANK LINES OR LINES STARTING WITH #
             List<List<string>> settings_list = getSettingsList();
 
@@ -279,7 +314,7 @@ namespace cDashboard
                     if (currentline[1] == "BackColor")
                     {
                         this.BackColor = Color.FromArgb(Convert.ToInt32(currentline[2]), Convert.ToInt32(currentline[3]), Convert.ToInt32(currentline[4]));
-                        //line removed so that transparent color works 
+                        //line removed so that transparent color works
                         //menuStrip1.BackColor = this.BackColor;
                     }
 
@@ -457,7 +492,6 @@ namespace cDashboard
                         this_cWeather.Location = new Point(Convert.ToInt16(currentline[3]), Convert.ToInt16(currentline[4]));
                     }
 
-
                     if (currentline[2] == "WOEID")
                     {
                         this_cWeather.WOEID = currentline[3];
@@ -570,7 +604,6 @@ namespace cDashboard
         /// </summary>
         private void createStickiesFromFiles(List<List<string>> settings_list)
         {
-
             foreach (List<string> current_item in settings_list)
             {
                 if (current_item[0] == "cSticky")
@@ -623,7 +656,7 @@ namespace cDashboard
                     ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).Text = "File missing";
                 }
 
-                //display control           
+                //display control
                 cSticky_new.Show();
                 cSticky_new.BringToFront();
             }
@@ -639,7 +672,7 @@ namespace cDashboard
             KeyHook.HookedKeys.Add(Keys.LControlKey);
             //begin hook
             KeyHook.hook();
-            //Setup Key Event Handlers 
+            //Setup Key Event Handlers
             KeyHook.KeyDown += new KeyEventHandler(KeyHook_KeyDown);
             KeyHook.KeyUp += new KeyEventHandler(KeyHook_KeyUp);
         }
@@ -653,6 +686,7 @@ namespace cDashboard
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 #region Build Data
+
                 //check if build file exists
                 if (!System.IO.File.Exists(SETTINGS_LOCATION + "BuildData.cDash"))
                 {
@@ -681,7 +715,8 @@ namespace cDashboard
                     //display build number
                     label_build.Text = "cDashBoard Alpha Build " + buildnum;
                 }
-                #endregion
+
+                #endregion Build Data
             }
 
             //create the settings file
@@ -723,9 +758,9 @@ namespace cDashboard
 
                 notifyIcon1.ShowBalloonTip(8, "Welcome to cDashboard!", "To bring up (or bring down) the dash, either use the keyboard shortcut, Ctrl-~, or double-click this icon.", ToolTipIcon.Info);
             }
-
         }
-        #endregion
+
+        #endregion Form Loading, Initial Setup
 
         #region Monitor Settings
 
@@ -758,7 +793,7 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// This will be called to cycle through all cForms to ensure that all 
+        /// This will be called to cycle through all cForms to ensure that all
         /// cForms were viewable on screen
         /// </summary>
         private void makeSureCFormsAreOnScreen()
@@ -898,7 +933,7 @@ namespace cDashboard
         private void closeMultiMontiorOverlays()
         {
         //get all forms open forms and scan to make sure it is a monitor form
-        top: ;
+        top:;
             FormCollection fc = Application.OpenForms;
             foreach (Form form_tmp in fc)
             {
@@ -911,7 +946,7 @@ namespace cDashboard
             }
         }
 
-        #endregion
+        #endregion Monitor Settings
 
         #region Key Hooks and Fades
 
@@ -968,7 +1003,7 @@ namespace cDashboard
             }
 
             e.Handled = false;
-        done: ;
+        done:;
         }
 
         /// <summary>
@@ -998,7 +1033,7 @@ namespace cDashboard
         /// </summary>
         private void fade_in()
         {
-            moveToPrimaryMonitor(); //ensures proper form sizing 
+            moveToPrimaryMonitor(); //ensures proper form sizing
 
             updateTimeDate(); //updates time/date on form
 
@@ -1164,7 +1199,9 @@ namespace cDashboard
             updateTimeDate(); //update time/date on ui
 
             //fadeout related code
+
             #region Fade Out
+
             if (cD_tstate == timerstate.fadeout)
             {
                 //computes amount of change in opacity per clock tick then applies it
@@ -1182,10 +1219,13 @@ namespace cDashboard
                     rotateCPic();
                 }
             }
-            #endregion
+
+            #endregion Fade Out
 
             //fade in related code
+
             #region Fade In
+
             if (cD_tstate == timerstate.fadein)
             {
                 //computes amount of change in opacity per clock tick then applies it
@@ -1200,8 +1240,8 @@ namespace cDashboard
                     fadetimer.Stop();
                 }
             }
-            #endregion
 
+            #endregion Fade In
         }
 
         /// <summary>
@@ -1253,9 +1293,11 @@ namespace cDashboard
                 catch (Exception) { }
             }
         }
-        #endregion
+
+        #endregion Key Hooks and Fades
 
         #region Colored Sticky Creation
+
         /// <summary>
         /// add red sticky
         /// </summary>
@@ -1368,10 +1410,10 @@ namespace cDashboard
                 MessageBox.Show("System.IO.Exception: File does not exist");
             }
 
-
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(SETTINGS_LOCATION + long_unique_timestamp.ToString() + ".rtf");
         }
-        #endregion
+
+        #endregion Colored Sticky Creation
 
         #region Calls to fade_out()
 
@@ -1435,7 +1477,8 @@ namespace cDashboard
         {
             fade_out();
         }
-        #endregion
+
+        #endregion Calls to fade_out()
 
         #region Menustrip Items
 
@@ -1489,7 +1532,6 @@ namespace cDashboard
             }
 
             replaceSetting(new string[] { "cNotification", "DisplayTime" }, new string[] { "cNotification", "DisplayTime", new_display_time.ToString() });
-
         }
 
         /// <summary>
@@ -1506,7 +1548,6 @@ namespace cDashboard
             System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash", true);
             sw.WriteLine("cRViewer;" + long_unique_timestamp.ToString() + ";Location;10;25");
             sw.Close();
-
 
             cRViewer cRViewer_new = new cRViewer();
             cRViewer_new.Name = long_unique_timestamp.ToString();
@@ -1556,7 +1597,6 @@ namespace cDashboard
             sw.WriteLine("cMote;" + long_unique_timestamp.ToString() + ";Location;10;25");
             sw.WriteLine("cMote;" + long_unique_timestamp.ToString() + ";SpotifyIntegration;False");
             sw.Close();
-
 
             cMote cMote_new = new cMote();
             cMote_new.Name = long_unique_timestamp.ToString();
@@ -1896,7 +1936,6 @@ namespace cDashboard
             DialogResult dr = folderBrowserDialog1.ShowDialog();
             if (dr == DialogResult.OK)
             {
-
                 //basic check to see if folder has "cDash Settings.cDash"
                 bool bool_found_cdash_file = false;
                 foreach (string file in System.IO.Directory.GetFiles(folderBrowserDialog1.SelectedPath))
@@ -1967,7 +2006,6 @@ namespace cDashboard
             {
                 makeNewSticky(colorDialog1.Color);
             }
-
         }
 
         /// <summary>
@@ -2018,7 +2056,6 @@ namespace cDashboard
 
                     //remove wallpaper image
                     System.IO.File.Delete(getSpecificSetting(new string[] { "cDash", "WallpaperImage" })[0]);
-
 
                     //we are not using a wallpaper image
                     //set as such
@@ -2138,7 +2175,6 @@ namespace cDashboard
             {
                 makeNewSticky(FavoriteStickyColor);
             }
-
         }
 
         /// <summary>
@@ -2250,7 +2286,6 @@ namespace cDashboard
             replace.Add("FadeLengthInMilliseconds");
             replace.Add(int_fade_milliseconds.ToString());
             replaceSetting(find, replace);
-
         }
 
         /// <summary>
@@ -2354,7 +2389,6 @@ namespace cDashboard
             }
 
             replaceSetting(new[] { "cDash", "WallpaperImageLayout" }, new[] { "cDash", "WallpaperImageLayout", string_layout });
-
         }
 
         /// <summary>
@@ -2385,9 +2419,11 @@ namespace cDashboard
                 combobox_wallpaper.SelectedIndex = 4;
             }
         }
-        #endregion
+
+        #endregion Menustrip Items
 
         #region Extra Events
+
         /// <summary>
         /// called if a control is removed
         /// ex: if the x button is clicked on a child from, handle deleting the cForm
@@ -2407,7 +2443,6 @@ namespace cDashboard
 
                 foreach (string file in System.IO.Directory.GetFiles(SETTINGS_LOCATION))
                 {
-
                     //f is the name of the file with extension
                     string f = file.Substring(file.LastIndexOf("\\") + 1);
 
@@ -2457,7 +2492,6 @@ namespace cDashboard
             this_control.Dispose();
             //save fixed settings
             saveSettingsList(list_settings);
-
         }
 
         /// <summary>
@@ -2481,6 +2515,15 @@ namespace cDashboard
         {
             menuStrip1.Focus();
         }
-        #endregion
+
+        #endregion Extra Events
+
+        private void PluginSaveTimer_Tick(object sender, EventArgs e)
+        {
+            foreach(var i in pluginTypes.Values)
+            {
+                i.SavePlugin(SETTINGS_LOCATION);
+            }
+        }
     }
 }

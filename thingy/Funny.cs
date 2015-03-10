@@ -15,6 +15,7 @@ namespace CdashboardPluginTest
         public Funny()
         {
             InitializeComponent();
+
         }
     }
 }

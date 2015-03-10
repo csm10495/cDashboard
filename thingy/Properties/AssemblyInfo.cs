@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("thingy")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("cDashboardPluginTest")]
+[assembly: AssemblyDescription("Testing the new plugin system")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("thingy")]
+[assembly: AssemblyProduct("cDashboardPluginTest")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

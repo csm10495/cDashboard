@@ -31,6 +31,11 @@ namespace cDashboard
             {
                 _container.ComposeParts(this);
             }
+            catch (System.Reflection.ReflectionTypeLoadException v)
+            {
+                foreach (var c in v.LoaderExceptions)
+                    Console.WriteLine(c.ToString());
+            }
             catch (CompositionException e) {
                 Console.WriteLine(e.ToString());
             }
