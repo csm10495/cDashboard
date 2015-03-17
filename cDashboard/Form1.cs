@@ -793,7 +793,7 @@ namespace cDashboard
             //set Primary Monitor for the dash
             string[] tmp = { "cDash", "PrimaryMonitor" };
             List<string> list_primarymonitorline = getSpecificSetting(new List<string>(tmp));
-            if (list_primarymonitorline.Count == 1)
+            if (list_primarymonitorline.Count == 1 && list_primarymonitorline[0] != "Span")
             {
                 //go through monitors to find the one that is = to the setting
                 foreach (Screen s in Screen.AllScreens)
@@ -806,9 +806,27 @@ namespace cDashboard
                         this.Top = s.Bounds.Top;
                     }
                 }
+
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else if (list_primarymonitorline[0] == "Span")
+            {
+                int tmp_height = int.MaxValue;
+                int tmp_width = 0;
+                foreach (Screen s in Screen.AllScreens)
+                {
+                    //take smallest height
+                    if (s.Bounds.Height > tmp_height)
+                        tmp_height = s.Bounds.Height;
+
+                    tmp_width += s.Bounds.Width;
+
+                }
+
+                this.Size = new System.Drawing.Size(tmp_width, tmp_height);
+                this.Location = new Point(0, 0);
             }
 
-            this.WindowState = FormWindowState.Maximized;
         }
 
         /// <summary>
@@ -901,6 +919,16 @@ namespace cDashboard
                 label_monitor_name.Text = "Click the monitor you would like to use for cDashBoard\n" + s.ToString();
                 label_monitor_name.Location = new Point((form_tmp.Width / 2) - label_monitor_name.Width / 2, (form_tmp.Height / 2) - label_monitor_name.Height / 2);
 
+                //add span button
+                Button button_span = new Button();
+                form_tmp.Controls.Add(button_span);
+                button_span.Show();
+                button_span.AutoSize = true;
+                button_span.FlatStyle = FlatStyle.Flat;
+                button_span.Text = "Span All Monitors";
+                button_span.Location = new Point(5, 5);
+                button_span.Click += new EventHandler(Multi_Monitor_button_span_Click);
+
                 if (isFreshInstall == false)
                 {
                     //add a cancel button to each form
@@ -910,10 +938,26 @@ namespace cDashboard
                     button_cancel.AutoSize = true;
                     button_cancel.FlatStyle = FlatStyle.Flat;
                     button_cancel.Text = "Cancel";
-                    button_cancel.Location = new Point(0, 0);
+                    button_cancel.Location = new Point(button_span.Location.X + button_span.Size.Width + 5, 5);
                     button_cancel.Click += new EventHandler(Mult_Monitor_button_cancel_Click);
                 }
             }
+        }
+
+        /// <summary>
+        /// sets the monitor to span in settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Multi_Monitor_button_span_Click(object sender, EventArgs e)
+        {
+            replaceSetting(new string[] { "cDash", "PrimaryMonitor" }, new string[] { "cDash", "PrimaryMonitor", "Span" });
+
+            //close overlays
+            closeMultiMontiorOverlays();
+
+            //move the Dash to the new monitor
+            moveToPrimaryMonitor();
         }
 
         /// <summary>
@@ -923,14 +967,11 @@ namespace cDashboard
         /// <param name="e"></param>
         private void Monitor_Overlay_Click(object sender, EventArgs e)
         {
-            List<string> list_find = new List<string>(new string[] { "cDash", "PrimaryMonitor" });
-            List<string> list_replace = new List<string>(new string[] { "cDash", "PrimaryMonitor", Screen.FromControl(((Form)sender)).ToString() });
+            //replace setting
+            replaceSetting(new string[] { "cDash", "PrimaryMonitor" }, new string[] { "cDash", "PrimaryMonitor", Screen.FromControl(((Form)sender)).ToString() });
 
             //close overlays
             closeMultiMontiorOverlays();
-
-            //replace setting
-            replaceSetting(list_find, list_replace);
 
             //move the Dash to the new monitor
             moveToPrimaryMonitor();
