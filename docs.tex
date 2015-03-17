@@ -119,6 +119,9 @@ namespace CalcProject{
     	//This tells the Composition framework about some useful metadata, as defined in IPluginData.
     	[ExportMetadata("name", "Calculator")]
 	class Calculator:IPlugin{
+		public bool NeedsSaving{
+			set; get;
+		}
 		public Calculator(){
 			//do things
 		}
@@ -137,8 +140,9 @@ namespace CalcProject{
  
  Hmm... It doesn't do anything still. You should also, if you have not already, add a reference to the System.Windows.Forms assembly in the project manager. Now let's look at what we have here.
  \begin{enumerate}
+ \item \textbf{NeedsSaving} Returns whether or not the Plugin needs to be saved\footnote{and then called a second later.}, and then wiped after each time it is saved(This needs to be made accessible from the form)\footnote{This should be accomlished without issue by having a static bool value that is written to by the plugin's form and then returned as NeedsSaving when necessary}.
  \item \textbf{GetForm() } Retrieves an instance of the form that the plugin provides.
- \item \textbf{SavePlugin(string)} Saves information\footnote{ This needs to include things like window positions.} about the plugin so that it remains persistent across sections, this is called regularly by the main process, saving it about once a second, so it is important to take care that it is performant.
+ \item \textbf{SavePlugin(string)} Saves information\footnote{ This needs to include things like window positions.} about the plugin so that it remains persistent across sessions, this is called regularly by the main process, saving it about once a second, so it is important to not save too much inefficiently.
  \item \textbf{LoadPlugin(string,cDashboard)} Called when cDashboard is loaded, loads the forms' settings from the configuration file, there is a method callable on the dash object called AddForm which adds forms, it is also important to remember that should you have a more intensive plugin, you might want to save this to an instance variable so you can manipulate the overall gui.
  \item \textbf{DisposeOnClose} informs cDashboard that the form should be removed after it has been closed. 
  \item \textbf{getFormType()} returns the type of the form that the plugin provides.
@@ -168,6 +172,9 @@ namespace CalcProject{
 	}
 	System.IO.File.WriteAllLines(settingslocation+"calculator.cDash",lines.ToArray());
 	//Write it all to a file(all at once).
+	
+	NeedsSaving=false;
+	//Mark that the program no longer needs to save this.
 }
 
 public void LoadPlugin(string settingslocation,cDashboard dash){

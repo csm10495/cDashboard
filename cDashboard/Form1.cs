@@ -6,23 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using Utilities;
 using System.Net;
 using System.Net.Sockets;
-using System.Net.NetworkInformation;
 using System.Web.Script.Serialization;
-using System.IO;
-
-
-
+using System.Windows.Forms;
+using Utilities;
 
 namespace cDashboard
 {
     public partial class cDashboard : cForm
     {
-
         #region Global Variables
 
         /// <summary>
@@ -120,28 +115,30 @@ namespace cDashboard
         private Dictionary<ToolStripItem, IPlugin> pluginsAssoc;
 
         /// <summary>
-        ///This is used to identify for persistance what sorts of things should be loaded by name. 
+        ///This is used to identify for persistance what sorts of things should be loaded by name.
         /// </summary>
         private Dictionary<string, IPlugin> pluginNames;
+
         /// <summary>
         /// Stores the information in a format meant to associate with the bindings of types provided to plugin.
         /// </summary>
         private Dictionary<Type, IPlugin> pluginTypes;
+
         /// <summary>
         /// Populate the Plugin list and bind the menu items to the correct output and restoring plugin settings.
         /// </summary>
         private void SetupPlugins()
         {
-            if(PluginContainer.plugins!=null)
-            foreach (var i in PluginContainer.plugins)
-            {
-                var new_toolstrip = pluginsToolStripMenuItem.DropDownItems.Add(i.Metadata.name);
-                pluginsAssoc[new_toolstrip] = i.Value;
-                new_toolstrip.Click += PluginToolStripHandler;
-                pluginNames[i.Metadata.name] = i.Value;
-                pluginNames[i.Metadata.name].LoadPlugin(SETTINGS_LOCATION, this);
-                pluginTypes[i.Value.getFormType()] = i.Value;
-            }
+            if (PluginContainer.plugins != null)
+                foreach (var i in PluginContainer.plugins)
+                {
+                    var new_toolstrip = pluginsToolStripMenuItem.DropDownItems.Add(i.Metadata.name);
+                    pluginsAssoc[new_toolstrip] = i.Value;
+                    new_toolstrip.Click += PluginToolStripHandler;
+                    pluginNames[i.Metadata.name] = i.Value;
+                    pluginNames[i.Metadata.name].LoadPlugin(SETTINGS_LOCATION, this);
+                    pluginTypes[i.Value.getFormType()] = i.Value;
+                }
         }
 
         /// <summary>
@@ -160,9 +157,10 @@ namespace cDashboard
             //this is apparently essential for adding it as a parent.
             AddForm(nf);
             //Write configuration to the file.
-            
+
             Console.WriteLine("Created plugin window");
         }
+
         /// <summary>
         /// Disposes of a plugin's form if it is closed.
         /// </summary>
@@ -170,9 +168,12 @@ namespace cDashboard
         /// <param name="e">The event arguments.</param>
         private void PluginFormClosedDispose(object sender, FormClosedEventArgs e)
         {
+            //Remove the control from the list.
             Controls.Remove((Control)sender);
+            //Call dispose on it.
             ((Form)sender).Dispose();
         }
+
         /// <summary>
         /// Add a form to this window correctly.
         /// </summary>
@@ -251,7 +252,6 @@ namespace cDashboard
 
                 exitApplication();
             }
-
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace cDashboard
 
                 byte[] data = new byte[100];
                 int size = s.Receive(data);
-                
+
                 if (System.Text.Encoding.ASCII.GetString(data, 0, data.Length).Contains("cdash-toggle"))
                 {
                     fade_toggle();
@@ -856,8 +856,7 @@ namespace cDashboard
             }
         }
 
-        #endregion
-
+        #endregion Form Loading, Initial Setup
 
         #region Monitor Settings
 
@@ -1029,7 +1028,6 @@ namespace cDashboard
         /// </summary>
         private void closeMultiMontiorOverlays()
         {
-
             //get all forms open forms and scan to make sure it is a monitor form
 
             FormCollection fc = Application.OpenForms;
@@ -1320,7 +1318,7 @@ namespace cDashboard
         }
 
         /// <summary>
-        /// timer tick specifically for fades, 
+        /// timer tick specifically for fades,
         /// when running, attempts to go 1/ms = 1000/s
         /// </summary>
         /// <param name="sender"></param>
@@ -1429,8 +1427,7 @@ namespace cDashboard
             }
         }
 
-        #endregion
-
+        #endregion Key Hooks and Fades
 
         #region Colored Sticky Creation
 
@@ -1549,8 +1546,7 @@ namespace cDashboard
             ((RichTextBox)cSticky_new.Controls.Find("rtb", false)[0]).SaveFile(SETTINGS_LOCATION + long_unique_timestamp.ToString() + ".rtf");
         }
 
-        #endregion
-
+        #endregion Colored Sticky Creation
 
         #region Calls to fade_out()
 
@@ -1614,8 +1610,8 @@ namespace cDashboard
         {
             fade_out();
         }
-        #endregion
 
+        #endregion Calls to fade_out()
 
         #region Menustrip Items
 
@@ -2741,8 +2737,7 @@ namespace cDashboard
             }
         }
 
-        #endregion
-
+        #endregion Menustrip Items
 
         #region Extra Events
 
@@ -2842,12 +2837,11 @@ namespace cDashboard
 
         private void PluginSaveTimer_Tick(object sender, EventArgs e)
         {
-            foreach(var i in pluginTypes.Values)
+            foreach (var i in pluginTypes.Values)
             {
-                if(i.NeedsSaving)
+                if (i.NeedsSaving)
                     i.SavePlugin(SETTINGS_LOCATION);
             }
         }
-
     }
 }
