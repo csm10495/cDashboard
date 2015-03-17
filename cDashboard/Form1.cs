@@ -1599,7 +1599,7 @@ namespace cDashboard
         /// </summary>
         /// <param name="release_version"></param>
         /// <returns></returns>
-        private string formatReleaseString(ref string release_version)
+        private string formatReleaseString(string release_version)
         {
             //add extra .0 onto the end of the version number to lengthen
             while (release_version.Count(f => f == '.') < 3)
@@ -1641,7 +1641,7 @@ namespace cDashboard
                 string release_version = ((string)dict[0]["tag_name"]).Substring(1);
 
                 //add extra .0 onto the end of the version number to lengthen
-                release_version = formatReleaseString(ref release_version);
+                release_version = formatReleaseString(release_version);
 
                 if (release_version != ProductVersion)
                 {
