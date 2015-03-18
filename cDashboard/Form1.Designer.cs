@@ -69,7 +69,9 @@
             this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new cDashboard.cToolStripMenuItem();
+
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +101,8 @@
             this.displayTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
+            this.PluginSaveTimer = new System.Windows.Forms.Timer(this.components);
+            this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -223,7 +227,8 @@
             this.newCRViewerToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.hideToolStripMenuItem,
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.pluginsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -394,6 +399,12 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.exitToolStripMenuItem.Text = "Exit cDashboard";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // pluginsToolStripMenuItem
+            // 
+            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
+            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.pluginsToolStripMenuItem.Text = "Plugins";
             // 
             // editToolStripMenuItem
             // 
@@ -639,6 +650,18 @@
             this.fadetimer.Interval = 1;
             this.fadetimer.Tick += new System.EventHandler(this.fadetimer_Tick);
             // 
+            // PluginSaveTimer
+            // 
+            this.PluginSaveTimer.Enabled = true;
+            this.PluginSaveTimer.Interval = 1000;
+            this.PluginSaveTimer.Tick += new System.EventHandler(this.PluginSaveTimer_Tick);
+           // automaticallyCheckForUpdatesToolStripMenuItem
+            // 
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Name = "automaticallyCheckForUpdatesToolStripMenuItem";
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Text = "Automatically Check for Updates ";
+            this.automaticallyCheckForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.automaticallyCheckForUpdatesToolStripMenuItem_Click);
+            // 
             // cDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -736,6 +759,9 @@
         private System.Windows.Forms.ToolStripMenuItem cNotificationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem displayTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolstrip_displaytime;
+
+        private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
+        private System.Windows.Forms.Timer PluginSaveTimer;
         private cDashboard.cToolStripMenuItem fileToolStripMenuItem;
         private cDashboard.cToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
