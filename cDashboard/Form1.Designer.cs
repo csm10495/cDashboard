@@ -71,7 +71,6 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new cDashboard.cToolStripMenuItem();
-
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cDashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,7 +101,6 @@
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.PluginSaveTimer = new System.Windows.Forms.Timer(this.components);
-            this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyicon_menustrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -655,12 +653,6 @@
             this.PluginSaveTimer.Enabled = true;
             this.PluginSaveTimer.Interval = 1000;
             this.PluginSaveTimer.Tick += new System.EventHandler(this.PluginSaveTimer_Tick);
-           // automaticallyCheckForUpdatesToolStripMenuItem
-            // 
-            this.automaticallyCheckForUpdatesToolStripMenuItem.Name = "automaticallyCheckForUpdatesToolStripMenuItem";
-            this.automaticallyCheckForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
-            this.automaticallyCheckForUpdatesToolStripMenuItem.Text = "Automatically Check for Updates ";
-            this.automaticallyCheckForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.automaticallyCheckForUpdatesToolStripMenuItem_Click);
             // 
             // cDashboard
             // 
