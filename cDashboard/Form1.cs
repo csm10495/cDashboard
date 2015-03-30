@@ -54,19 +54,31 @@ namespace cDashboard
         private globalKeyboardHook KeyHook = new globalKeyboardHook(); //KeyHook is the global key hook
 
         /// <summary>
-        /// Signifies if the LCtrl key is down
+        /// Signifies if key1 (for fading) is down
         /// </summary>
-        private bool LCtrlIsDown = false;
+        private bool Key1IsDown = false;
+
+        /// <summary>
+        /// Signifies if key2 (for fading) is down
+        /// </summary>
+        private bool Key2IsDown = false;
+
+        /// <summary>
+        /// represents the first key of the fade shortcut
+        /// defaults to LCtrl
+        /// </summary>
+        private Keys Key1 = Keys.LControlKey;
+
+        /// <summary>
+        /// represents the second key of the fade shortcut
+        /// defaults to Oemtilde
+        /// </summary>
+        private Keys Key2 = Keys.Oemtilde;
 
         /// <summary>
         /// signifies if a wallpaper image is being used
         /// </summary>
         private bool UseWallpaperImage = false;
-
-        /// <summary>
-        /// Signifies if the tilde key is down
-        /// </summary>
-        private bool TildeIsDown = false;
 
         /// <summary>
         /// opacity level of the dashboard
@@ -267,9 +279,6 @@ namespace cDashboard
 
             this.notifyIcon1.Visible = true;
 
-            variable_setup(); //setup variables1
-            // this.Focus(); //This makes it so the text is not edited by pressing keys after startup (while invisible)
-
             //create appdata directory
             if (!System.IO.Directory.Exists(SETTINGS_LOCATION))
                 System.IO.Directory.CreateDirectory((SETTINGS_LOCATION));
@@ -286,6 +295,8 @@ namespace cDashboard
 
             //Read settings not pertaining to stickies
             otherSettings(ref settings_list);
+
+            variable_setup(); //setup variables1
 
             //start listening server
             new System.Threading.Thread(runServer).Start();
@@ -760,9 +771,9 @@ namespace cDashboard
         /// </summary>
         private void variable_setup()
         {
-            //add tilde and LeftCtrl to the list of hooked keys
-            KeyHook.HookedKeys.Add(Keys.Oemtilde);
-            KeyHook.HookedKeys.Add(Keys.LControlKey);
+            //add Key1 and Key2 to the list of hooked keys
+            KeyHook.HookedKeys.Add(Key2);
+            KeyHook.HookedKeys.Add(Key1);
             //begin hook
             KeyHook.hook();
             //Setup Key Event Handlers
@@ -1093,22 +1104,22 @@ namespace cDashboard
         /// <param name="e">Arguements for the event</param>
         private void KeyHook_KeyDown(object sender, KeyEventArgs e)
         {
-            //Check if the hooked key is the LCtrl
-            if (e.KeyCode == Keys.LControlKey)
+            //Check if the hooked key is Key1
+            if (e.KeyCode == Key1)
             {
                 //Set the bool properly
-                LCtrlIsDown = true;
+                Key1IsDown = true;
             }
 
-            //Check if the hooked key is the tilde key
-            if (e.KeyCode == Keys.Oemtilde)
+            //Check if the hooked key is Key2
+            if (e.KeyCode == Key2)
             {
                 //Set the bool properly
-                TildeIsDown = true;
+                Key2IsDown = true;
             }
 
             //if both hooked keys are down, and we are ready to fadein, fade in the dash
-            if (TildeIsDown && LCtrlIsDown && cD_tstate == timerstate.fadein && CompletedForm_Load == true)
+            if (Key2IsDown && Key1IsDown && cD_tstate == timerstate.fadein && CompletedForm_Load == true)
             {
                 //kill attempts to call a fade_in during a fade_in
                 if (this.Opacity != 0)
@@ -1118,19 +1129,19 @@ namespace cDashboard
 
                 //reset which keys are down
                 //don't reset LCtrl (for convinence)
-                TildeIsDown = false;
+                Key2IsDown = false;
                 e.Handled = true;
                 return;
             }
 
             //if both hooked keys are down, and we are ready to fadeout, fadeout in the dash
-            if (TildeIsDown && LCtrlIsDown && cD_tstate == timerstate.indash)
+            if (Key2IsDown && Key1IsDown && cD_tstate == timerstate.indash)
             {
                 fade_out();
 
                 //reset which keys are down
                 //don't reset LCtrl (for convinence)
-                TildeIsDown = false;
+                Key2IsDown = false;
                 e.Handled = true;
                 return;
             }
@@ -1145,18 +1156,18 @@ namespace cDashboard
         /// <param name="e">Arguements for the event</param>
         private void KeyHook_KeyUp(object sender, KeyEventArgs e)
         {
-            //Check if the hooked key is the LCtrl
-            if (e.KeyCode == Keys.LControlKey)
+            //Check if the hooked key is Key1
+            if (e.KeyCode == Key1)
             {
                 //Set the bool properly
-                LCtrlIsDown = false;
+                Key1IsDown = false;
             }
 
-            //Check if the hooked key is the tilde key
-            if (e.KeyCode == Keys.Oemtilde)
+            //Check if the hooked key is Key2
+            if (e.KeyCode == Key2)
             {
                 //Set the bool properly
-                TildeIsDown = false;
+                Key2IsDown = false;
             }
         }
 
