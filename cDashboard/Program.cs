@@ -26,7 +26,7 @@ namespace cDashboard
         /// The Plugins loaded by MEF.
         /// </summary>
         [ImportMany]
-        IEnumerable<Lazy<IPlugin,IPluginData>> plugins;
+        IEnumerable<Lazy<IPlugin,IPluginData>> plugins = null;
         private Program()
         {
             var catalog = new AggregateCatalog();
