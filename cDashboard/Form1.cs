@@ -909,7 +909,7 @@ namespace cDashboard
 
                 this.WindowState = FormWindowState.Maximized;
             }
-            else if (list_primarymonitorline[0] == "Span")
+            else if (list_primarymonitorline.Count > 0 && list_primarymonitorline[0] == "Span")
             {
                 int tmp_height = int.MaxValue;
                 int tmp_width = 0;
@@ -925,6 +925,10 @@ namespace cDashboard
 
                 this.Size = new System.Drawing.Size(tmp_width, tmp_height);
                 this.Location = new Point(0, 0);
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Maximized;
             }
 
         }
