@@ -376,6 +376,18 @@ namespace cDashboard
                 //set backcolor of the Dash from settings
                 if (currentline[0] == "cDash")
                 {
+                    //set Key1
+                    if (currentline[1] == "Key1")
+                    {
+                        Key1 = (Keys)Convert.ToInt16(currentline[2]);
+                    }
+
+                    //set Key2
+                    if (currentline[1] == "Key2")
+                    {
+                        Key2 = (Keys)Convert.ToInt16(currentline[2]);
+                    }
+
                     //updates ui to signify auto checking
                     if (currentline[1] == "AutoUpdateCheck")
                     {
@@ -1480,7 +1492,7 @@ namespace cDashboard
         }
 
         #endregion Key Hooks and Fades
-
+                         
         #region Colored Sticky Creation
 
         /// <summary>
