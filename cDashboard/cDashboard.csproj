@@ -99,6 +99,12 @@
     <Compile Include="cForm.Designer.cs">
       <DependentUpon>cForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="cKBSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cKBSetup.Designer.cs">
+      <DependentUpon>cKBSetup.cs</DependentUpon>
+    </Compile>
     <Compile Include="cMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="cForm.resx">
       <DependentUpon>cForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cKBSetup.resx">
+      <DependentUpon>cKBSetup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="cMessageBox.resx">
       <DependentUpon>cMessageBox.cs</DependentUpon>

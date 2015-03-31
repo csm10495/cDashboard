@@ -67,13 +67,13 @@ namespace cDashboard
         /// represents the first key of the fade shortcut
         /// defaults to LCtrl
         /// </summary>
-        private Keys Key1 = Keys.LControlKey;
+        public Keys Key1 = Keys.LControlKey;
 
         /// <summary>
         /// represents the second key of the fade shortcut
         /// defaults to Oemtilde
         /// </summary>
-        private Keys Key2 = Keys.Oemtilde;
+        public Keys Key2 = Keys.Oemtilde;
 
         /// <summary>
         /// signifies if a wallpaper image is being used
@@ -2810,6 +2810,18 @@ namespace cDashboard
         #region Extra Events
 
         /// <summary>
+        /// opens setup for fade keyboard shortcut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void fadeShortcutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cKBSetup cKBS = new cKBSetup(Key1, Key2);
+            cKBS.Show();
+            fade_out();
+        }
+
+        /// <summary>
         /// called if a control is removed
         /// ex: if the x button is clicked on a child from, handle deleting the cForm
         /// </summary>
@@ -2911,5 +2923,6 @@ namespace cDashboard
                     i.SavePlugin(SETTINGS_LOCATION);
             }
         }
+
     }
 }
