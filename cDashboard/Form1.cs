@@ -67,13 +67,13 @@ namespace cDashboard
         /// represents the first key of the fade shortcut
         /// defaults to LCtrl
         /// </summary>
-        public Keys Key1 = Keys.LControlKey;
+        private Keys Key1 = Keys.LControlKey;
 
         /// <summary>
         /// represents the second key of the fade shortcut
         /// defaults to Oemtilde
         /// </summary>
-        public Keys Key2 = Keys.Oemtilde;
+        private Keys Key2 = Keys.Oemtilde;
 
         /// <summary>
         /// signifies if a wallpaper image is being used
