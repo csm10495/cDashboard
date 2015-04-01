@@ -296,7 +296,9 @@ namespace cDashboard
             //Read settings not pertaining to stickies
             otherSettings(ref settings_list);
 
-            variable_setup(); //setup variables1
+            //sets up the hooking for fades
+            //pass false to say don't unhook anything first
+            keyHookSetup(false);
 
             //start listening server
             new System.Threading.Thread(runServer).Start();
@@ -781,8 +783,17 @@ namespace cDashboard
         /// <summary>
         /// Sets variables for proper key hooking and begins the hook
         /// </summary>
-        private void variable_setup()
+        /// <param name="unhook_first">should we unhook previous before hooking</param>
+        private void keyHookSetup(bool unhook_first)
         {
+            if (unhook_first)
+            {
+                KeyHook.HookedKeys.Clear();
+                KeyHook.unhook();
+                Key1 = (Keys)Convert.ToInt16(getSpecificSetting(new string[] { "cDash", "Key1" })[0]);
+                Key2 = (Keys)Convert.ToInt16(getSpecificSetting(new string[] { "cDash", "Key2" })[0]);
+            }
+
             //add Key1 and Key2 to the list of hooked keys
             KeyHook.HookedKeys.Add(Key2);
             KeyHook.HookedKeys.Add(Key1);
@@ -888,8 +899,6 @@ namespace cDashboard
         /// </summary>
         private void moveToPrimaryMonitor()
         {
-            this.WindowState = FormWindowState.Normal;
-
             //set Primary Monitor for the dash
             string[] tmp = { "cDash", "PrimaryMonitor" };
             List<string> list_primarymonitorline = getSpecificSetting(new List<string>(tmp));
@@ -911,6 +920,7 @@ namespace cDashboard
             }
             else if (list_primarymonitorline.Count > 0 && list_primarymonitorline[0] == "Span")
             {
+                this.WindowState = FormWindowState.Normal;
                 int tmp_height = int.MaxValue;
                 int tmp_width = 0;
                 foreach (Screen s in Screen.AllScreens)
@@ -925,12 +935,15 @@ namespace cDashboard
 
                 this.Size = new System.Drawing.Size(tmp_width, tmp_height);
                 this.Location = new Point(0, 0);
+                
+                //call this manually because within the size change event it is ignored if FormWindowState is normal
+                //this was done to prevent it from resizing while calculating the span size
+                makeSureCFormsAreOnScreen();
             }
             else
             {
                 this.WindowState = FormWindowState.Maximized;
             }
-
         }
 
         /// <summary>
@@ -974,7 +987,11 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cDashboard_SizeChanged(object sender, EventArgs e)
         {
-            makeSureCFormsAreOnScreen();
+            //don't do this if in normal state
+            if (this.WindowState != FormWindowState.Normal)
+            {
+                makeSureCFormsAreOnScreen();
+            }
         }
 
         /// <summary>
@@ -1078,6 +1095,7 @@ namespace cDashboard
             closeMultiMontiorOverlays();
 
             //move the Dash to the new monitor
+            this.WindowState = FormWindowState.Normal;
             moveToPrimaryMonitor();
         }
 
@@ -1496,7 +1514,7 @@ namespace cDashboard
         }
 
         #endregion Key Hooks and Fades
-                         
+
         #region Colored Sticky Creation
 
         /// <summary>
@@ -2817,7 +2835,15 @@ namespace cDashboard
         private void fadeShortcutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             cKBSetup cKBS = new cKBSetup(Key1, Key2);
-            cKBS.Show();
+
+            //automatically rehook after this dialog closes
+            new System.Threading.Thread(() =>
+            {
+                cKBS.ShowDialog();
+                keyHookSetup(true);
+            }
+                ).Start();
+
             fade_out();
         }
 

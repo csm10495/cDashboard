@@ -138,7 +138,6 @@ namespace cDashboard
                 replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", ((int)Key1).ToString() });
                 replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", ((int)Key2).ToString() });
 
-                MessageBox.Show("Setting will be applied after restarting the application");
             }
             this.Close();
         }
@@ -155,7 +154,6 @@ namespace cDashboard
                 replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", "162" });
                 replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", "192" });
 
-                MessageBox.Show("Setting will be applied after restarting the application");
             }
             this.Close();
         }
