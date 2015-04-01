@@ -67,22 +67,47 @@ namespace cDashboard
         /// <param name="e"></param>
         private void cKBSetup_KeyDown(object sender, KeyEventArgs e)
         {
-            // Console.WriteLine("Ctrl:{0}, LCtrl:{1}, RCtrl:{2}", GetAsyncKeyState(Keys.ControlKey), GetAsyncKeyState(Keys.LControlKey), GetAsyncKeyState(Keys.RControlKey));
-
             int checked_keyvalue = e.KeyValue;
 
             //special checking for modifiers (ctrl, shift, alt)
             if (e.KeyCode == Keys.ControlKey)
             {
-                MessageBox.Show("");
+                //Left
+                if (GetAsyncKeyState(Keys.LControlKey) < 0)
+                {
+                    checked_keyvalue = (int)Keys.LControlKey;
+                }
+                //Right
+                else if (GetAsyncKeyState(Keys.RControlKey) < 0)
+                {
+                    checked_keyvalue = (int)Keys.RControlKey;
+                }
             }
             else if (e.KeyCode == Keys.Menu) //alt
             {
-                MessageBox.Show("");
+                //Left
+                if (GetAsyncKeyState(Keys.LMenu) < 0)
+                {
+                    checked_keyvalue = (int)Keys.LMenu;
+                }
+                //Right
+                else if (GetAsyncKeyState(Keys.RMenu) < 0)
+                {
+                    checked_keyvalue = (int)Keys.RMenu;
+                }
             }
             else if (e.KeyCode == Keys.ShiftKey)
             {
-                MessageBox.Show("");
+                //Left
+                if (GetAsyncKeyState(Keys.LShiftKey) < 0)
+                {
+                    checked_keyvalue = (int)Keys.LShiftKey;
+                }
+                //Right
+                else if (GetAsyncKeyState(Keys.RShiftKey) < 0)
+                {
+                    checked_keyvalue = (int)Keys.RShiftKey;
+                }
             }
 
             //replace in settings
@@ -108,11 +133,13 @@ namespace cDashboard
         /// <param name="e"></param>
         private void saveShortcutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", ((int)Key1).ToString() });
-            replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", ((int)Key2).ToString() });
+            if (MessageBox.Show("Are you sure you want to save the fade shortcut: " + Key1.ToString() + " + " + Key2.ToString(), "Save Fade Shortcut?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", ((int)Key1).ToString() });
+                replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", ((int)Key2).ToString() });
 
-            MessageBox.Show("Setting will be applied after restarting the application");
-
+                MessageBox.Show("Setting will be applied after restarting the application");
+            }
             this.Close();
         }
 
@@ -123,11 +150,13 @@ namespace cDashboard
         /// <param name="e"></param>
         private void goBackToDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", "162" });
-            replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", "192" });
+            if (MessageBox.Show("Are you sure you want to save the fade shortcut: LControlKey + Oemtilde", "Go Back To Default Fade Shortcut?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", "162" });
+                replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", "192" });
 
-            MessageBox.Show("Setting will be applied after restarting the application");
-
+                MessageBox.Show("Setting will be applied after restarting the application");
+            }
             this.Close();
         }
 
