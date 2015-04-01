@@ -119,7 +119,7 @@ namespace cDashboard
 
         #endregion Constructor
 
-        #region plugins
+        #region Plugins
 
         /// <summary>
         /// This is used to identify which plugin should be called when a menu button is pressed.
@@ -198,7 +198,7 @@ namespace cDashboard
             Controls.Add(nf);
         }
 
-        #endregion plugins
+        #endregion Plugins
 
         #region Form Loading, Initial Setup
 
@@ -2939,8 +2939,11 @@ namespace cDashboard
             menuStrip1.Focus();
         }
 
-        #endregion Extra Events
-
+        /// <summary>
+        /// timer for saving plugin data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PluginSaveTimer_Tick(object sender, EventArgs e)
         {
             foreach (var i in pluginTypes.Values)
@@ -2950,5 +2953,6 @@ namespace cDashboard
             }
         }
 
+        #endregion Extra Events
     }
 }

@@ -5,7 +5,6 @@
 using System;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Linq;
 
 namespace cDashboard
 {
@@ -31,6 +30,9 @@ namespace cDashboard
         /// </summary>
         private Keys Key2;
 
+        /// <summary>
+        /// Normal constructor
+        /// </summary>
         public cKBSetup()
         {
             InitializeComponent();
@@ -39,8 +41,8 @@ namespace cDashboard
         /// <summary>
         /// special constructor to get keys from cDashboard
         /// </summary>
-        /// <param name="k1"></param>
-        /// <param name="K2"></param>
+        /// <param name="k1">key 1</param>
+        /// <param name="K2">key 2</param>
         public cKBSetup(Keys k1, Keys K2)
         {
             InitializeComponent();
@@ -137,7 +139,6 @@ namespace cDashboard
             {
                 replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", ((int)Key1).ToString() });
                 replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", ((int)Key2).ToString() });
-
             }
             this.Close();
         }
@@ -153,7 +154,6 @@ namespace cDashboard
             {
                 replaceSetting(new string[] { "cDash", "Key1" }, new string[] { "cDash", "Key1", "162" });
                 replaceSetting(new string[] { "cDash", "Key2" }, new string[] { "cDash", "Key2", "192" });
-
             }
             this.Close();
         }
