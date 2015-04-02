@@ -1912,13 +1912,13 @@ namespace cDashboard
             }
             catch
             {
-                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 11");
+                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 121");
                 return;
             }
 
-            if (!(new_display_time >= 2 && new_display_time <= 10))
+            if (!(new_display_time >= 2 && new_display_time <= 120))
             {
-                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 11");
+                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 121");
                 return;
             }
 
