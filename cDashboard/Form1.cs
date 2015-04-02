@@ -1395,10 +1395,10 @@ namespace cDashboard
         private void uitimer_Tick(object sender, EventArgs e)
         {
             updateCWeather();
+            checkForCReminders();
 
             if (cD_tstate == timerstate.indash)
             {
-                checkForCReminders();
                 updateTimeDate();
             }
         }
