@@ -23,6 +23,7 @@ namespace cDashboard
         }
 
         #region Global Variables
+
         /// <summary>
         /// location for settings related files
         /// </summary>
@@ -32,6 +33,11 @@ namespace cDashboard
         /// represents if Form_Load Completion
         /// </summary>
         protected bool CompletedForm_Load = false;
+
+        /// <summary>
+        /// used for makinmg io locks files
+        /// </summary>
+        private Object lock_object = new Object();
 
         #endregion
 
@@ -65,40 +71,43 @@ namespace cDashboard
         /// <returns></returns>
         protected List<List<string>> getSettingsList()
         {
-            //StreamReader to read settings
-            System.IO.StreamReader sr = new System.IO.StreamReader(SETTINGS_LOCATION + "cDash Settings.cDash");
-
             //this will be the list of lines from the settings file 
             //THE settings_list WILL NOT INCLUDE BLANK LINES OR LINES STARTING WITH #
             List<List<string>> settings_list = new List<List<string>>();
 
-            //each line
-            string tmp_line = sr.ReadLine();
-
-            //add proper lines to settings_list
-            while (tmp_line != null)
+            lock (lock_object)
             {
-                //check for blank lines or ones that start with #
-                if (tmp_line != "") //&& tmp_line.Substring(0, 1) != "#") 
-                //changed line to maintain comment structure of settings file
+                //StreamReader to read settings
+                System.IO.StreamReader sr = new System.IO.StreamReader(SETTINGS_LOCATION + "cDash Settings.cDash");
+
+                //each line
+                string tmp_line = sr.ReadLine();
+
+                //add proper lines to settings_list
+                while (tmp_line != null)
                 {
-                    //this will be the list that will be added to settings_list
-                    List<string> tmp_list = new List<string>();
-
-                    //delimit tmp_string
-                    foreach (string s in tmp_line.Split(';'))
+                    //check for blank lines or ones that start with #
+                    if (tmp_line != "") //&& tmp_line.Substring(0, 1) != "#") 
+                    //changed line to maintain comment structure of settings file
                     {
-                        tmp_list.Add(s);
-                    }
-                    //final add
-                    settings_list.Add(tmp_list);
-                }
+                        //this will be the list that will be added to settings_list
+                        List<string> tmp_list = new List<string>();
 
-                //increment line
-                tmp_line = sr.ReadLine();
+                        //delimit tmp_string
+                        foreach (string s in tmp_line.Split(';'))
+                        {
+                            tmp_list.Add(s);
+                        }
+                        //final add
+                        settings_list.Add(tmp_list);
+                    }
+
+                    //increment line
+                    tmp_line = sr.ReadLine();
+                }
+                //close file
+                sr.Close();
             }
-            //close file
-            sr.Close();
             return settings_list;
         }
 
@@ -135,7 +144,6 @@ namespace cDashboard
 
             notcorrectline: ;
                 x++;
-
             }
 
             //in case the setting wasn't found, add it uniquely 
@@ -152,17 +160,19 @@ namespace cDashboard
         /// <param name="list_settings">a list of lists of parts of settings lines</param>
         protected void saveSettingsList(List<List<string>> list_settings)
         {
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash");
-            // sw.WriteLine("# cDashBoard Settings File");
-            // sw.WriteLine("# A # tells the program to ignore this line");
-            // sw.WriteLine("# Don't edit this file unless you know what you are doing");
-            // removed so that this isn't printed over and over...
-            foreach (List<string> currentline in list_settings)
+            lock (lock_object)
             {
-                sw.WriteLine(string.Join(";", currentline));
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(SETTINGS_LOCATION + "cDash Settings.cDash");
+                // sw.WriteLine("# cDashBoard Settings File");
+                // sw.WriteLine("# A # tells the program to ignore this line");
+                // sw.WriteLine("# Don't edit this file unless you know what you are doing");
+                // removed so that this isn't printed over and over...
+                foreach (List<string> currentline in list_settings)
+                {
+                    sw.WriteLine(string.Join(";", currentline));
+                }
+                sw.Close();
             }
-            sw.Close();
-
         }
 
         /// <summary>
