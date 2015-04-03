@@ -37,7 +37,7 @@ namespace cDashboard
         /// <summary>
         /// used for makinmg io locks files
         /// </summary>
-        private Object lock_object = new Object();
+        private static readonly Object lock_object = new Object();
 
         #endregion
 
