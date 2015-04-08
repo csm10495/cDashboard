@@ -142,7 +142,11 @@ namespace cDashboard
                     int_fade_timertime = 0;
                     timer_fade.Stop();
                     loadedin = true;
-                    timer_show.Start();
+                    //only start timer if it should auto fade out
+                    if (display_time != -1)
+                    {
+                        timer_show.Start();
+                    }
                 }
             }
             #endregion

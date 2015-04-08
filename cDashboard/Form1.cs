@@ -935,7 +935,7 @@ namespace cDashboard
 
                 this.Size = new System.Drawing.Size(tmp_width, tmp_height);
                 this.Location = new Point(0, 0);
-                
+
                 //call this manually because within the size change event it is ignored if FormWindowState is normal
                 //this was done to prevent it from resizing while calculating the span size
                 makeSureCFormsAreOnScreen();
@@ -1912,13 +1912,13 @@ namespace cDashboard
             }
             catch
             {
-                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 121");
+                MessageBox.Show("Display Time must be an integer greater than 1 and less than 121. It can also be -1, which would make it display till manually closed.");
                 return;
             }
 
-            if (!(new_display_time >= 2 && new_display_time <= 120))
+            if (!((new_display_time >= 2 && new_display_time <= 120) || new_display_time == -1))
             {
-                MessageBox.Show("Display Time needs to be an integer greater than 1 and less than 121");
+                MessageBox.Show("Display Time must be an integer greater than 1 and less than 121. It can also be -1, which would make it display till manually closed.");
                 return;
             }
 
