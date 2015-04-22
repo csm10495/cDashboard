@@ -84,6 +84,7 @@
             this.setFadeTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setInMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textbox_fadetime = new System.Windows.Forms.ToolStripTextBox();
+            this.fadeShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setDateTimeColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boardlessModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cStickyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,7 +100,8 @@
             this.cNotificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolstrip_displaytime = new System.Windows.Forms.ToolStripTextBox();
-            this.fadeShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.snoozeTimeInMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textbox_snooze = new System.Windows.Forms.ToolStripTextBox();
             this.fadetimer = new System.Windows.Forms.Timer(this.components);
             this.PluginSaveTimer = new System.Windows.Forms.Timer(this.components);
             this.notifyicon_menustrip.SuspendLayout();
@@ -529,6 +531,13 @@
             this.textbox_fadetime.Name = "textbox_fadetime";
             this.textbox_fadetime.Size = new System.Drawing.Size(100, 23);
             // 
+            // fadeShortcutToolStripMenuItem
+            // 
+            this.fadeShortcutToolStripMenuItem.Name = "fadeShortcutToolStripMenuItem";
+            this.fadeShortcutToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.fadeShortcutToolStripMenuItem.Text = "Fade Shortcut...";
+            this.fadeShortcutToolStripMenuItem.Click += new System.EventHandler(this.fadeShortcutToolStripMenuItem_Click);
+            // 
             // setDateTimeColorToolStripMenuItem
             // 
             this.setDateTimeColorToolStripMenuItem.Name = "setDateTimeColorToolStripMenuItem";
@@ -613,13 +622,6 @@
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            //
-            // fadeShortcutToolStripMenuItem
-            // 
-            this.fadeShortcutToolStripMenuItem.Name = "fadeShortcutToolStripMenuItem";
-            this.fadeShortcutToolStripMenuItem.Size = new System.Drawing.Size(295, 36);
-            this.fadeShortcutToolStripMenuItem.Text = "Fade Shortcut...";
-            this.fadeShortcutToolStripMenuItem.Click += new System.EventHandler(this.fadeShortcutToolStripMenuItem_Click); 
             // 
             // importToolStripMenuItem
             // 
@@ -631,7 +633,8 @@
             // cNotificationToolStripMenuItem
             // 
             this.cNotificationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.displayTimeToolStripMenuItem});
+            this.displayTimeToolStripMenuItem,
+            this.snoozeTimeInMinutesToolStripMenuItem});
             this.cNotificationToolStripMenuItem.Name = "cNotificationToolStripMenuItem";
             this.cNotificationToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.cNotificationToolStripMenuItem.Text = "cNotification";
@@ -651,6 +654,22 @@
             this.toolstrip_displaytime.Name = "toolstrip_displaytime";
             this.toolstrip_displaytime.Size = new System.Drawing.Size(152, 23);
             this.toolstrip_displaytime.Text = "5";
+            // 
+            // snoozeTimeInMinutesToolStripMenuItem
+            // 
+            this.snoozeTimeInMinutesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.textbox_snooze});
+            this.snoozeTimeInMinutesToolStripMenuItem.Name = "snoozeTimeInMinutesToolStripMenuItem";
+            this.snoozeTimeInMinutesToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.snoozeTimeInMinutesToolStripMenuItem.Text = "Snooze Time in Minutes";
+            this.snoozeTimeInMinutesToolStripMenuItem.DropDownClosed += new System.EventHandler(this.snoozeTimeInMinutesToolStripMenuItem_DropDownClosed);
+            this.snoozeTimeInMinutesToolStripMenuItem.DropDownOpened += new System.EventHandler(this.snoozeTimeInMinutesToolStripMenuItem_DropDownOpened);
+            // 
+            // textbox_snooze
+            // 
+            this.textbox_snooze.Name = "textbox_snooze";
+            this.textbox_snooze.Size = new System.Drawing.Size(152, 23);
+            this.textbox_snooze.Text = "5";
             // 
             // fadetimer
             // 
@@ -768,6 +787,8 @@
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fadeShortcutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem snoozeTimeInMinutesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox textbox_snooze;
     }
 }
 

@@ -2812,6 +2812,61 @@ namespace cDashboard
         }
 
         /// <summary>
+        /// read snooze time from settings and place into menustrip item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void snoozeTimeInMinutesToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            List<string> snooze = getSpecificSetting(new string[] { "cNotification", "SnoozeTime" });
+
+            //if the settings key doesn't exist yet, add it
+            if (snooze.Count() == 0)
+            {
+                replaceSetting(new string[] { "cNotification", "SnoozeTime" }, new string[] { "cNotification", "SnoozeTime", "10" });
+                textbox_snooze.Text = "5";
+            }
+            else
+            {
+                textbox_snooze.Text = snooze[0];
+            }
+        }
+
+        /// <summary>
+        /// try to save new value for snooze time in minutes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void snoozeTimeInMinutesToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            ///current snooze time
+            int snooze_min = Convert.ToInt16(getSpecificSetting(new string[] { "cNotification", "SnoozeTime" })[0]);
+
+            int new_snooze_min = -1;
+
+            //if the casting fails, then break gracefully
+            try
+            {
+                new_snooze_min = Convert.ToInt32(textbox_snooze.Text);
+            }
+            catch
+            {
+                MessageBox.Show("The snooze time must be a positive integer!");
+                return;
+            }
+
+            //make sure it is positive
+            if (new_snooze_min <= 0)
+            {
+                MessageBox.Show("The snooze time must be a positive integer!");
+                return;
+            }
+
+            //save
+            replaceSetting(new string[] { "cNotification", "SnoozeTime" }, new string[] { "cNotification", "SnoozeTime", new_snooze_min.ToString() });
+        }
+
+        /// <summary>
         /// Class with antialiasing to get rid of fuschia artifacts on File, Edit
         /// </summary>
         public class cToolStripMenuItem : ToolStripMenuItem

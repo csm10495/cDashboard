@@ -207,5 +207,43 @@ namespace cDashboard
         {
             this.Close();
         }
+
+        /// <summary>
+        /// snoozes current cNotification for set amount of time
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_snooze_Click(object sender, EventArgs e)
+        {
+            List<string> snooze = getSpecificSetting(new string[] { "cNotification", "SnoozeTime" });
+
+            //if the settings key doesn't exist yet, add it
+            if (snooze.Count() == 0)
+            {
+                replaceSetting(new string[] { "cNotification", "SnoozeTime" }, new string[] { "cNotification", "SnoozeTime", "5" });
+                Console.WriteLine("added key");
+                this.Close();
+            }
+            else
+            {
+                List<string> cReminders = new List<string>();
+                cReminders.Add("cReminders");
+                cReminders.AddRange(getSpecificSetting(new string[] { "cReminders" }));
+
+                //add this onto cReminders in settings
+                cReminders.Add(DateTime.Now.AddMinutes(Convert.ToInt16(snooze[0])).Ticks.ToString());
+                cReminders.Add(label_text.Text);
+
+                List<string> find = new List<string>();
+                find.Add("cReminders");
+
+                replaceSetting(find, cReminders);
+
+                //update the dict of cReminders in cDashboard
+                Application.OpenForms.OfType<cDashboard>().FirstOrDefault().updateDictCReminders();
+
+                this.Close();
+            }
+        }
     }
 }

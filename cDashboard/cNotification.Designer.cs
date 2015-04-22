@@ -38,6 +38,7 @@
             this.button_close = new System.Windows.Forms.Button();
             this.timer_show = new System.Windows.Forms.Timer(this.components);
             this.timer_fade = new System.Windows.Forms.Timer(this.components);
+            this.button_snooze = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -106,12 +107,25 @@
             this.timer_fade.Interval = 1;
             this.timer_fade.Tick += new System.EventHandler(this.timer_fade_tick);
             // 
+            // button_snooze
+            // 
+            this.button_snooze.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_snooze.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_snooze.Location = new System.Drawing.Point(389, 1);
+            this.button_snooze.Name = "button_snooze";
+            this.button_snooze.Size = new System.Drawing.Size(24, 23);
+            this.button_snooze.TabIndex = 6;
+            this.button_snooze.Text = "Zz";
+            this.button_snooze.UseVisualStyleBackColor = true;
+            this.button_snooze.Click += new System.EventHandler(this.button_snooze_Click);
+            // 
             // cNotification
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(442, 151);
+            this.Controls.Add(this.button_snooze);
             this.Controls.Add(this.button_close);
             this.Controls.Add(this.panel_underline);
             this.Controls.Add(this.label_text);
@@ -137,5 +151,6 @@
         private System.Windows.Forms.Button button_close;
         private System.Windows.Forms.Timer timer_show;
         private System.Windows.Forms.Timer timer_fade;
+        private System.Windows.Forms.Button button_snooze;
     }
 }
