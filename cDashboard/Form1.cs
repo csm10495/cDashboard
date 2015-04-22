@@ -2668,15 +2668,7 @@ namespace cDashboard
             }
 
             //replace the setting
-            List<string> find = new List<string>();
-            List<string> replace = new List<string>();
-
-            find.Add("cDash");
-            replace.Add("cDash");
-            find.Add("FadeLengthInMilliseconds");
-            replace.Add("FadeLengthInMilliseconds");
-            replace.Add(int_fade_milliseconds.ToString());
-            replaceSetting(find, replace);
+            replaceSetting(new string[] { "cDash", "FadeLengthInMilliseconds" }, new string[] { "cDash", "FadeLengthInMilliseconds", int_fade_milliseconds.ToString() });
         }
 
         /// <summary>
