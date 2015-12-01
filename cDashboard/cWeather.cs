@@ -340,9 +340,9 @@ namespace cDashboard
                 return null;
             }
 
-            //return dict if using Telize for this call
+            //return dict if using Freegeoip for this call
             //avoids confusing logic
-            if (url.Contains("telize"))
+            if (url.Contains("freegeoip"))
                 return dict;
 
             //no places found for woeid
@@ -530,26 +530,30 @@ namespace cDashboard
 
         /// <summary>
         /// autolocates based on IP
-        /// uses (Awesome, 100% FREE) Telize.com/geoip API
+        /// uses (Awesome, 100% FREE) freegeoip.net API
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void button_auto_locate_Click(object sender, EventArgs e)
         {
-            Dictionary<string, dynamic> dict_ip = getDictFromJsonUrl(@"http://www.telize.com/geoip");
+            Dictionary<string, dynamic> dict_ip = getDictFromJsonUrl(@"http://freegeoip.net/json/");
 
             //avoid continuing if getDic
             if (dict_ip == null)
-                return;
+            {
+                MessageBox.Show("Unable to get location information from IP");
+            }
+            else
+            {
+                string latitude = dict_ip["latitude"].ToString();
+                string longitude = dict_ip["longitude"].ToString();
 
-            string latitude = dict_ip["latitude"].ToString();
-            string longitude = dict_ip["longitude"].ToString();
+                WOEID = getWOEID(latitude + "," + longitude);
+                replaceSetting(new string[] { "cWeather", this.Name, "WOEID" }, new string[] { "cWeather", this.Name, "WOEID", WOEID });
 
-            WOEID = getWOEID(latitude + "," + longitude);
-            replaceSetting(new string[] { "cWeather", this.Name, "WOEID" }, new string[] { "cWeather", this.Name, "WOEID", WOEID });
-
-            //gets weather info based on new geolocated location
-            getWeatherInfo();
+                //gets weather info based on new geolocated location
+                getWeatherInfo();
+            }
         }
     }
 }
